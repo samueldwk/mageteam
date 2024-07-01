@@ -26,3 +26,7 @@ jobs:
       - name: Install dependencies 2
         run: |
           pip install pandas python-dotenv
+
+      - name: Run Code
+        run: |
+          python rel_ger_ecco_api_v1.0.py
