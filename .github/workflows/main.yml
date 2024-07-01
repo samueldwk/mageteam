@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas python-dotenv
+          pip install pandas python-dotenv requests
 
       - name: Run Code
         run: |
