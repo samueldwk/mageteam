@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas python-dotenv requests workalendar
+          pip install pandas=2.1.4 python-dotenv requests workalendar
 
       - name: Run Code
         run: |
