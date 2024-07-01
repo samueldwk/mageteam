@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '15 3 * * *'  # Every day at 12:15 AM (BRT) 
 
+  workflow_dispatch:
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
