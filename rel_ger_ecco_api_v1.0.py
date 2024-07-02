@@ -78,7 +78,7 @@ for client in c_list:
     )
 
     dic_ecco_prod = response_prod.json()
-    df_ecco_prod = pd.DataFrame(dic_ecco_prod)
+    df_ecco_prod = pd.DataFrame.from_dict(dic_ecco_prod)
 
     # COLUMNS TO KEEP
     columns_to_keep = [
@@ -101,7 +101,7 @@ for client in c_list:
     )
 
     dic_ecco_ped = response_ped.json()
-    df_ecco_ped = pd.DataFrame(dic_ecco_ped)
+    df_ecco_ped = pd.DataFrame.from_dict(dic_ecco_ped)
 
     # CONVERT COLUMNS TYPE
     df_ecco_ped["desconto"] = df_ecco_ped["desconto"].str.replace(",", ".")
@@ -175,7 +175,7 @@ for client in c_list:
         )
 
         dic_ecco_ped_prod = response_ped_prod.json()
-        df_ecco_ped_prod_un = pd.DataFrame(
+        df_ecco_ped_prod_un = pd.DataFrame.from_dict(
             dic_ecco_ped_prod,
         )
 
@@ -268,7 +268,7 @@ for client in c_list:
     resultado_ticketmedio = round(resultado_ticketmedio, 2)
 
     # CREATE df_relger_vendas_total
-    df_relger_vendas_total = pd.DataFrame(
+    df_relger_vendas_total = pd.DataFrame.from_dict(
         {
             "DATA": [dataname1],
             "VALOR PEDIDOS APROVADOS": [resultado_valor_vendas_total],
@@ -322,7 +322,7 @@ for client in c_list:
     )
 
     # Create a new DataFrame 'df_relger_vendas_pordesconto_final' with the results
-    df_vendas_pordesconto_bruto = pd.DataFrame(
+    df_vendas_pordesconto_bruto = pd.DataFrame.from_dict(
         resultado_valor_vendas_faixa_desconto
     )
     df_relger_vendas_pordesconto_final = df_vendas_pordesconto_bruto.T
@@ -365,7 +365,7 @@ for client in c_list:
             break
 
     dic_ecco_estoque = response_estoque.json()
-    df_ecco_estoque_cru = pd.DataFrame(dic_ecco_estoque)
+    df_ecco_estoque_cru = pd.DataFrame.from_dict(dic_ecco_estoque)
 
     # SUBSTITUTE ALL NEGATIVE VALUES BY 0
     df_ecco_estoque_limpo = df_ecco_estoque_cru.copy()
@@ -418,7 +418,7 @@ for client in c_list:
     )
 
     # CREATE df_relger_estoque_total
-    df_relger_estoque_total = pd.DataFrame(
+    df_relger_estoque_total = pd.DataFrame.from_dict(
         {
             "QUANTIDADE ESTOQUE TOTAL": [resultado_quantidade_estoque_total],
             "VALOR ESTOQUE TOTAL": [resultado_valor_estoque_total],
@@ -476,7 +476,7 @@ for client in c_list:
     )
 
     # Create a new DataFrame 'df_relger_estoque_pordesconto_final' with the results
-    df_estoque_pordesconto_bruto = pd.DataFrame(
+    df_estoque_pordesconto_bruto = pd.DataFrame.from_dict(
         resultado_valor_estoque_faixa_desconto
     )
     df_relger_estoque_pordesconto_final = df_estoque_pordesconto_bruto.T
@@ -509,7 +509,7 @@ for client in c_list:
     )
 
     # Criar DF final de informações complementares de pedidos
-    df_relger_informacoes_total = pd.DataFrame(
+    df_relger_informacoes_total = pd.DataFrame.from_dict(
         {
             "VALOR FRETE COBRADO TOTAL": [resultado_valor_frete_total],
             "% FRETE": [resultado_porcentagem_frete_total],
