@@ -54,6 +54,9 @@ jobs:
 
       - name: Print Workspace Directory
         run: ls -l $GITHUB_WORKSPACE
+        
+      - name: Print File Contents
+        run: cat $GITHUB_WORKSPACE/credentials.json
           
       - name: Run Code GA API
         run: |
