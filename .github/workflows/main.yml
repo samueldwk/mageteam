@@ -61,8 +61,6 @@ jobs:
       - name: Run Code GA API
         run: |
           python rel_ger_ga_api_v1.0.py
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/credentials.json
 
 
 
