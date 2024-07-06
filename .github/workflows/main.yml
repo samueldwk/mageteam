@@ -46,8 +46,8 @@ jobs:
 
       - name: Run Code FB API
         run: |
-          python rel_ger_fb_api_v1.0
+          python rel_ger_fb_api_v1.0.py
 
       - name: Run Code GA API
         run: |
-          python rel_ger_ga_api_v1.0
+          python rel_ger_ga_api_v1.0.py
