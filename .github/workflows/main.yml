@@ -38,7 +38,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests workalendar supabase google.analytics.data_v1beta
+          pip install pandas==2.1.4 python-dotenv requests workalendar supabase BetaAnalyticsDataClient
 
       - name: Run Code Eccosys API
         run: |
