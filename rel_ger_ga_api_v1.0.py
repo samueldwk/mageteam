@@ -70,7 +70,7 @@ for client in c_list:
 
     os.environ[
     "GOOGLE_APPLICATION_CREDENTIALS"
-    ] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+    ] = os.getenv("credentials.json")
 
     from google.analytics.data_v1beta import BetaAnalyticsDataClient
     from google.analytics.data_v1beta.types import (
