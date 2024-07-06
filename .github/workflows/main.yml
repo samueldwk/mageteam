@@ -17,7 +17,8 @@ jobs:
       fb_llt: ${{ secrets.FB_LLT }}
       ga_id_mun: ${{ secrets.GA_ID_MUN }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}      
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/credentials.json
       
     strategy:
       matrix:
@@ -62,7 +63,6 @@ jobs:
         run: |
           python rel_ger_ga_api_v1.0.py
 
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/credentials.json
+
 
         
