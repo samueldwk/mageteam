@@ -13,6 +13,9 @@ jobs:
     
     env:
       ecco_aut_mun: ${{ secrets.ECCO_AUT_MUN }}
+      fb_act_mun: ${{ secrets.FB_ACT_MUN }}
+      fb_llt: ${{ secrets.FB_LLT }}
+      ga_id_mun: ${{ secrets.GA_ID_MUN }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}      
       
@@ -37,6 +40,14 @@ jobs:
         run: |
           pip install pandas==2.1.4 python-dotenv requests workalendar supabase
 
-      - name: Run Code
+      - name: Run Code Eccosys API
         run: |
           python rel_ger_ecco_api_v1.0.py
+
+      - name: Run Code FB API
+        run: |
+          python rel_ger_fb_api_v1.0
+
+      - name: Run Code GA API
+        run: |
+          python rel_ger_ga_api_v1.0
