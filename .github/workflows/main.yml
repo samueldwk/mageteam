@@ -18,7 +18,6 @@ jobs:
       ga_id_mun: ${{ secrets.GA_ID_MUN }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/credentials.json
       
     strategy:
       matrix:
@@ -58,10 +57,12 @@ jobs:
         
       - name: Print File Contents
         run: cat $GITHUB_WORKSPACE/credentials.json
-          
+        
       - name: Run Code GA API
         run: |
           python rel_ger_ga_api_v1.0.py
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/credentials.json
 
 
 
