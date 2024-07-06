@@ -1,4 +1,4 @@
-name: Scheduled [rel_ger_ecco_api_v1.0]
+name: Scheduled [rel_ger_all_api_v1.0]
 
 on:
   schedule:
@@ -51,12 +51,6 @@ jobs:
       - name: Decode and save Google credentials
         run: |
           echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
-
-      - name: Print Workspace Directory
-        run: ls -l $GITHUB_WORKSPACE
-        
-      - name: Print File Contents
-        run: cat $GITHUB_WORKSPACE/credentials.json
         
       - name: Run Code GA API
         run: |
