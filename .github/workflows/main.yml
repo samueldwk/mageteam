@@ -13,8 +13,6 @@ jobs:
     
     env:
       ecco_aut_mun: ${{ secrets.ECCO_AUT_MUN }}
-      FB_ACT_MUN: ${{ secrets.FB_ACT_MUN }}
-      GA_ID_MUN: ${{ secrets.GA_ID_MUN }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}      
       
@@ -37,7 +35,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests workalendar
+          pip install pandas==2.1.4 python-dotenv requests workalendar supabase
 
       - name: Run Code
         run: |
