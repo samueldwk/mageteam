@@ -38,7 +38,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests workalendar supabase
+          pip install pandas==2.1.4 python-dotenv requests workalendar supabase google
 
       - name: Run Code Eccosys API
         run: |
