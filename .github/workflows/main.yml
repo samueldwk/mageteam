@@ -51,6 +51,9 @@ jobs:
       - name: Decode and save Google credentials
         run: |
           echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
+
+      - name: Print Workspace Directory
+        run: ls -l $GITHUB_WORKSPACE
           
       - name: Run Code GA API
         run: |
