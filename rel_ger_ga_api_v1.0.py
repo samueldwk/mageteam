@@ -68,9 +68,7 @@ dic_nomes = {
 for client in c_list:
     # In[01]: Google Analytics API e montar df final de google analytics
 
-    os.environ[
-        "GOOGLE_APPLICATION_CREDENTIALS"
-    ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
+    credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
     from google.analytics.data_v1beta import BetaAnalyticsDataClient
     from google.analytics.data_v1beta.types import (
