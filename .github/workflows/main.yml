@@ -3,6 +3,7 @@ name: Scheduled [rel_ger_all_api_v1.0]
 on:
   schedule:
     - cron: '15 3 * * *'  # Every day at 12:15 AM (BRT) 
+    - cron: '15 6 * * *'  # Every day at 03:15 AM (BRT) 
 
   workflow_dispatch:
 
