@@ -13,9 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
+      ecco_aut_alanis: ${{ secrets.ECCO_AUT_ALANIS }}    
       ecco_aut_mun: ${{ secrets.ECCO_AUT_MUN }}
+      fb_act_alanis: ${{ secrets.FB_ACT_ALANIS }}
       fb_act_mun: ${{ secrets.FB_ACT_MUN }}
       fb_llt: ${{ secrets.FB_LLT }}
+      ga_id_alanis: ${{ secrets.GA_ID_ALANIS }} 
       ga_id_mun: ${{ secrets.GA_ID_MUN }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
