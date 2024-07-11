@@ -14,12 +14,45 @@ jobs:
     
     env:
       ecco_aut_alanis: ${{ secrets.ECCO_AUT_ALANIS }}    
+      ecco_aut_dadri: ${{ secrets.ECCO_AUT_DADRI }}   
+      ecco_aut_french: ${{ secrets.ECCO_AUT_FRENCH }}
+      ecco_aut_haut: ${{ secrets.ECCO_AUT_HAUT }}
+      ecco_aut_infini: ${{ secrets.ECCO_AUT_INFINI }}
+      ecco_aut_kle: ${{ secrets.ECCO_AUT_KLE }}     
       ecco_aut_mun: ${{ secrets.ECCO_AUT_MUN }}
+      ecco_aut_nobu: ${{ secrets.ECCO_AUT_NOBU }}
+      ecco_aut_othergirls: ${{ secrets.ECCO_AUT_OTHERGIRLS }}
+      ecco_aut_paconcept: ${{ secrets.ECCO_AUT_PACONCEPT }}
+      ecco_aut_rery: ${{ secrets.ECCO_AUT_RERY }}
+      ecco_aut_talgui: ${{ secrets.ECCO_AUT_TALGUI }}
+      ecco_aut_una: ${{ secrets.ECCO_AUT_UNA }}
       fb_act_alanis: ${{ secrets.FB_ACT_ALANIS }}
+      fb_act_dadri: ${{ secrets.FB_ACT_DADRI }}
+      fb_act_french: ${{ secrets.FB_ACT_FRENCH }}
+      fb_act_haut: ${{ secrets.FB_ACT_HAUT }}
+      fb_act_infini: ${{ secrets.FB_ACT_INFINI }}
+      fb_act_kle: ${{ secrets.FB_ACT_KLE }}
       fb_act_mun: ${{ secrets.FB_ACT_MUN }}
+      fb_act_nobu: ${{ secrets.FB_ACT_NOBU }}
+      fb_act_othergirls: ${{ secrets.FB_ACT_OTHERGIRLS }}
+      fb_act_paconcept: ${{ secrets.FB_ACT_PACONCEPT }}
+      fb_act_rery: ${{ secrets.FB_ACT_RERY }}
+      fb_act_talgui: ${{ secrets.FB_ACT_TALGUI }}
+      fb_act_una: ${{ secrets.FB_ACT_UNA }}
       fb_llt: ${{ secrets.FB_LLT }}
-      ga_id_alanis: ${{ secrets.GA_ID_ALANIS }} 
-      ga_id_mun: ${{ secrets.GA_ID_MUN }}
+      ga_id_alanis: ${{ secrets.GA_ID_ALANIS }}
+      ga_id_dadri: ${{ secrets.GA_ID_DADRI }}
+      ga_id_french: ${{ secrets.GA_ID_FRENCH }}
+      ga_id_haut: ${{ secrets.GA_ID_HAUT }}
+      ga_id_infini: ${{ secrets.GA_ID_INFINI }}
+      ga_id_kle: ${{ secrets.GA_ID_KLE }}
+      ga_id_mun: ${{ secrets.GA_ID_MUN }}      
+      ga_id_nobu: ${{ secrets.GA_ID_NOBU }}
+      ga_id_othergirls: ${{ secrets.GA_ID_OTHERGIRLS }}
+      ga_id_paconcept: ${{ secrets.GA_ID_PACONCEPT }}
+      ga_id_rery: ${{ secrets.GA_ID_RERY }}
+      ga_id_talgui: ${{ secrets.GA_ID_TALGUI }}
+      ga_id_una: ${{ secrets.GA_ID_UNA }} 
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       

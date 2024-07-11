@@ -25,39 +25,41 @@ datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
 c_list = [
     # "ajobrand",
     "alanis",
-    "dadri",
+    # "dadri",
     "french",
-    "haverroth",
-    "infini",
+    # "haverroth",
+    "haut",
+    # "infini",
     "kle",
     # "luvic",
     "mun",
     "nobu",
     "othergirls",
+    "rery",
     "talgui",
     "paconcept",
     "una",
 ]
 
-c_list = ["alanis", "mun"]
+# c_list = ["alanis", "mun"]
 
 # NAME DICTIONARY
-dic_nomes = {
-    "ajobrand": "aJo Brand",
-    "alanis": "Alanis",
-    "dadri": "Dadri",
-    "french": "French",
-    "haverroth": "Haverroth",
-    "infini": "Infini",
-    "kle": "Kle",
-    "luvic": "Luvic",
-    "mun": "Mun",
-    "nobu": "Nobu",
-    "othergirls": "Other Girls",
-    "paconcept": "P.A Concept",
-    "talgui": "Talgui",
-    "una": "Una",
-}
+# dic_nomes = {
+#     "ajobrand": "aJo Brand",
+#     "alanis": "Alanis",
+#     "dadri": "Dadri",
+#     "french": "French",
+#     "haverroth": "Haverroth",
+#     "infini": "Infini",
+#     "kle": "Kle",
+#     "luvic": "Luvic",
+#     "mun": "Mun",
+#     "nobu": "Nobu",
+#     "othergirls": "Other Girls",
+#     "paconcept": "P.A Concept",
+#     "talgui": "Talgui",
+#     "una": "Una",
+# }
 
 # API HEADER
 
