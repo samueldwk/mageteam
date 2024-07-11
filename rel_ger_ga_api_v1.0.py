@@ -30,7 +30,7 @@ year = date_object.year
 # CLIENT LIST
 c_list = [
     # "ajobrand",
-    "alanis",
+    # "alanis",
     # "dadri",
     "french",
     # "haverroth",
@@ -38,13 +38,13 @@ c_list = [
     # "infini",
     "kle",
     # "luvic",
-    "mun",
+    # "mun",
     "nobu",
-    "othergirls",
-    "rery",
-    "talgui",
-    "paconcept",
-    "una",
+    # "othergirls",
+    # "rery",
+    # "talgui",
+    # "paconcept",
+    # "una",
 ]
 
 # c_list = ["alanis", "mun"]
@@ -65,7 +65,7 @@ c_list = [
 #     "paconcept": "P.A Concept",
 #     "talgui": "Talgui",
 #     "una": "Una",
-}
+# }
 
 for client in c_list:
     # In[01]: Google Analytics API e montar df final de google analytics
