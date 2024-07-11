@@ -272,6 +272,7 @@ for client in c_list:
         {
             "DATA": [dataname1],
             "VALOR PEDIDOS APROVADOS": [resultado_valor_vendas_total],
+            "CMV": [resultado_valor_cmv_total],
             "MKP VENDAS": [resultado_mkp_vendas_total],
             "QUANTIDADE PEDIDOS APROVADOS": [
                 resultado_quantidade_pedidos_total
@@ -389,6 +390,15 @@ for client in c_list:
     df_ecco_estoque_prod[columns_to_convert] = df_ecco_estoque_prod[
         columns_to_convert
     ].astype(float)
+
+    # REMOVER ESTOQUE DE EMBALAGENS / VALE PRESENTES (TUDO QUE NÃO FOR PRODUTO ACABADO PRINCIPAL)
+
+    if client == "mun":
+        df_ecco_estoque_prod = df_ecco_estoque_prod[
+            ~df_ecco_estoque_prod.apply(
+                lambda row: row.astype(str).str.contains("VP").any(), axis=1
+            )
+        ]
 
     # SUM TOTAL QTY OF STOCK
     resultado_quantidade_estoque_total = df_ecco_estoque_prod[
