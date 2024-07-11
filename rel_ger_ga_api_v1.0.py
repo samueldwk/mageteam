@@ -45,7 +45,7 @@ c_list = [
     "una",
 ]
 
-c_list = ["mun"]
+c_list = ["alanis", "mun"]
 
 # NAME DICTIONARY
 dic_nomes = {
@@ -68,9 +68,7 @@ dic_nomes = {
 for client in c_list:
     # In[01]: Google Analytics API e montar df final de google analytics
 
-    os.environ[
-    "GOOGLE_APPLICATION_CREDENTIALS"
-    ] = "credentials.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
     from google.analytics.data_v1beta import BetaAnalyticsDataClient
     from google.analytics.data_v1beta.types import (
