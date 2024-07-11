@@ -39,7 +39,7 @@ c_list = [
     "una",
 ]
 
-c_list = ["mun"]
+c_list = ["alanis", "mun"]
 
 # NAME DICTIONARY
 dic_nomes = {
