@@ -50,7 +50,7 @@ c_list = [
     "una",
 ]
 
-# c_list = ["haut"]
+# c_list = ["infini"]
 
 # DICIONÁRIO DE NOMES
 
