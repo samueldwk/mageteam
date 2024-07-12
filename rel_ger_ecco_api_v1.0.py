@@ -24,7 +24,7 @@ datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
 # CLIENT LIST
 c_list = [
     # "ajobrand",
-    # "alanis",
+    "alanis",
     # "dadri",
     "french",
     # "haverroth",
@@ -32,16 +32,16 @@ c_list = [
     # "infini",
     "kle",
     # "luvic",
-    # "mun",
+    "mun",
     "nobu",
-    # "othergirls",
-    # "rery",
+    "othergirls",
+    "rery",
     # "talgui",
-    # "paconcept",
-    # "una",
+    "paconcept",
+    "una",
 ]
 
-# c_list = ["alanis", "mun"]
+c_list = ["paconcept"]
 
 # NAME DICTIONARY
 # dic_nomes = {
