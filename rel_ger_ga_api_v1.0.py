@@ -30,47 +30,35 @@ year = date_object.year
 # CLIENT LIST
 c_list = [
     # "ajobrand",
-    # "alanis",
-    # "dadri",
+    "alanis",
+    "dadri",
     "french",
     # "haverroth",
     "haut",
-    # "infini",
+    "infini",
     "kle",
     # "luvic",
-    # "mun",
+    "mun",
     "nobu",
-    # "othergirls",
-    # "rery",
-    # "talgui",
-    # "paconcept",
-    # "una",
+    "othergirls",
+    "rery",
+    "talgui",
+    "paconcept",
+    "una",
 ]
 
 # c_list = ["alanis", "mun"]
 
-# NAME DICTIONARY
-# dic_nomes = {
-#     "ajobrand": "aJo Brand",
-#     "alanis": "Alanis",
-#     "dadri": "Dadri",
-#     "french": "French",
-#     "haverroth": "Haverroth",
-#     "infini": "Infini",
-#     "kle": "Kle",
-#     "luvic": "Luvic",
-#     "mun": "Mun",
-#     "nobu": "Nobu",
-#     "othergirls": "Other Girls",
-#     "paconcept": "P.A Concept",
-#     "talgui": "Talgui",
-#     "una": "Una",
-# }
 
 for client in c_list:
     # In[01]: Google Analytics API e montar df final de google analytics
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+
+    # Run in local machine
+    # os.environ[
+    #     "GOOGLE_APPLICATION_CREDENTIALS"
+    # ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
 
     from google.analytics.data_v1beta import BetaAnalyticsDataClient
     from google.analytics.data_v1beta.types import (

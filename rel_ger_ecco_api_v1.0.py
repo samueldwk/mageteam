@@ -41,25 +41,7 @@ c_list = [
     "una",
 ]
 
-c_list = ["paconcept"]
-
-# NAME DICTIONARY
-# dic_nomes = {
-#     "ajobrand": "aJo Brand",
-#     "alanis": "Alanis",
-#     "dadri": "Dadri",
-#     "french": "French",
-#     "haverroth": "Haverroth",
-#     "infini": "Infini",
-#     "kle": "Kle",
-#     "luvic": "Luvic",
-#     "mun": "Mun",
-#     "nobu": "Nobu",
-#     "othergirls": "Other Girls",
-#     "paconcept": "P.A Concept",
-#     "talgui": "Talgui",
-#     "una": "Una",
-# }
+# c_list = ["paconcept"]
 
 # API HEADER
 
@@ -164,16 +146,39 @@ for client in c_list:
     # CALL PRODUCTS FROM EACH ORDER AND MERGE IT WITH ORDERS DF AND CALCULATE SOME INDICATORS
 
     df_order_ids = df_ecco_ped["id"]
-
     df_ecco_ped_prod = pd.DataFrame()
+
+    max_requests_per_minute = 60
+    sleep_time = (
+        60 / max_requests_per_minute
+    )  # Time to wait between requests in seconds
+
+    def make_request_with_retries(url, headers, data, files, max_retries=10):
+        retries = 0
+        backoff_time = 1  # Initial backoff time in seconds
+        while retries < max_retries:
+            response = requests.get(
+                url, headers=headers, data=data, files=files
+            )
+            if response.status_code == 200:
+                return response
+            elif response.status_code == 429:  # Too many requests
+                retries += 1
+                time.sleep(backoff_time)
+                backoff_time *= 2  # Exponential backoff
+            else:
+                response.raise_for_status()
+        raise Exception(
+            f"Failed to fetch data from {url} after {max_retries} retries"
+        )
 
     for order in df_order_ids:
         url_ped_prod = (
             f"https://empresa.eccosys.com.br/api/pedidos/{order}/items"
         )
 
-        response_ped_prod = requests.request(
-            "GET", url_ped_prod, headers=headers, data=payload, files=files
+        response_ped_prod = make_request_with_retries(
+            url_ped_prod, headers=headers, data=payload, files=files
         )
 
         dic_ecco_ped_prod = response_ped_prod.json()

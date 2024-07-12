@@ -28,42 +28,25 @@ year = date_object.year
 # CLIENT LIST
 c_list = [
     # "ajobrand",
-    # "alanis",
-    # "dadri",
+    "alanis",
+    "dadri",
     "french",
     # "haverroth",
     "haut",
-    # "infini",
+    "infini",
     "kle",
     # "luvic",
-    # "mun",
+    "mun",
     "nobu",
-    # "othergirls",
-    # "rery",
-    # "talgui",
-    # "paconcept",
-    # "una",
+    "othergirls",
+    "rery",
+    "talgui",
+    "paconcept",
+    "una",
 ]
 
-# c_list = ["alanis", "mun"]
+# c_list = ["haut"]
 
-# NAME DICTIONARY
-# dic_nomes = {
-#     "ajobrand": "aJo Brand",
-#     "alanis": "Alanis",
-#     "dadri": "Dadri",
-#     "french": "French",
-#     "haverroth": "Haverroth",
-#     "infini": "Infini",
-#     "kle": "Kle",
-#     "luvic": "Luvic",
-#     "mun": "Mun",
-#     "nobu": "Nobu",
-#     "othergirls": "Other Girls",
-#     "paconcept": "P.A Concept",
-#     "talgui": "Talgui",
-#     "una": "Una",
-# }
 
 for client in c_list:
     # In[01]: Meta ADS API
@@ -105,10 +88,21 @@ for client in c_list:
                 value = action.get("value")
                 row[action_type] = value
 
+                # if not action_values in structured_data:
+                #     row[action_type] = {"web_in_store_purchase": 0}
+
             structured_data.append(row)
 
     # Create DataFrame
     df_fb_campaigns = pd.DataFrame(structured_data)
+
+    # Replace None values with 0
+    df_fb_campaigns = df_fb_campaigns.fillna(0)
+
+    # If no "web_in_store_purchase" on df_fb_campaigns add column if value 0
+
+    if "web_in_store_purchase" not in df_fb_campaigns.columns:
+        df_fb_campaigns["web_in_store_purchase"] = 0
 
     # In[02]: Calcular os valores finais de facebook
 
@@ -170,6 +164,9 @@ for client in c_list:
             "CLIQUES NO LINK": [resultado_fb_linkclicks_total],
         }
     )
+
+    # Replace None values with 0
+    df_relger_fb_final = df_relger_fb_final.fillna(0)
 
     # In[03]: Enviar informações para DB
 
