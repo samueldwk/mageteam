@@ -51,7 +51,7 @@ c_list = [
     "una",
 ]
 
-# c_list = ["haut"]
+# c_list = ["talgui", "una"]
 
 # DICIONÁRIO DE NOMES
 
