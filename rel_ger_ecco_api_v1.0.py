@@ -148,11 +148,6 @@ for client in c_list:
     df_order_ids = df_ecco_ped["id"]
     df_ecco_ped_prod = pd.DataFrame()
 
-    max_requests_per_minute = 60
-    sleep_time = (
-        60 / max_requests_per_minute
-    )  # Time to wait between requests in seconds
-
     def make_request_with_retries(url, headers, data, files, max_retries=10):
         retries = 0
         backoff_time = 1  # Initial backoff time in seconds
