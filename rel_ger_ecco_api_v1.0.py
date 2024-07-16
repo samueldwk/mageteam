@@ -148,9 +148,9 @@ for client in c_list:
     df_order_ids = df_ecco_ped["id"]
     df_ecco_ped_prod = pd.DataFrame()
 
-    def make_request_with_retries(url, headers, data, files, max_retries=10):
+    def make_request_with_retries(url, headers, data, files, max_retries=30):
         retries = 0
-        backoff_time = 1  # Initial backoff time in seconds
+        backoff_time = 60  # Initial backoff time in seconds
         while retries < max_retries:
             response = requests.get(
                 url, headers=headers, data=data, files=files
@@ -160,7 +160,7 @@ for client in c_list:
             elif response.status_code == 429:  # Too many requests
                 retries += 1
                 time.sleep(backoff_time)
-                backoff_time *= 2  # Exponential backoff
+
             else:
                 response.raise_for_status()
         raise Exception(

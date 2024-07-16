@@ -47,7 +47,7 @@ c_list = [
     "una",
 ]
 
-# c_list = ["alanis", "mun"]
+# c_list = ["mun"]
 
 
 for client in c_list:
