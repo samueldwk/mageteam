@@ -32,10 +32,11 @@ c_list = [
     "othergirls",
     "talgui",
     "paconcept",
+    "rery",
     "una",
 ]
 
-# c_list = ["kle"]
+# c_list = ["mun"]
 
 #### FILE PATHS ####
 

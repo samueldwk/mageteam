@@ -32,12 +32,13 @@ c_list = [
     # "luvic",
     "mun",
     "nobu",
+    "rery",
     "othergirls",
     "talgui",
     "una",
 ]
 
-# c_list = ["una"]
+# c_list = ["mun"]
 
 # DICIONÁRIO DE NOMES
 
@@ -55,6 +56,7 @@ dic_nomes = {
     "nobu": "Nobu",
     "othergirls": "Other Girls",
     "paconcept": "P.A Concept",
+    "rery": "Rery",
     "talgui": "Talgui",
     "una": "Una",
 }
@@ -69,7 +71,7 @@ c_list_sku_8 = {
 }
 c_list_sku_9 = {"Cliente": ["ajobrand", "french", "una"], "Index": 9}
 c_list_sku_15 = {
-    "Cliente": ["haverroth", "haut", "kle", "paconcept"],
+    "Cliente": ["haverroth", "haut", "kle", "paconcept", "rery"],
     "Index": 15,
 }  ###get all sku, doesnt need to slice
 

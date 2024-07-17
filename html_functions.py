@@ -144,7 +144,12 @@ def download_eccosys(
         dropdown = Select(driver.find_element(By.XPATH, dropdown_xpath))
 
         # Exceção de select caso cliente = una, todos os produtos
-        if cliente == "una" or cliente == "haverroth" or cliente == "haut":
+        if (
+            cliente == "una"
+            or cliente == "haverroth"
+            or cliente == "haut"
+            or cliente == "rery"
+        ):
             option_index_to_select = 0
             dropdown.select_by_index(option_index_to_select)
 
