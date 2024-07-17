@@ -47,7 +47,7 @@ c_list = [
     "una",
 ]
 
-# c_list = ["mun"]
+c_list = ["mun"]
 
 
 for client in c_list:
@@ -56,9 +56,9 @@ for client in c_list:
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
     # Run in local machine
-    os.environ[
-        "GOOGLE_APPLICATION_CREDENTIALS"
-    ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
+    # os.environ[
+    #     "GOOGLE_APPLICATION_CREDENTIALS"
+    # ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
 
     from google.analytics.data_v1beta import BetaAnalyticsDataClient
     from google.analytics.data_v1beta.types import (

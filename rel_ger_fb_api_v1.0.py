@@ -45,7 +45,7 @@ c_list = [
     "una",
 ]
 
-# c_list = ["paconcept"]
+c_list = ["mun"]
 
 
 for client in c_list:
