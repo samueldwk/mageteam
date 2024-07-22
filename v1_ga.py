@@ -35,23 +35,22 @@ datatxt1, dataname1, datasql1, datanamex = datef.dates(d1)
 # CLIENTES
 
 c_list = [
-    # "ajobrand",
     "alanis",
     "dadri",
     "french",
     "haut",
-    # "haverroth",
     "infini",
     "kle",
-    # "luvic",
     "mun",
     "nobu",
     "othergirls",
+    "rery",
     "talgui",
     "una",
+    "uniquechic",
 ]
 
-# c_list = ["talgui", "una"]
+# c_list = ["uniquechic"]
 
 # DICIONÁRIO DE NOMES
 
@@ -69,8 +68,10 @@ dic_nomes = {
     "nobu": "Nobu",
     "othergirls": "Other Girls",
     "paconcept": "P.A Concept",
+    "rery": "Rery",
     "talgui": "Talgui",
     "una": "Una",
+    "uniquechic": "Unique Chic",
 }
 
 # %% FORMAT REPORT - run report method

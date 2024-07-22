@@ -1,4 +1,4 @@
-# %% FB META ADS API
+# %% FB META ADS API V1
 
 import requests
 import pandas as pd

@@ -6,7 +6,7 @@ import path_functions as pathf
 import file_functions as filef
 import dotenv
 import gspread
-import v1_fb as fb
+import v2_fb as fb
 
 
 dotenv.load_dotenv()
@@ -16,29 +16,27 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 7, 12).date()
+# d1 = datetime.datetime(2024, 7, 20).date()
 
 datatxt, dataname, datasql, dataname2 = datef.dates(d1)
 
 c_list = [
-    # "ajobrand",
     "alanis",
     "dadri",
     "french",
-    "haverroth",
-    "haut",
+    # "haut",
     "infini",
     "kle",
-    # "luvic",
-    "mun",
+    # "mun",
     "nobu",
     "rery",
     "othergirls",
     "talgui",
     "una",
+    "uniquechic",
 ]
 
-# c_list = ["mun"]
+# c_list = ["uniquechic"]
 
 # DICIONÁRIO DE NOMES
 
@@ -59,6 +57,7 @@ dic_nomes = {
     "rery": "Rery",
     "talgui": "Talgui",
     "una": "Una",
+    "uniquechic": "Unique Chic",
 }
 
 ##### DICTS PARA SLICE DO CODIGO SKU #####
@@ -71,8 +70,8 @@ c_list_sku_8 = {
 }
 c_list_sku_9 = {"Cliente": ["ajobrand", "french", "una"], "Index": 9}
 c_list_sku_15 = {
-    "Cliente": ["haverroth", "haut", "kle", "paconcept", "rery"],
-    "Index": 15,
+    "Cliente": ["haverroth", "haut", "kle", "paconcept", "rery", "uniquechic"],
+    "Index": 40,
 }  ###get all sku, doesnt need to slice
 
 #### FILE PATHS ####

@@ -149,6 +149,7 @@ def download_eccosys(
             or cliente == "haverroth"
             or cliente == "haut"
             or cliente == "rery"
+            or cliente == "uniquechic"
         ):
             option_index_to_select = 0
             dropdown.select_by_index(option_index_to_select)

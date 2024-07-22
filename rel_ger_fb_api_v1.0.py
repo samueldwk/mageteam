@@ -53,7 +53,7 @@ for client in c_list:
 
     llt = os.getenv("fb_llt")
 
-    url_fb_insights = f"https://graph.facebook.com/v19.0/{os.getenv(f'fb_act_{client}')}?fields=campaigns%7Binsights.time_range(%7B'since'%3A'{dataname1}'%2C'until'%3A'{dataname1}'%7D)%7Bobjective%2Cspend%2Caction_values%2Cimpressions%2Cinline_link_clicks%7D%7D&access_token={llt}"
+    url_fb_insights = f"https://graph.facebook.com/v19.0/{os.getenv(f'fb_act_{client}')}?fields=campaigns%7Binsights.time_range(%7B'since'%3A'{dataname1}'%2C'until'%3A'{dataname1}'%7D)%7Bobjective%2Cspend%2Caction_values%2Cimpressions%2Cinline_link_clicks%2Ccampaign_name%7D%7D&access_token={llt}"
 
     response_fb = requests.get(url_fb_insights)
 
@@ -73,6 +73,7 @@ for client in c_list:
         for insight in insights:
             row = {
                 "Campaign ID": campaign_id,
+                "Campaign Name": insight.get("campaign_name"),
                 "Objective": insight.get("objective"),
                 "Spend": insight.get("spend"),
                 "Impressions": insight.get("impressions"),
@@ -87,9 +88,6 @@ for client in c_list:
                 action_type = action.get("action_type")
                 value = action.get("value")
                 row[action_type] = value
-
-                # if not action_values in structured_data:
-                #     row[action_type] = {"web_in_store_purchase": 0}
 
             structured_data.append(row)
 
@@ -120,6 +118,14 @@ for client in c_list:
     # Filtrar apenas campanhas de objetivo conversão / vendas
     df_fb_campaigns = df_fb_campaigns[
         df_fb_campaigns["Objective"] == "OUTCOME_SALES"
+    ]
+
+    # Filtar apenas campanhas de varejo ecommerce (drop atacado)
+
+    df_fb_campaigns = df_fb_campaigns[
+        ~df_fb_campaigns.apply(
+            lambda row: row.astype(str).str.contains("atacado").any(), axis=1
+        )
     ]
 
     # Somar valor total investido "Spend"
