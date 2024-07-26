@@ -115,7 +115,7 @@ def download_ga(cliente, dataname2, dataname1):
         property=f"properties/{os.getenv(f'ga_id_{cliente}')}",
         dimensions=[Dimension(name="date")],
         metrics=[
-            Metric(name="sessionConversionRate"),
+            Metric(name="userKeyEventRate"),
             Metric(name="bounceRate"),
         ],
         date_ranges=[DateRange(start_date=dataname2, end_date=dataname1)],
@@ -123,7 +123,7 @@ def download_ga(cliente, dataname2, dataname1):
 
     output_df = format_report(request)
 
-    return output_df[["bounceRate", "sessionConversionRate"]]
+    return output_df[["bounceRate", "userKeyEventRate"]]
 
 
 for cliente in c_list:

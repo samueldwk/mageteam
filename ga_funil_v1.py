@@ -1,5 +1,4 @@
-# rel_ger_ga_api_v1.0
-# REL GER GA BY API
+# ga_funil_v1
 
 import requests
 import pandas as pd
@@ -16,9 +15,9 @@ dotenv.load_dotenv()
 hj = datetime.datetime.now()
 d1 = datef.dmenos(hj).date()
 
-# #Para puxar de uma data específica
+# Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 6, 8).date()
+d1 = datetime.datetime(2024, 7, 21).date()
 
 datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
 
@@ -29,15 +28,12 @@ year = date_object.year
 
 # CLIENT LIST
 c_list = [
-    # "ajobrand",
     "alanis",
     "dadri",
     "french",
-    # "haverroth",
     "haut",
     "infini",
     "kle",
-    # "luvic",
     "mun",
     "nobu",
     "othergirls",
@@ -47,18 +43,18 @@ c_list = [
     "una",
 ]
 
-c_list = ["mun"]
+c_list = ["talgui"]
 
 
 for client in c_list:
     # In[01]: Google Analytics API e montar df final de google analytics
 
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
     # Run in local machine
-    # os.environ[
-    #     "GOOGLE_APPLICATION_CREDENTIALS"
-    # ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
+    os.environ[
+        "GOOGLE_APPLICATION_CREDENTIALS"
+    ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
 
     from google.analytics.data_v1beta import BetaAnalyticsDataClient
     from google.analytics.data_v1beta.types import (
@@ -79,12 +75,15 @@ for client in c_list:
         dimensions=[Dimension(name="date")],
         metrics=[
             Metric(name="sessions"),
-            Metric(name="bounceRate"),
+            # Metric(name="bounceRate"),
+            # Metric(name="totalUsers"),
             Metric(name="engagedSessions"),
+            Metric(name="activeUsers"),
+            Metric(name="itemViewEvents"),
             Metric(name="addToCarts"),
             Metric(name="checkouts"),
-            Metric(name="userKeyEventRate"),
             Metric(name="ecommercePurchases"),
+            # Metric(name="keyEvents"),
         ],
         date_ranges=[DateRange(start_date=dataname2, end_date=dataname1)],
     )

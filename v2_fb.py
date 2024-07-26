@@ -7,6 +7,7 @@ import os
 from flatten_json import flatten
 import datetime
 import date_functions as datef
+import numpy as np
 
 
 dotenv.load_dotenv()
@@ -24,12 +25,60 @@ def download_fb(client, dataname1):
 
     url_fb_insights = f"https://graph.facebook.com/v19.0/{os.getenv(f'fb_act_{client}')}?fields=campaigns%7Binsights.time_range(%7B'since'%3A'{dataname1}'%2C'until'%3A'{dataname1}'%7D)%7Bobjective%2Cspend%2Caction_values%2Cimpressions%2Cinline_link_clicks%2Ccampaign_name%7D%7D&access_token={llt}"
 
-    response_fb = requests.get(url_fb_insights)
+    # response_fb = requests.get(url_fb_insights)
 
-    dic_cru_fb = response_fb.json()
-    # print(dic_cru_fb)
+    # dic_cru_fb = response_fb.json()
+    # # print(dic_cru_fb)
 
-    campaigns = dic_cru_fb["campaigns"]["data"]
+    # campaigns = dic_cru_fb["campaigns"]["data"]
+
+    def fetch_all_pages(url):
+        all_results = []
+        nextnumber = 0
+
+        while url:
+            # print(
+            #     f"Fetching data from URL: {url}"
+            # )  # Debug: Print the current URL
+            response = requests.get(url)
+
+            if response.status_code != 200:
+                # print(f"Error: Received status code {response.status_code}")
+                break
+
+            data = response.json()
+
+            # # Debug: Print the current page data
+            # print(f"Response Data: {data}")
+
+            # Append campaign data from the current page
+
+            if nextnumber == 0:
+                campaigns = data.get("campaigns", {}).get("data", [])
+                all_results.extend(campaigns)
+
+            else:
+                campaigns = data.get("data", [])
+                all_results.extend(campaigns)
+
+            # Get the URL for the next page, if it exists
+
+            if nextnumber == 0:
+                url = data.get("campaigns", {}).get("paging", {}).get("next")
+
+            else:
+                url = data.get("paging", {}).get("next")
+
+            # # Debug: Print the next URL
+            # print(f"Next URL: {url}")
+
+            nextnumber = nextnumber + 1
+
+        # print(f"Nextnumber: {nextnumber}")
+        return all_results
+
+    # Fetch all pages
+    campaigns = fetch_all_pages(url_fb_insights)
 
     # Initialize a list to store the structured data
     structured_data = []
@@ -139,5 +188,8 @@ def download_fb(client, dataname1):
 
     # Replace None values with 0
     df_relger_fb_final = df_relger_fb_final.fillna(0)
+
+    # Replace Infinity values with 0
+    df_relger_fb_final.replace([np.inf, -np.inf], 0, inplace=True)
 
     return df_relger_fb_final

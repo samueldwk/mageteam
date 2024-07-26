@@ -21,17 +21,17 @@ c_list = [
     "alanis",
     "dadri",
     "french",
-    # "haut",
+    "haut",
     "infini",
     "kle",
-    # "mun",
+    "mun",
     "nobu",
     "othergirls",
     "talgui",
     "paconcept",
     "rery",
     "una",
-    # "uniquechic",
+    "uniquechic",
 ]
 
 # c_list = ["rery"]
