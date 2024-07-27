@@ -22,23 +22,23 @@ datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
 
 # CLIENT LIST
 c_list = [
-    "alanis",
-    "dadri",
+    # "alanis",
+    # "dadri",
     "french",
-    "haut",
-    "infini",
-    "kle",
+    # "haut",
+    # "infini",
+    # "kle",
     "mun",
-    "nobu",
-    "othergirls",
-    "rery",
-    "talgui",
-    "paconcept",
-    "una",
-    "uniquechic",
+    # "nobu",
+    # "othergirls",
+    # "rery",
+    # "talgui",
+    # "paconcept",
+    # "una",
+    # "uniquechic",
 ]
 
-c_list = ["mun"]
+# c_list = ["french"]
 
 # API HEADER
 
