@@ -18,7 +18,7 @@ d1 = datef.dmenos(hj).date()
 
 # Para puxar de uma data específica
 
-d1 = datetime.datetime(2024, 7, 5).date()
+# d1 = datetime.datetime(2024, 7, 5).date()
 
 datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
 
@@ -47,7 +47,7 @@ c_list = [
     "una",
 ]
 
-c_list = ["paconcept"]
+c_list = ["alanis"]
 
 
 for client in c_list:
@@ -159,7 +159,8 @@ for client in c_list:
 
     # Filtrar apenas campanhas de objetivo conversão / vendas
     df_fb_campaigns_filtrado = df_fb_campaigns_cru[
-        df_fb_campaigns_cru["Objective"] == "OUTCOME_SALES"
+        (df_fb_campaigns_cru["Objective"] == "OUTCOME_SALES")
+        | (df_fb_campaigns_cru["Objective"] == "CONVERSIONS")
     ]
 
     # Filtar apenas campanhas de varejo ecommerce (drop atacado)

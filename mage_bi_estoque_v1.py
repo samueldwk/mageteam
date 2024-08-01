@@ -112,6 +112,7 @@ for client in c_list:
     # In[2]: Eccosys API: GET Listar todos os produtos
 
     url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$opcEcommerce=S"
+
     response_prod = requests.request(
         "GET", url_prod, headers=headers, data=payload
     )

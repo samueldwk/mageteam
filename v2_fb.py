@@ -110,15 +110,15 @@ def download_fb(client, dataname1):
             structured_data.append(row)
 
     # Create DataFrame
-    df_fb_campaigns = pd.DataFrame(structured_data)
+    df_fb_campaigns_cru = pd.DataFrame(structured_data)
 
     # Replace None values with 0
-    df_fb_campaigns = df_fb_campaigns.fillna(0)
+    df_fb_campaigns_cru = df_fb_campaigns_cru.fillna(0)
 
     # If no "web_in_store_purchase" on df_fb_campaigns add column if value 0
 
-    if "web_in_store_purchase" not in df_fb_campaigns.columns:
-        df_fb_campaigns["web_in_store_purchase"] = 0
+    if "web_in_store_purchase" not in df_fb_campaigns_cru.columns:
+        df_fb_campaigns_cru["web_in_store_purchase"] = 0
 
     # In[02]: Calcular os valores finais de facebook
 
@@ -129,34 +129,41 @@ def download_fb(client, dataname1):
         "Link Clicks",
         "web_in_store_purchase",
     ]
-    df_fb_campaigns[columns_to_convert] = df_fb_campaigns[
+    df_fb_campaigns_cru[columns_to_convert] = df_fb_campaigns_cru[
         columns_to_convert
     ].astype(float)
 
     # Filtrar apenas campanhas de objetivo conversão / vendas
-    df_fb_campaigns = df_fb_campaigns[
-        df_fb_campaigns["Objective"] == "OUTCOME_SALES"
+    df_fb_campaigns_filtrado = df_fb_campaigns_cru[
+        (df_fb_campaigns_cru["Objective"] == "OUTCOME_SALES")
+        | (df_fb_campaigns_cru["Objective"] == "CONVERSIONS")
     ]
 
     # Filtar apenas campanhas de varejo ecommerce (drop atacado)
 
-    df_fb_campaigns = df_fb_campaigns[
-        ~df_fb_campaigns.apply(
+    df_fb_campaigns_filtrado = df_fb_campaigns_filtrado[
+        ~df_fb_campaigns_filtrado.apply(
             lambda row: row.astype(str).str.contains("atacado").any(), axis=1
         )
     ]
 
     # Somar valor total investido "Spend"
-    resultado_fb_spend_total = df_fb_campaigns["Spend"].sum()
+    resultado_fb_spend_total = df_fb_campaigns_filtrado["Spend"].sum()
 
     # Somar valor total de impressões "Impressions"
-    resultado_fb_impressions_total = df_fb_campaigns["Impressions"].sum()
+    resultado_fb_impressions_total = df_fb_campaigns_filtrado[
+        "Impressions"
+    ].sum()
 
     # Somar valor total de cliques no link "Link Clicks"
-    resultado_fb_linkclicks_total = df_fb_campaigns["Link Clicks"].sum()
+    resultado_fb_linkclicks_total = df_fb_campaigns_filtrado[
+        "Link Clicks"
+    ].sum()
 
     # Somar valor total de venda "web_in_store_purchase"
-    resultado_fb_vendas_total = df_fb_campaigns["web_in_store_purchase"].sum()
+    resultado_fb_vendas_total = df_fb_campaigns_filtrado[
+        "web_in_store_purchase"
+    ].sum()
 
     # Calcular CPM ("spend"/"Impressions"*1000)
     resultado_fb_cpm = (

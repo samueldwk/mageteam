@@ -282,17 +282,17 @@ def download_eccosys(
         relatorio_fin.click()
 
         time.sleep(1)
-        data2_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[3]/table/tbody/tr/td[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div/div/div/input"
+        data2_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[3]/div/div[2]/div[1]/div[1]/div[1]/div[1]/div/div/div/input"
         driver.find_element(By.XPATH, data2_xpath).send_keys(Keys.CONTROL, "a")
         driver.find_element(By.XPATH, data2_xpath).send_keys(Keys.DELETE)
         driver.find_element(By.XPATH, data2_xpath).send_keys(datatxt)
         time.sleep(0.5)
 
-        visualizar_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[3]/table/tbody/tr/td[1]/div[2]/div[1]/div[2]/div[1]/input[1]"
+        visualizar_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[3]/div/div[2]/div[1]/div[2]/div[1]/input[1]"
         driver.find_element(By.XPATH, visualizar_xpath).click()
 
         time.sleep(1)
-        download3_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[3]/table/tbody/tr/td[1]/div[2]/div[1]/div[2]/div[1]/input[2]"
+        download3_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[3]/div/div[2]/div[1]/div[2]/div[1]/input[2]"
         driver.find_element(By.XPATH, download3_xpath).click()
 
         time.sleep(pause_time)

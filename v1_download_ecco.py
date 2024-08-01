@@ -18,9 +18,9 @@ d1 = datef.dmenos(hj).date()
 datatxt, dataname, datasql, dataname2 = datef.dates(d1)
 
 c_list = [
-    "alanis",
-    "dadri",
-    "french",
+    # "alanis",
+    # "dadri",
+    # "french",
     "haut",
     "infini",
     "kle",
@@ -34,7 +34,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["rery"]
+# c_list = ["uniquechic"]
 
 #### FILE PATHS ####
 

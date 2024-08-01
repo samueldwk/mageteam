@@ -83,7 +83,7 @@ for client in c_list:
             Metric(name="engagedSessions"),
             Metric(name="addToCarts"),
             Metric(name="checkouts"),
-            Metric(name="userKeyEventRate"),
+            Metric(name="sessionKeyEventRate"),
             Metric(name="ecommercePurchases"),
         ],
         date_ranges=[DateRange(start_date=dataname2, end_date=dataname1)],
