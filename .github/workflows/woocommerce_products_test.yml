@@ -38,7 +38,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests supabase woocommerce os
+          pip install pandas==2.1.4 python-dotenv requests supabase woocommerce
 
       - name: Run Code Woocommerce Products
         run: |
