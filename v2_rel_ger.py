@@ -16,17 +16,19 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 7, 28).date()
+# d1 = datetime.datetime(2024, 8, 20).date()
 
-datatxt, dataname, datasql, dataname2 = datef.dates(d1)
+datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
 c_list = [
     "alanis",
+    "basicler",
     "dadri",
     "french",
     "haut",
     "infini",
     "kle",
+    "morina",
     "mun",
     "nobu",
     "othergirls",
@@ -36,20 +38,20 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["dadri"]
+# c_list = ["una", "uniquechic"]
 
 # DICIONÁRIO DE NOMES
 
 dic_nomes = {
-    "ajobrand": "aJo Brand",
     "alanis": "Alanis",
+    "basicler": "Basicler",
     "dadri": "Dadri",
     "french": "French",
-    "haverroth": "Haverroth",
     "haut": "Haut",
     "infini": "Infini",
     "kle": "Kle",
     "luvic": "Luvic",
+    "morina": "Morina",
     "mun": "Mun",
     "nobu": "Nobu",
     "othergirls": "Other Girls",
@@ -70,7 +72,15 @@ c_list_sku_8 = {
 }
 c_list_sku_9 = {"Cliente": ["ajobrand", "french", "una"], "Index": 9}
 c_list_sku_15 = {
-    "Cliente": ["haverroth", "haut", "kle", "paconcept", "rery", "uniquechic"],
+    "Cliente": [
+        "basicler",
+        "haut",
+        "kle",
+        "morina",
+        "paconcept",
+        "rery",
+        "uniquechic",
+    ],
     "Index": 40,
 }  ###get all sku, doesnt need to slice
 
@@ -545,11 +555,18 @@ for cliente in c_list:
 
     # ACRESCENTAR MÊS E ANO NAS COLUNAS
 
+    # df_vendas_ped_total["Mês"] = pd.to_datetime(
+    #     df_vendas_ped_total["Data"]
+    # ).dt.month
+    # df_vendas_ped_total["Ano"] = pd.to_datetime(
+    #     df_vendas_ped_total["Data"]
+    # ).dt.year
+
     df_vendas_ped_total["Mês"] = pd.to_datetime(
-        df_vendas_ped_total["Data"]
+        df_vendas_ped_total["Data"], dayfirst=True
     ).dt.month
     df_vendas_ped_total["Ano"] = pd.to_datetime(
-        df_vendas_ped_total["Data"]
+        df_vendas_ped_total["Data"], dayfirst=True
     ).dt.year
 
     # Juntar todos os dfs
@@ -625,6 +642,6 @@ for cliente in c_list:
 
     df_list_final = df_rel_ger.values.tolist()
 
-    print(df_list_final)
+    print(f"{dic_nomes[cliente]} - Relatório Gerencial E-Commerce")
 
     sh.append_rows(df_list_final, table_range="A1")

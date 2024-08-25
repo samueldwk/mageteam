@@ -15,11 +15,12 @@ dotenv.load_dotenv()
 hj = datetime.datetime.now()
 d1 = datef.dmenos(hj).date()
 
+datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
+
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 6, 8).date()
-
-datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
+dataname1 = "2024-07-31"
+dataname2 = "2024-01-01"
 
 # CLIENT LIST
 c_list = [
@@ -32,6 +33,7 @@ c_list = [
     # "infini",
     "kle",
     # "luvic",
+    "morina",
     "mun",
     "nobu",
     "othergirls",
@@ -41,7 +43,7 @@ c_list = [
     "una",
 ]
 
-c_list = ["mun"]
+c_list = ["morina"]
 
 # API HEADER
 
@@ -72,13 +74,14 @@ for client in c_list:
         "precoDe",
         "preco",
         "situacao",
+        "idProdutoMaster",
     ]
 
     df_ecco_prod = df_ecco_prod[columns_to_keep]
 
     # In[2]: Eccosys API: GET Listar todos os pedidos
 
-    url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname1}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
+    url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname2}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
 
     response_ped = requests.request(
         "GET", url_ped, headers=headers, data=payload, files=files

@@ -15,7 +15,7 @@ dotenv.load_dotenv()
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
 # d1 = datetime.datetime(2024, 1, 10).date()  # SELECT DATE
 
-datatxt1, dataname1 = datef.dates(d1)
+datatxt, dataname1, datasql, dataname2, dataname3 = datef.dates(d1)
 
 # CLIENT LIST
 
@@ -285,7 +285,7 @@ for client in c_list:
 
     # IMPUT DATATEXT1 COLUMN
 
-    df_vendas_geral["datatxt1"] = datatxt1
+    df_vendas_geral["datatxt"] = datatxt1
 
     # ORDER COLUMNS
 

@@ -56,22 +56,6 @@ while "next" in response_products.links.keys():
         [df_woo_products, df_woo_products_next], ignore_index=True
     )
 
-#### ? Dúvidas sobre product properties
-
-## ? product variations api x product
-# API products realmente não trouxe as variations, apenas dentro do próprio produto variable
-
-## ? date_modified pega quais modificaçoes? quais campos? própria criaçao?
-## ? price x regular_price x sale_price
-## ? date_on_sale_from and date_on_sale_to
-## ? purchasable x status x featured x stock_status x visible
-## ? dimensions?
-## ? related_ids x parent_id (= product variation? e se for, como sai o do próprio product variation?)
-## ? images (vem o link?)
-## ? variations?
-
-## ? Available parameters
-# ? after x modified_after
 
 # In[01]: GET Products (com date modified)
 

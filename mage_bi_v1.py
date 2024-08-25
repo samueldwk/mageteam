@@ -41,7 +41,7 @@ c_list = [
     # "uniquechic",
 ]
 
-c_list = ["french"]
+c_list = ["mun"]
 
 # API HEADER
 

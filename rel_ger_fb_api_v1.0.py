@@ -47,7 +47,7 @@ c_list = [
     "una",
 ]
 
-c_list = ["alanis"]
+# c_list = ["alanis"]
 
 
 for client in c_list:
@@ -68,13 +68,13 @@ for client in c_list:
             response = requests.get(url)
 
             if response.status_code != 200:
-                # print(f"Error: Received status code {response.status_code}")
+                print(f"Error: Received status code {response.status_code}")
                 break
 
             data = response.json()
 
-            # # Debug: Print the current page data
-            # print(f"Response Data: {data}")
+            # Debug: Print the current page data
+            print(f"Response Data: {data}")
 
             # Append campaign data from the current page
 

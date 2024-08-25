@@ -21,23 +21,23 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de um data range específico
 
-data_inicio = datetime.date(2024, 7, 19)
+data_inicio = datetime.date(2024, 8, 20)
 
-data_fim = datetime.date(2024, 7, 22)
+data_fim = datetime.date(2024, 8, 20)
 
 date_range = (data_fim - data_inicio).days + 1
 
 d1 = data_inicio
 
 for dates in range(date_range):
-    datatxt, dataname, datasql, dataname2 = datef.dates(d1)
+    datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
     c_list = [
-        # "ajobrand",
+        # "basicler",
         # "alanis",
         # "dadri",
         # "french",
-        # "haverroth",
+        "haut",
         # "infini",
         # "kle",
         # "luvic",
@@ -47,8 +47,9 @@ for dates in range(date_range):
         # "talgui",
         # "paconcept",
         # "una",
+        "uniquechic",
     ]
-    c_list = ["paconcept"]
+    # c_list = ["morina"]
 
     #### FILE PATHS ####
 

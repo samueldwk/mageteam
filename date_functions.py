@@ -33,5 +33,6 @@ def dates(dt):
     dataname1 = str(dt)
     datasql = f"{yy}-{mm}-{dd}"
     dataname2 = str(dt - timedelta(days=1))
+    dataname3 = str(dt - timedelta(days=2))
 
-    return datatxt, dataname1, datasql, dataname2
+    return datatxt, dataname1, datasql, dataname2, dataname3
