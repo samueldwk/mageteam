@@ -28,7 +28,7 @@ c_list = [
     # "haut",
     # "infini",
     # "kle",
-    "mun",
+    # "mun",
     # "nobu",
     # "othergirls",
     # "rery",
@@ -38,7 +38,7 @@ c_list = [
     # "uniquechic",
 ]
 
-c_list = ["mun"]
+# c_list = ["mun"]
 
 # API HEADER
 
@@ -92,7 +92,7 @@ for client in c_list:
     )
 
     # Colocar coluna de data cadastro
-    df_ecco_produto["Data"] = dataname1
+    df_ecco_produto["Data"] = dataname
 
     # In[11]: Enviar informações para DB
 

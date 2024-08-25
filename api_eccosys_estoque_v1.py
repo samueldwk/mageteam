@@ -28,7 +28,7 @@ c_list = [
     # "haut",
     # "infini",
     # "kle",
-    "mun",
+    # "mun",
     # "nobu",
     # "othergirls",
     # "rery",
@@ -94,7 +94,7 @@ for client in c_list:
     ].apply(lambda x: x if x > 0 else 0)
 
     # Colocar coluna de data estoque
-    df_ecco_estoque_limpo["Data"] = dataname1
+    df_ecco_estoque_limpo["Data"] = dataname
 
     # Tranformar formato coluna estoque para int
     columns_to_convert = ["estoqueDisponivel", "estoqueReal"]
@@ -163,7 +163,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_bi_estoque_{client}_v1")
+            supabase.table(f"mage_bi_estoque_tamanho_{client}_v1")
             .upsert(dic_ecco_estoque_final)
             .execute()
         )
