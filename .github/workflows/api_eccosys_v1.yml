@@ -1,4 +1,4 @@
-name: Scheduled [mage_bi_v1.0]
+name: Scheduled [api_eccosys_v1.0]
 
 on:
   schedule:
