@@ -52,11 +52,11 @@ jobs:
 
       - name: Run Code Eccosys Estoque
         run: |
-          python mage_bi_estoque_v1.py
+          python api_eccosys_estoque_v1.py
 
       - name: Run Code Eccosys Produto
         run: |
-          python mage_bi_produto_v1.py
+          python api_eccosys_produto_v1.py
 
 
         
