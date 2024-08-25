@@ -18,7 +18,7 @@ d1 = datef.dmenos(hj).date()
 
 # d1 = datetime.datetime(2024, 6, 8).date()
 
-datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
+datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
 # CLIENT LIST
 c_list = [
