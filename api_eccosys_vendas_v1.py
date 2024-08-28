@@ -1,4 +1,4 @@
-# api_eccosys_vendas_produto_v1
+# api_eccosys_vendas_v1 (3 dias de venda anterior) por pedido e por produto
 
 import requests
 import pandas as pd
@@ -47,7 +47,7 @@ for client in c_list:
 
     # In[1]: GET LIST OF ORDERS
 
-    url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname1}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
+    url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname3}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
 
     response_ped = requests.request(
         "GET", url_ped, headers=headers, data=payload, files=files
@@ -55,6 +55,12 @@ for client in c_list:
 
     dic_ecco_ped = response_ped.json()
     df_ecco_ped = pd.DataFrame(dic_ecco_ped)
+
+    # PRIMEIRA COMPRA 1 = SIM , VAZIO = NAO
+
+    df_ecco_ped["primeiraCompra"] = df_ecco_ped["primeiraCompra"].replace(
+        {"1": "sim", "": "nao"}
+    )
 
     # CONVERT COLUMNS TYPE
 
@@ -64,6 +70,11 @@ for client in c_list:
     df_ecco_ped[columns_to_convert] = df_ecco_ped[columns_to_convert].astype(
         float
     )
+
+    # columns_to_convert = ["id", "idContato", "numeroPedido", "primeiraCompra"]
+    # df_ecco_ped[columns_to_convert] = df_ecco_ped[columns_to_convert].astype(
+    #     int
+    # )
 
     # PRODUCTS SALES VALE WITHOUT DISCOUNT
 
@@ -96,6 +107,7 @@ for client in c_list:
 
     columns_to_keep = [
         "id",
+        "idContato",
         "numeroPedido",
         "data",
         "desconto",
@@ -117,9 +129,50 @@ for client in c_list:
         df_ecco_ped["Status Name"].isin(status_name_keep)
     ]
 
-    # In[2]: CALL PRODUCTS FROM EACH ORDER
+    # RENAME COLUMNS NAME
 
-    df_order_ids = df_ecco_ped["id"]
+    df_ecco_ped = df_ecco_ped.rename(
+        columns={
+            "id": "idVenda",
+            "idContato": "idCliente",
+            "numeroPedido": "NumeroPedido",
+            "data": "DataVendaPedido",
+            "desconto": "DescontoPedido",
+            "totalProdutos": "ValorVendaProdutoBruto",
+            "totalVenda": "ValorTotalVenda",
+            "frete": "ValorFrete",
+            "primeiraCompra": "PrimeiraCompra",
+            "Status Name": "StatusPedido",
+            "Vendas Produto Liquido": "ValorVendaProdutoLiquido",
+        }
+    )
+
+    df_ecco_ped.dtypes
+
+    # In[2]: Enviar informações para DB
+
+    from supabase import create_client, Client
+    import supabase
+
+    url: str = os.environ.get("SUPABASE_BI_URL")
+    key: str = os.environ.get("SUPABASE_BI_KEY")
+    supabase: Client = create_client(url, key)
+
+    dic_ecco_ped = df_ecco_ped.to_dict(orient="records")
+
+    try:
+        response = (
+            supabase.table(f"mage_eccosys_pedidos_{client}_v1")
+            .upsert(dic_ecco_ped)
+            .execute()
+        )
+
+    except Exception as exception:
+        print(exception)
+
+    # In[3]: CALL PRODUCTS FROM EACH ORDER
+
+    df_order_ids = df_ecco_ped["idVenda"]
 
     df_ecco_ped_prod = pd.DataFrame()
 
@@ -157,15 +210,23 @@ for client in c_list:
 
     # CONVERT COLUMNS TYPE
 
-    columns_to_convert = ["valor", "quantidade", "valorDesconto"]
+    columns_to_convert = ["valor", "valorDesconto", "quantidade"]
 
     df_ecco_ped_prod[columns_to_convert] = df_ecco_ped_prod[
         columns_to_convert
     ].astype(float)
 
-    # INSERT DATE COLUMN
+    columns_to_convert = ["quantidade"]
 
-    df_ecco_ped_prod["Data"] = dataname1
+    df_ecco_ped_prod[columns_to_convert] = df_ecco_ped_prod[
+        columns_to_convert
+    ].astype(int)
+
+    # COLOCAR DATA DO PEDIDO PARA CADA PRODUTO VENDIDO
+
+    df_ecco_ped_prod = df_ecco_ped_prod.merge(
+        df_ecco_ped, how="left", left_on="idVenda", right_on="idVenda"
+    )
 
     # COLUMNS TO KEEP
 
@@ -177,7 +238,41 @@ for client in c_list:
         "descricao",
         "valorDesconto",
         "codigo",
-        "Data",
+        "DataVendaPedido",
     ]
 
     df_ecco_ped_prod = df_ecco_ped_prod[columns_to_keep]
+
+    # RENAME COLUMNS NAME
+
+    df_ecco_ped_prod = df_ecco_ped_prod.rename(
+        columns={
+            "idVenda": "idPedido",
+            "quantidade": "QuantidadeVenda",
+            "valor": "ValorVenda",
+            "valorDesconto": "ValorDescontoPedido",
+            "descricao": "NomeProduto",
+            "codigo": "CodigoProduto",
+        }
+    )
+
+    # In[4]: Enviar informações para DB
+
+    from supabase import create_client, Client
+    import supabase
+
+    url: str = os.environ.get("SUPABASE_BI_URL")
+    key: str = os.environ.get("SUPABASE_BI_KEY")
+    supabase: Client = create_client(url, key)
+
+    dic_ecco_ped_prod = df_ecco_ped_prod.to_dict(orient="records")
+
+    try:
+        response = (
+            supabase.table(f"mage_eccosys_vendas_produto_{client}_v1")
+            .upsert(dic_ecco_ped_prod)
+            .execute()
+        )
+
+    except Exception as exception:
+        print(exception)
