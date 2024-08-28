@@ -1,4 +1,4 @@
-# TESTE API CLIENTE TALGUI
+# api_relger_eccossys_v1
 
 import requests
 import pandas as pd
@@ -31,12 +31,6 @@ c_list = [
 ]
 
 c_list = ["french"]
-
-# DICTS PARA SLICE DO CODIGO SKU
-
-c_list_sku_0 = {"Cliente": ["mun", "infini"], "Index": 0}
-c_list_sku_8 = {"Cliente": ["talgui", "dadri", "othergirls"], "Index": 8}
-c_list_sku_9 = {"Cliente": ["ajobrand", "french", "una"], "Index": 9}
 
 # API HEADER
 
@@ -162,26 +156,6 @@ for client in c_list:
             [df_ecco_ped_prod, df_ecco_ped_prod_un], ignore_index=True
         )
 
-    # TRANSFORM SKU TO COD. MODELO + COR
-
-    c_list_sku = [c_list_sku_0, c_list_sku_8, c_list_sku_9]
-
-    for cliente in c_list:
-        for c_sku in c_list_sku:
-            if cliente in c_sku["Cliente"]:
-                index = c_sku["Index"]
-                if index == 0:
-                    df_ecco_ped_prod["Cod. Modelo + Cor"] = df_ecco_ped_prod[
-                        "codigo"
-                    ].apply(lambda x: x.split("-")[0])
-                else:
-                    df_ecco_ped_prod["Cod. Modelo + Cor"] = df_ecco_ped_prod[
-                        "codigo"
-                    ].str.slice(0, index)
-                break
-        else:
-            print(f"The value '{cliente}' is not present in any c_list_sku.")
-
     # BRING PRODUCT COST
 
     df_ecco_ped_prod = df_ecco_ped_prod.merge(
@@ -285,7 +259,7 @@ for client in c_list:
 
     # IMPUT DATATEXT1 COLUMN
 
-    df_vendas_geral["datatxt"] = datatxt1
+    df_vendas_geral["datatxt"] = datatxt
 
     # ORDER COLUMNS
 
@@ -370,26 +344,6 @@ for client in c_list:
 
     dic_ecco_stock = response_stock.json()
     df_ecco_stock = pd.DataFrame(dic_ecco_stock)
-
-    # TRANSFORM SKU TO COD. MODELO + COR
-
-    c_list_sku = [c_list_sku_0, c_list_sku_8, c_list_sku_9]
-
-    for cliente in c_list:
-        for c_sku in c_list_sku:
-            if cliente in c_sku["Cliente"]:
-                index = c_sku["Index"]
-                if index == 0:
-                    df_ecco_stock["Cod. Modelo + Cor"] = df_ecco_stock[
-                        "codigo"
-                    ].apply(lambda x: x.split("-")[0])
-                else:
-                    df_ecco_stock["Cod. Modelo + Cor"] = df_ecco_stock[
-                        "codigo"
-                    ].str.slice(0, index)
-                break
-        else:
-            print(f"The value '{cliente}' is not present in any c_list_sku.")
 
     # BRING PRODUCT COST
 

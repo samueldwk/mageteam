@@ -14,7 +14,7 @@ d1 = datef.dmenos(hj).date()
 
 # Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 7, 8).date()
+# d1 = datetime.datetime(2024, 8, 22).date()
 
 (
     datatxt,
@@ -50,14 +50,14 @@ c_list = [
 
 # In[1] #### FILE PATHS #### d1
 
-# d_path = pathf.dl_folder()
-# f_path = rf"{os.getenv('path_mage')}m&p\Relatorios Diarios\{dataname1}"
+d_path = pathf.dl_folder()
+f_path = rf"{os.getenv('path_mage')}m&p\Relatorios Diarios\{dataname1}"
 
-# # files = os.listdir(f_path)
+# files = os.listdir(f_path)
 
-# # DOWNLOAD FILES FROM ECCOSYS (PRODUTO, VENDAS E ESTOQUE)
+# DOWNLOAD FILES FROM ECCOSYS (PRODUTO, VENDAS E ESTOQUE)
 
-# htmlf.download_eccosys(datatxt, dataname1, c_list, d_path, f_path)
+htmlf.download_eccosys(datatxt, dataname1, c_list, d_path, f_path)
 
 # In[2] #### FILE PATHS #### d2
 

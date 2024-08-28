@@ -1,4 +1,4 @@
-# mage_bi_estoque_v1
+# api_eccosys_estoque_v1
 
 import requests
 import pandas as pd
@@ -163,7 +163,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_bi_estoque_tamanho_{client}_v1")
+            supabase.table(f"mage_eccosys_estoque_tamanho_{client}_v1")
             .upsert(dic_ecco_estoque_final)
             .execute()
         )
