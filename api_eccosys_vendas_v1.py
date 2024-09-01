@@ -228,13 +228,77 @@ for client in c_list:
         df_ecco_ped, how="left", left_on="idVenda", right_on="idVenda"
     )
 
-    # COLUMNS TO KEEP
+    # COLOCAR DESCONTO TO PRODUTO
+    # Eccosys API: GET Listar todos os produtos
 
+    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$opcEcommerce=S"
+
+    response_prod = requests.request(
+        "GET", url_prod, headers=headers, data=payload
+    )
+
+    dic_ecco_produto = response_prod.json()
+    df_ecco_produto = pd.DataFrame.from_dict(dic_ecco_produto)
+
+    # COLUMNS TO KEEP
+    columns_to_keep = [
+        "id",
+        "precoDe",
+    ]
+
+    df_ecco_produto = df_ecco_produto[columns_to_keep]
+
+    # Renomear os nomes das colunas
+    df_ecco_produto.rename(
+        columns={
+            "id": "idProduto",
+            "precoDe": "precoLancamentoProduto",
+        },
+        inplace=True,
+    )
+
+    # Determinar faixa de desconto de produto
+    # Trazer precoLancamentoProduto para tabela de vendas produto
+    df_ecco_ped_prod = df_ecco_ped_prod.merge(
+        df_ecco_produto, how="left", on="idProduto"
+    )
+
+    # Calcular PorcentagemDescontoProduto
+    df_ecco_ped_prod["PorcentagemDescontoProduto"] = 1 - (
+        df_ecco_ped_prod["valor"] / df_ecco_ped_prod["precoLancamentoProduto"]
+    )
+
+    # Arredondar o desconto de produto
+    precision = 5
+    df_ecco_ped_prod.loc[:, "PorcentagemDescontoProduto"] = df_ecco_ped_prod[
+        "PorcentagemDescontoProduto"
+    ].round(precision)
+
+    # Criar faixas de desconto de produto
+    bins = [-float("inf"), 0, 0.25, 0.45, 0.6, float("inf")]
+    labels = [
+        "V: <= 0%",
+        "V: > 0% and <= 25%",
+        "V: > 25% and <= 45%",
+        "V: > 45% and <= 60%",
+        "V: > 60%",
+    ]
+
+    # Adicionar nova coluna com faixa de desconto de produto
+    df_ecco_ped_prod.loc[:, "FaixaDescontoProduto"] = pd.cut(
+        df_ecco_ped_prod["PorcentagemDescontoProduto"],
+        bins=bins,
+        labels=labels,
+    )
+
+    # Columns to keep na df de pedidos produto
     columns_to_keep = [
         "idVenda",
         "idProduto",
         "quantidade",
         "valor",
+        "PorcentagemDescontoProduto",
+        "FaixaDescontoProduto",
         "descricao",
         "valorDesconto",
         "codigo",
