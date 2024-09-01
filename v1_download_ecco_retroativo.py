@@ -41,12 +41,12 @@ c_list = [
     # "othergirls",
     # "talgui",
     # "paconcept",
-    # "rery",
+    "rery",
     # "una",
     # "uniquechic",
 ]
 
-# c_list = ["basicler"]
+# c_list = ["rery"]
 
 # In[1] #### FILE PATHS #### d1
 

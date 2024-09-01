@@ -249,7 +249,7 @@ for client in c_list:
         columns={
             "idVenda": "idPedido",
             "quantidade": "QuantidadeVenda",
-            "valor": "ValorVenda",
+            "valor": "ValorVendaUnit",
             "valorDesconto": "ValorDescontoPedido",
             "descricao": "NomeProduto",
             "codigo": "CodigoProduto",

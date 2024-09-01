@@ -36,7 +36,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["haut", "uniquechic"]
+# c_list = ["basicler"]
 
 #### FILE PATHS ####
 

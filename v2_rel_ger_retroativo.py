@@ -40,13 +40,13 @@ c_list = [
     # "mun",
     # "nobu",
     # "othergirls",
-    # "rery",
+    "rery",
     # "talgui",
     # "una",
     # "uniquechic",
 ]
 
-# c_list = ["basicler"]
+# c_list = ["rery"]
 
 # DICIONÁRIO DE NOMES
 
