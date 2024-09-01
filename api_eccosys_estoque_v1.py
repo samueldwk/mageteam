@@ -124,6 +124,8 @@ for client in c_list:
     columns_to_keep = [
         "id",
         "preco",
+        "precoDe",
+        "precoCusto",
         "situacao",
     ]
 
@@ -134,6 +136,8 @@ for client in c_list:
         columns={
             "id": "idProduto",
             "preco": "precoProduto",
+            "precoDe": "precoLancamentoProduto",
+            "precoCusto": "precoCustoProdutoUnit",
             "situacao": "statusProduto",
         },
         inplace=True,
@@ -147,7 +151,54 @@ for client in c_list:
 
     # Trazer informação de produto para estoque
     df_ecco_estoque_final = df_ecco_estoque_limpo.merge(
-        df_ecco_prod, on="idProduto", how="inner"
+        df_ecco_prod, on="idProduto", how="left"
+    )
+
+    # CONVERT COLUMNS TYPE
+    columns_to_convert = [
+        "precoLancamentoProduto",
+        "precoProduto",
+        "precoCustoProdutoUnit",
+    ]
+
+    df_ecco_estoque_final[columns_to_convert] = df_ecco_estoque_final[
+        columns_to_convert
+    ].astype(float)
+
+    # Calcular PorcentagemDescontoProduto
+    df_ecco_estoque_final["PorcentagemDescontoProduto"] = 1 - (
+        df_ecco_estoque_final["precoProduto"]
+        / df_ecco_estoque_final["precoLancamentoProduto"]
+    )
+
+    df_ecco_estoque_final.fillna(0, inplace=True)
+
+    # Arredondar o desconto de produto
+    precision = 5
+    df_ecco_estoque_final.loc[
+        :, "PorcentagemDescontoProduto"
+    ] = df_ecco_estoque_final["PorcentagemDescontoProduto"].round(precision)
+
+    # Criar faixas de desconto de produto
+    bins = [-float("inf"), 0, 0.25, 0.45, 0.6, float("inf")]
+    labels = [
+        "E: <= 0%",
+        "E: > 0% and <= 25%",
+        "E: > 25% and <= 45%",
+        "E: > 45% and <= 60%",
+        "E: > 60%",
+    ]
+
+    # Adicionar nova coluna com faixa de desconto de produto
+    df_ecco_estoque_final.loc[:, "FaixaDescontoProduto"] = pd.cut(
+        df_ecco_estoque_final["PorcentagemDescontoProduto"],
+        bins=bins,
+        labels=labels,
+    )
+
+    # Drop columns que nao precisa mandar para database
+    df_ecco_estoque_final = df_ecco_estoque_final.drop(
+        columns=["precoLancamentoProduto"]
     )
 
     # In[11]: Enviar informações para DB

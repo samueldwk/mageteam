@@ -170,8 +170,7 @@ for client in c_list:
     except Exception as exception:
         print(exception)
 
-    # In[3]: CALL PRODUCTS FROM EACH ORDER
-
+    # In[3]: CALL PRODUCTS FROM EACH ORDER AND MAKE PEDIDOS X PRODUTOS
     df_order_ids = df_ecco_ped["idVenda"]
 
     df_ecco_ped_prod = pd.DataFrame()
@@ -209,7 +208,6 @@ for client in c_list:
             )
 
     # CONVERT COLUMNS TYPE
-
     columns_to_convert = ["valor", "valorDesconto", "quantidade"]
 
     df_ecco_ped_prod[columns_to_convert] = df_ecco_ped_prod[
@@ -223,12 +221,11 @@ for client in c_list:
     ].astype(int)
 
     # COLOCAR DATA DO PEDIDO PARA CADA PRODUTO VENDIDO
-
     df_ecco_ped_prod = df_ecco_ped_prod.merge(
         df_ecco_ped, how="left", left_on="idVenda", right_on="idVenda"
     )
 
-    # COLOCAR DESCONTO TO PRODUTO
+    # COLOCAR DESCONTO DO PRODUTO
     # Eccosys API: GET Listar todos os produtos
 
     url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$opcEcommerce=S"
@@ -241,10 +238,7 @@ for client in c_list:
     df_ecco_produto = pd.DataFrame.from_dict(dic_ecco_produto)
 
     # COLUMNS TO KEEP
-    columns_to_keep = [
-        "id",
-        "precoDe",
-    ]
+    columns_to_keep = ["id", "precoDe", "precoCusto"]
 
     df_ecco_produto = df_ecco_produto[columns_to_keep]
 
@@ -253,6 +247,7 @@ for client in c_list:
         columns={
             "id": "idProduto",
             "precoDe": "precoLancamentoProduto",
+            "precoCusto": "precoCustoProdutoUnit",
         },
         inplace=True,
     )
@@ -263,10 +258,19 @@ for client in c_list:
         df_ecco_produto, how="left", on="idProduto"
     )
 
+    # CONVERT COLUMNS TYPE
+    columns_to_convert = ["precoLancamentoProduto"]
+
+    df_ecco_ped_prod[columns_to_convert] = df_ecco_ped_prod[
+        columns_to_convert
+    ].astype(float)
+
     # Calcular PorcentagemDescontoProduto
     df_ecco_ped_prod["PorcentagemDescontoProduto"] = 1 - (
         df_ecco_ped_prod["valor"] / df_ecco_ped_prod["precoLancamentoProduto"]
     )
+
+    df_ecco_ped_prod.fillna(0, inplace=True)
 
     # Arredondar o desconto de produto
     precision = 5
@@ -296,6 +300,7 @@ for client in c_list:
         "idVenda",
         "idProduto",
         "quantidade",
+        "precoCustoProdutoUnit",
         "valor",
         "PorcentagemDescontoProduto",
         "FaixaDescontoProduto",
@@ -308,7 +313,6 @@ for client in c_list:
     df_ecco_ped_prod = df_ecco_ped_prod[columns_to_keep]
 
     # RENAME COLUMNS NAME
-
     df_ecco_ped_prod = df_ecco_ped_prod.rename(
         columns={
             "idVenda": "idPedido",
