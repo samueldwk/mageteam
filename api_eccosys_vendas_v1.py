@@ -1,4 +1,4 @@
-# api_eccosys_vendas_v1 (3 dias de venda anterior) por pedido e por produto
+# api_eccosys_vendas_v1 (3 dias de venda anterior) por pedido e por produto gitactions
 
 import requests
 import pandas as pd

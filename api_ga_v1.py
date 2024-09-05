@@ -1,5 +1,4 @@
-# rel_ger_ga_api_v1.0
-# REL GER GA BY API
+# api_fb_v1 gitactions
 
 import requests
 import pandas as pd
@@ -16,16 +15,15 @@ dotenv.load_dotenv()
 hj = datetime.datetime.now()
 d1 = datef.dmenos(hj).date()
 
-# #Para puxar de uma data específica
-
-# d1 = datetime.datetime(2024, 6, 8).date()
-
 datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
 date_object = datetime.datetime.strptime(dataname, "%Y-%m-%d")
 
 month = date_object.month
 year = date_object.year
+
+# #Para puxar de uma data específica
+# d1 = datetime.datetime(2024, 6, 8).date()
 
 # CLIENT LIST
 c_list = [
@@ -47,7 +45,7 @@ c_list = [
     "una",
 ]
 
-c_list = ["mun"]
+c_list = ["french"]
 
 
 for client in c_list:
@@ -55,7 +53,7 @@ for client in c_list:
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
-    # Run in local machine
+    # # Run in local machine
     # os.environ[
     #     "GOOGLE_APPLICATION_CREDENTIALS"
     # ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
@@ -119,36 +117,27 @@ for client in c_list:
         columns=metric_names,
     ).reset_index()
 
-    df_relger_ga_final["DATA"] = df_relger_ga_final["date"].apply(
+    df_relger_ga_final["data"] = df_relger_ga_final["date"].apply(
         lambda x: datetime.datetime.strptime(x, "%Y%m%d").strftime("%Y-%m-%d")
     )
 
-    df_relger_ga_final["DATA API"] = dataname
-
     df_relger_ga_final.drop(columns="date", inplace=True)
 
-    # In[02]: Enviar informações para DB
+    # # In[02]: Enviar informações para DB
 
     from supabase import create_client, Client
     import supabase
 
-    url: str = os.environ.get("SUPABASE_URL")
-    key: str = os.environ.get("SUPABASE_KEY")
+    url: str = os.environ.get("SUPABASE_BI_URL")
+    key: str = os.environ.get("SUPABASE_BI_KEY")
     supabase: Client = create_client(url, key)
 
-    # email: str = os.environ.get("supabase_email")
-    # password: str = os.environ.get("supabase_password")
-
-    # data = Client.sign_in(
-    #     {"email": email, "password": password}
-    # )
-
-    dic_relger_ga_final = df_relger_ga_final.to_dict(orient="records")
+    dic_df_relger_ga_final = df_relger_ga_final.to_dict(orient="records")
 
     try:
         response = (
-            supabase.table(f"df_relger_ga_{client}")
-            .upsert(dic_relger_ga_final)
+            supabase.table(f"mage_ga_{client}_v1")
+            .upsert(dic_df_relger_ga_final)
             .execute()
         )
 

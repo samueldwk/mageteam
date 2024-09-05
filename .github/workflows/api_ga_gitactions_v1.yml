@@ -1,0 +1,65 @@
+name: Scheduled [api_ga_gitactions_v1.0]
+
+on:
+  schedule:
+    - cron: '15 6 * * *'  # Every day at 03:15 AM (BRT) 
+    - cron: '15 9 * * *'  # Every day at 06:15 AM (BRT) 
+
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    env:
+      ga_id_alanis: ${{ secrets.GA_ID_ALANIS }}    
+      ga_id_dadri: ${{ secrets.GA_ID_DADRI }}   
+      ga_id_french: ${{ secrets.GA_ID_FRENCH }}
+      ga_id_haut: ${{ secrets.GA_ID_HAUT }}
+      ga_id_infini: ${{ secrets.GA_ID_INFINI }}
+      ga_id_kle: ${{ secrets.GA_ID_KLE }}     
+      ga_id_mun: ${{ secrets.GA_ID_MUN }}
+      ga_id_nobu: ${{ secrets.GA_ID_NOBU }}
+      ga_id_othergirls: ${{ secrets.GA_ID_OTHERGIRLS }}
+      ga_id_paconcept: ${{ secrets.GA_ID_PACONCEPT }}
+      ga_id_rery: ${{ secrets.GA_ID_RERY }}
+      ga_id_talgui: ${{ secrets.GA_ID_TALGUI }}
+      ga_id_una: ${{ secrets.GA_ID_UNA }}
+      SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
+      SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
+      
+    strategy:
+      matrix:
+        python-version: [3.11]
+        
+    steps:
+    
+      # Step to decode the Base64 string and recreate credentials.json
+      - name: Create credentials.json file from Base64
+        run: |
+          echo "$GOOGLE_CREDENTIALS_BASE64" | base64 --decode > credentials.json
+        env:
+          GOOGLE_CREDENTIALS_BASE64: ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }}
+    
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Install dependencies 2
+        run: |
+          pip install pandas==2.1.4 python-dotenv requests supabase numpy datetime
+
+      - name: Run Code ga_api
+        run: |
+          python api_ga_v1.py
+
+        
