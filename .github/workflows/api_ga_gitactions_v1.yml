@@ -36,11 +36,9 @@ jobs:
     steps:
     
       # Step to decode the Base64 string and recreate credentials.json
-      - name: Create credentials.json file from Base64
+      - name: Decode and save Google credentials
         run: |
-          echo "$GOOGLE_CREDENTIALS_BASE64" | base64 --decode > credentials.json
-        env:
-          GOOGLE_CREDENTIALS_BASE64: ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }}
+          echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
     
       - name: Checkout repository
         uses: actions/checkout@v2
