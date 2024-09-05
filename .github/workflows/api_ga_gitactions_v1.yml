@@ -56,7 +56,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests supabase numpy datetime workalendar googleanalytics
+          pip install pandas==2.1.4 python-dotenv requests supabase numpy datetime workalendar google-analytics-data
 
       - name: Run Code ga_api
         run: |
