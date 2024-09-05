@@ -49,7 +49,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests workalendar supabase numpy date_functions datetime flatten_json requests
+          pip install pandas==2.1.4 python-dotenv requests workalendar supabase numpy datetime flatten_json requests
 
       - name: Run Code fb_api
         run: |
