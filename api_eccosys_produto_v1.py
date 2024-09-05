@@ -38,7 +38,7 @@ c_list = [
     # "uniquechic",
 ]
 
-# c_list = ["mun"]
+# c_list = ["rery"]
 
 # API HEADER
 
@@ -93,6 +93,13 @@ for client in c_list:
 
     # Colocar coluna de data cadastro
     df_ecco_produto["Data"] = dataname
+
+    # # Salvar df produto em excel
+    # # Specify the file name you want to save the Excel file as
+    # file_name = "output.xlsx"
+
+    # # Save the DataFrame to an Excel file
+    # df_ecco_produto.to_excel(file_name, index=False)
 
     # In[11]: Enviar informações para DB
 

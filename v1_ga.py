@@ -52,7 +52,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["rery"]
+# c_list = ["kle"]
 
 # DICIONÁRIO DE NOMES
 

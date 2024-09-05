@@ -1,4 +1,4 @@
-name: Scheduled [api_eccosys_v1.0]
+name: Scheduled [api_eccosys_gitactions_v1.0]
 
 on:
   schedule:

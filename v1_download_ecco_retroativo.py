@@ -14,7 +14,7 @@ d1 = datef.dmenos(hj).date()
 
 # Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 8, 22).date()
+# d1 = datetime.datetime(2024, 8, 30).date()
 
 (
     datatxt,
@@ -46,7 +46,7 @@ c_list = [
     # "uniquechic",
 ]
 
-# c_list = ["rery"]
+# c_list = ["morina"]
 
 # In[1] #### FILE PATHS #### d1
 

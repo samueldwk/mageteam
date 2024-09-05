@@ -1,0 +1,58 @@
+name: Scheduled [api_fb_gitactions_v1.0]
+
+on:
+  schedule:
+    - cron: '15 5 * * *'  # Every day at 02:15 AM (BRT) 
+    - cron: '15 8 * * *'  # Every day at 05:15 AM (BRT) 
+
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    env:
+      fb_act_alanis: ${{ secrets.FB_ACT_ALANIS }}    
+      fb_act_dadri: ${{ secrets.FB_ACT_DADRI }}   
+      fb_act_french: ${{ secrets.FB_ACT_FRENCH }}
+      fb_act_haut: ${{ secrets.FB_ACT_HAUT }}
+      fb_act_infini: ${{ secrets.FB_ACT_INFINI }}
+      fb_act_kle: ${{ secrets.FB_ACT_KLE }}     
+      fb_act_mun: ${{ secrets.FB_ACT_MUN }}
+      fb_act_nobu: ${{ secrets.FB_ACT_NOBU }}
+      fb_act_othergirls: ${{ secrets.FB_ACT_OTHERGIRLS }}
+      fb_act_paconcept: ${{ secrets.FB_ACT_PACONCEPT }}
+      fb_act_rery: ${{ secrets.FB_ACT_RERY }}
+      fb_act_talgui: ${{ secrets.FB_ACT_TALGUI }}
+      fb_act_una: ${{ secrets.FB_ACT_UNA }}
+      fb_llt: ${{ secrets.FB_LLT }}          
+      SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
+      SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
+      
+    strategy:
+      matrix:
+        python-version: [3.11]
+        
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Install dependencies 2
+        run: |
+          pip install pandas==2.1.4 python-dotenv requests workalendar supabase numpy date_functions datetime flatten_json requests
+
+      - name: Run Code fb_api
+        run: |
+          python api_fb_v1.py
+
+        
