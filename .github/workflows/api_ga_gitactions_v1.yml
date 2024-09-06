@@ -36,9 +36,6 @@ jobs:
     steps:
     
       # Step to decode the Base64 string and recreate credentials.json
-      - name: Decode and save Google credentials
-        run: |
-          echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
           
       - name: Verify credentials.json
         run: ls -la $GITHUB_WORKSPACE        
@@ -61,6 +58,10 @@ jobs:
       - name: Install dependencies 2
         run: |
           pip install pandas==2.1.4 python-dotenv requests supabase numpy datetime workalendar google-analytics-data
+
+      - name: Decode and save Google credentials
+        run: |
+          echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
 
       - name: Run Code ga_api
         run: |
