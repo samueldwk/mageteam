@@ -51,7 +51,9 @@ c_list = ["french"]
 for client in c_list:
     # In[01]: Google Analytics API e montar df final de google analytics
 
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(
+        os.getenv("GITHUB_WORKSPACE"), "credentials.json"
+    )
 
     # # Run in local machine
     # os.environ[
