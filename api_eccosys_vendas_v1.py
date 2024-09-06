@@ -58,6 +58,8 @@ for client in c_list:
 
     # PRIMEIRA COMPRA 1 = SIM , VAZIO = NAO
 
+    df_ecco_ped.fillna("", inplace=True)
+
     df_ecco_ped["primeiraCompra"] = df_ecco_ped["primeiraCompra"].replace(
         {"1": "sim", "": "nao"}
     )
