@@ -34,15 +34,7 @@ jobs:
         python-version: [3.11]
         
     steps:
-    
-      # Step to decode the Base64 string and recreate credentials.json
-          
-      - name: Verify credentials.json
-        run: ls -la $GITHUB_WORKSPACE        
-        
-      - name: Set permissions for credentials.json
-        run: chmod 600 $GITHUB_WORKSPACE/credentials.json
-            
+                
       - name: Checkout repository
         uses: actions/checkout@v2
 
