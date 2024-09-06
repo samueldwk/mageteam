@@ -39,7 +39,13 @@ jobs:
       - name: Decode and save Google credentials
         run: |
           echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
-    
+          
+      - name: Verify credentials.json
+        run: ls -la $GITHUB_WORKSPACE        
+        
+      - name: Set permissions for credentials.json
+        run: chmod 600 $GITHUB_WORKSPACE/credentials.json
+            
       - name: Checkout repository
         uses: actions/checkout@v2
 
