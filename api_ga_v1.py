@@ -55,6 +55,11 @@ for client in c_list:
         os.getenv("GITHUB_WORKSPACE"), "credentials.json"
     )
 
+    # Debug step, checar se esta usando o caminho certo
+    print(
+        f"GOOGLE_APPLICATION_CREDENTIALS path: {os.environ['GOOGLE_APPLICATION_CREDENTIALS']}"
+    )
+
     # # Run in local machine
     # os.environ[
     #     "GOOGLE_APPLICATION_CREDENTIALS"
