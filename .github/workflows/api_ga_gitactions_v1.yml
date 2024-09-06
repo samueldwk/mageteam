@@ -34,9 +34,13 @@ jobs:
         python-version: [3.11]
         
     steps:
-                
+    
       - name: Checkout repository
         uses: actions/checkout@v2
+        
+      - name: Set timezone to GMT-3
+        run: |
+          sudo timedatectl set-timezone America/Sao_Paulo
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -50,7 +54,7 @@ jobs:
       - name: Install dependencies 2
         run: |
           pip install pandas==2.1.4 python-dotenv requests supabase numpy datetime workalendar google-analytics-data
-
+      
       - name: Decode and save Google credentials
         run: |
           echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
