@@ -128,6 +128,8 @@ for client in c_list:
 
     df_relger_ga_final.drop(columns="date", inplace=True)
 
+    df_relger_ga_final["mage_cliente"] = client
+
     # # In[02]: Enviar informações para DB
 
     from supabase import create_client, Client
@@ -141,7 +143,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_ga_{client}_v1")
+            supabase.table(f"mage_ga_v1")
             .upsert(dic_df_relger_ga_final)
             .execute()
         )

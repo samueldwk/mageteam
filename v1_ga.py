@@ -44,6 +44,7 @@ c_list = [
     "kle",
     "morina",
     "mun",
+    "muna",
     "nobu",
     "othergirls",
     "rery",
@@ -52,7 +53,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["kle"]
+# c_list = ["muna"]
 
 # DICIONÁRIO DE NOMES
 
@@ -67,6 +68,7 @@ dic_nomes = {
     "luvic": "Luvic",
     "morina": "Morina",
     "mun": "Mun",
+    "muna": "Muna",
     "nobu": "Nobu",
     "othergirls": "Other Girls",
     "paconcept": "P.A Concept",

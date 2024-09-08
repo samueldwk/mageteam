@@ -6,7 +6,6 @@ import path_functions as pathf
 import file_functions as filef
 import dotenv
 import gspread
-import v2_fb as fb
 
 
 dotenv.load_dotenv()
@@ -38,6 +37,7 @@ c_list = [
     # "kle",
     "morina",
     # "mun",
+    "muna",
     # "nobu",
     # "othergirls",
     "rery",
@@ -61,6 +61,7 @@ dic_nomes = {
     "luvic": "Luvic",
     "morina": "Morina",
     "mun": "Mun",
+    "munä": "Muna",
     "nobu": "Nobu",
     "othergirls": "Other Girls",
     "paconcept": "P.A Concept",
@@ -85,6 +86,7 @@ c_list_sku_15 = {
         "haut",
         "kle",
         "morina",
+        "muna",
         "paconcept",
         "rery",
         "uniquechic",

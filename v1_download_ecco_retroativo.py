@@ -36,6 +36,7 @@ c_list = [
     # "infini",
     # "kle",
     # "mun",
+    "muna",
     "morina",
     # "nobu",
     # "othergirls",

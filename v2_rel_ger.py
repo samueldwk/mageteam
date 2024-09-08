@@ -16,7 +16,7 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 9, 3).date()
+# d1 = datetime.datetime(2024, 9, 5).date()
 
 datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
@@ -30,6 +30,7 @@ c_list = [
     "kle",
     "morina",
     "mun",
+    "muna",
     "nobu",
     "othergirls",
     "rery",
@@ -38,7 +39,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["kle"]
+# c_list = ["muna"]
 
 # DICIONÁRIO DE NOMES
 
@@ -53,6 +54,7 @@ dic_nomes = {
     "luvic": "Luvic",
     "morina": "Morina",
     "mun": "Mun",
+    "muna": "Muna",
     "nobu": "Nobu",
     "othergirls": "Other Girls",
     "paconcept": "P.A Concept",
@@ -77,6 +79,7 @@ c_list_sku_15 = {
         "haut",
         "kle",
         "morina",
+        "muna",
         "paconcept",
         "rery",
         "uniquechic",
@@ -614,11 +617,21 @@ for cliente in c_list:
 
     # %% FB ADS DATA
 
-    df_rel_ger_fb = fb.download_fb(cliente, dataname)
+    # Em casos quando o cliente ainda não tem fb, tentar bater no fb mas se nao der apenas continuar
+    try:
+        df_rel_ger_fb = fb.download_fb(cliente, dataname)
 
-    # %% CONCAT 'df_rel_ger_ecco', 'df_rel_ger_fb'
+        # CONCAT 'df_rel_ger_ecco', 'df_rel_ger_fb'
+        df_rel_ger = pd.concat([df_rel_ger_ecco, df_rel_ger_fb], axis=1)
 
-    df_rel_ger = pd.concat([df_rel_ger_ecco, df_rel_ger_fb], axis=1)
+    except Exception:
+        print(f"Erro ao tentar acessar dados do fb do cliente: {cliente}")
+        df_rel_ger = df_rel_ger_ecco.copy()
+        pass
+
+    # # %% CONCAT 'df_rel_ger_ecco', 'df_rel_ger_fb'
+
+    # df_rel_ger = pd.concat([df_rel_ger_ecco, df_rel_ger_fb], axis=1)
 
     # %% IF SALES = 0, SUBSTITUTE NAN FOR 0 AND PUT DATE
 

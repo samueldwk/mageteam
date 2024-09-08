@@ -201,6 +201,9 @@ for client in c_list:
         columns=["precoLancamentoProduto"]
     )
 
+    # Colocar coluna mage_cliente
+    df_ecco_estoque_final["mage_cliente"] = client
+
     # In[11]: Enviar informações para DB
 
     from supabase import create_client, Client
@@ -214,7 +217,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_eccosys_estoque_tamanho_{client}_v1")
+            supabase.table(f"mage_eccosys_estoque_v1")
             .upsert(dic_ecco_estoque_final)
             .execute()
         )

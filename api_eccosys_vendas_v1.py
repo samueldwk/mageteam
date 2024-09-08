@@ -132,7 +132,6 @@ for client in c_list:
     ]
 
     # RENAME COLUMNS NAME
-
     df_ecco_ped = df_ecco_ped.rename(
         columns={
             "id": "idVenda",
@@ -149,7 +148,10 @@ for client in c_list:
         }
     )
 
-    df_ecco_ped.dtypes
+    # df_ecco_ped.dtypes
+
+    # Colocar coluna mage_cliente
+    df_ecco_ped["mage_cliente"] = client
 
     # In[2]: Enviar informações para DB
 
@@ -164,7 +166,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_eccosys_pedidos_{client}_v1")
+            supabase.table(f"mage_eccosys_pedidos_v1")
             .upsert(dic_ecco_ped)
             .execute()
         )
@@ -326,6 +328,9 @@ for client in c_list:
         }
     )
 
+    # Colocar coluna mage_cliente
+    df_ecco_ped_prod["mage_cliente"] = client
+
     # In[4]: Enviar informações para DB
 
     from supabase import create_client, Client
@@ -339,7 +344,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_eccosys_vendas_produto_{client}_v1")
+            supabase.table(f"mage_eccosys_vendas_produto_v1")
             .upsert(dic_ecco_ped_prod)
             .execute()
         )

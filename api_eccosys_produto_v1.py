@@ -92,7 +92,10 @@ for client in c_list:
     )
 
     # Colocar coluna de data cadastro
-    df_ecco_produto["Data"] = dataname
+    df_ecco_produto["data"] = dataname
+
+    # Colocar coluna mage_cliente
+    df_ecco_produto["mage_cliente"] = client
 
     # # Salvar df produto em excel
     # # Specify the file name you want to save the Excel file as
@@ -114,7 +117,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_eccosys_produto_{client}_v1")
+            supabase.table(f"mage_eccosys_produto_v1")
             .upsert(dic_ecco_produto)
             .execute()
         )

@@ -151,6 +151,7 @@ def download_eccosys(
             or cliente == "morina"
             or cliente == "rery"
             or cliente == "uniquechic"
+            or cliente == "muna"
         ):
             option_index_to_select = 0
             dropdown.select_by_index(option_index_to_select)
@@ -191,9 +192,16 @@ def download_eccosys(
         driver.find_element(By.XPATH, preco_ant_xpath).click()
 
         time.sleep(8)
+        # # Path original para download produto quando não esta tendo manutenção no site
+        # download_xpath = (
+        #     "/html/body/div[5]/div/div[2]/div[2]/div/form/div[4]/input"
+        # )
+
+        # Path para download produto quando esta tendo manutenção no site 20240907
         download_xpath = (
-            "/html/body/div[5]/div/div[2]/div[2]/div/form/div[4]/input"
+            "/html/body/div[5]/div/div[2]/div[2]/div/form/div[4]/input[2]"
         )
+
         driver.find_element(By.XPATH, download_xpath).click()
 
         time.sleep(pause_time + 60)

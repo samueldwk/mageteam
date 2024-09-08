@@ -231,7 +231,10 @@ for client in c_list:
     df_relger_fb_final.replace([np.inf, -np.inf], 0, inplace=True)
 
     # Colocar coluna de data estoque
-    df_relger_fb_final["Data"] = dataname
+    df_relger_fb_final["data"] = dataname
+
+    # Colocar coluna mage_cliente
+    df_relger_fb_final["mage_cliente"] = client
 
     # In[03]: Enviar informações para DB
 
@@ -246,7 +249,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_fb_{client}_v1")
+            supabase.table(f"mage_fb_v1")
             .upsert(dic_df_relger_fb_final)
             .execute()
         )
