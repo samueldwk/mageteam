@@ -38,7 +38,7 @@ c_list = [
     # "uniquechic",
 ]
 
-# c_list = ["mun"]
+# c_list = ["talgui"]
 
 # API HEADER
 
@@ -94,7 +94,7 @@ for client in c_list:
     ].apply(lambda x: x if x > 0 else 0)
 
     # Colocar coluna de data estoque
-    df_ecco_estoque_limpo["Data"] = dataname
+    df_ecco_estoque_limpo["data"] = dataname
 
     # Tranformar formato coluna estoque para int
     columns_to_convert = ["estoqueDisponivel", "estoqueReal"]
@@ -111,7 +111,7 @@ for client in c_list:
 
     # In[2]: Eccosys API: GET Listar todos os produtos
 
-    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$opcEcommerce=S"
+    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data"
 
     response_prod = requests.request(
         "GET", url_prod, headers=headers, data=payload
