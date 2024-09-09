@@ -28,24 +28,24 @@ year = date_object.year
 # CLIENT LIST
 c_list = [
     # "ajobrand",
-    "alanis",
-    "dadri",
+    # "alanis",
+    # "dadri",
     "french",
     # "haverroth",
-    "haut",
-    "infini",
-    "kle",
+    # "haut",
+    # "infini",
+    # "kle",
     # "luvic",
-    "mun",
-    "nobu",
-    "othergirls",
-    "rery",
+    # "mun",
+    # "nobu",
+    # "othergirls",
+    # "rery",
     "talgui",
-    "paconcept",
-    "una",
+    # "paconcept",
+    # "una",
 ]
 
-c_list = ["french"]
+# c_list = ["french"]
 
 
 for client in c_list:
@@ -53,10 +53,10 @@ for client in c_list:
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
-    # Debug step, checar se esta usando o caminho certo
-    print(
-        f"GOOGLE_APPLICATION_CREDENTIALS path: {os.environ['GOOGLE_APPLICATION_CREDENTIALS']}"
-    )
+    # # Debug step, checar se esta usando o caminho certo
+    # print(
+    #     f"GOOGLE_APPLICATION_CREDENTIALS path: {os.environ['GOOGLE_APPLICATION_CREDENTIALS']}"
+    # )
 
     # # Run in local machine
     # os.environ[
@@ -149,4 +149,6 @@ for client in c_list:
         )
 
     except Exception as exception:
-        print(exception)
+        print(f"{client}: {exception}")
+
+    print(f"{client}: api_ga_v1 (OK)")

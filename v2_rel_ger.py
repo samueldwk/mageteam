@@ -39,7 +39,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["muna"]
+# c_list = ["basicler"]
 
 # DICIONÁRIO DE NOMES
 

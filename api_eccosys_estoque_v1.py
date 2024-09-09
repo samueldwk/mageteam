@@ -32,7 +32,7 @@ c_list = [
     # "nobu",
     # "othergirls",
     # "rery",
-    # "talgui",
+    "talgui",
     # "paconcept",
     # "una",
     # "uniquechic",
@@ -217,10 +217,12 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_eccosys_estoque_v1")
+            supabase.table("mage_eccosys_estoque_v1")
             .upsert(dic_ecco_estoque_final)
             .execute()
         )
 
     except Exception as exception:
-        print(exception)
+        print(f"{client}: {exception}")
+
+    print(f"{client}: api_eccosys_estoque_v1 (OK)")

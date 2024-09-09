@@ -21,17 +21,16 @@ datatxt, dataname1, datasql, dataname2, dataname3 = datef.dates(d1)
 # CLIENT LIST
 
 c_list = [
-    "ajobrand",
-    "dadri",
+    # "dadri",
     "french",
-    "infini",
-    "mun",
-    "othergirls",
+    # "infini",
+    # "mun",
+    # "othergirls",
     "talgui",
-    "una",
+    # "una",
 ]
 
-c_list = ["french"]
+# c_list = ["french"]
 
 # API HEADER
 
@@ -166,13 +165,15 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_eccosys_pedidos_v1")
+            supabase.table("mage_eccosys_pedidos_v1")
             .upsert(dic_ecco_ped)
             .execute()
         )
 
     except Exception as exception:
-        print(exception)
+        print(f"{client}: {exception}")
+
+    print(f"{client}: api_eccosys_pedidos_v1 (OK)")
 
     # In[3]: CALL PRODUCTS FROM EACH ORDER AND MAKE PEDIDOS X PRODUTOS
     df_order_ids = df_ecco_ped["idVenda"]
@@ -350,4 +351,6 @@ for client in c_list:
         )
 
     except Exception as exception:
-        print(exception)
+        print(f"{client}: {exception}")
+
+    print(f"{client}: api_eccosys_vendas_produto_v1 (OK)")

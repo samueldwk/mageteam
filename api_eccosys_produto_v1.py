@@ -32,13 +32,13 @@ c_list = [
     # "nobu",
     # "othergirls",
     # "rery",
-    # "talgui",
+    "talgui",
     # "paconcept",
     # "una",
     # "uniquechic",
 ]
 
-# c_list = ["rery"]
+# c_list = ["talgui"]
 
 # API HEADER
 
@@ -117,10 +117,12 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_eccosys_produto_v1")
+            supabase.table("mage_eccosys_produto_v1")
             .upsert(dic_ecco_produto)
             .execute()
         )
 
     except Exception as exception:
-        print(exception)
+        print(f"{client}: {exception}")
+
+    print(f"{client}: api_eccosys_produto_v1 (OK)")

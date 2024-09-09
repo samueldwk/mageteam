@@ -13,25 +13,25 @@ import numpy as np
 dotenv.load_dotenv()
 
 # Lista de clientes mageteam
-# c_list = [
-#     "alanis",
-#     "basicler",
-#     "dadri",
-#     "french",
-#     "haut",
-#     "infini",
-#     "kle",
-#     "morina",
-#     "mun",
-#     "nobu",
-#     "othergirls",
-#     "rery",
-#     "talgui",
-#     "una",
-#     "uniquechic",
-# ]
+c_list = [
+    # "alanis",
+    # "basicler",
+    # "dadri",
+    "french",
+    # "haut",
+    # "infini",
+    # "kle",
+    # "morina",
+    # "mun",
+    # "nobu",
+    # "othergirls",
+    # "rery",
+    "talgui",
+    # "una",
+    # "uniquechic",
+]
 
-c_list = ["french"]
+# c_list = ["french"]
 
 # Date functions
 hj = datetime.datetime.now()
@@ -249,10 +249,12 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_fb_v1")
+            supabase.table("mage_fb_v1")
             .upsert(dic_df_relger_fb_final)
             .execute()
         )
 
     except Exception as exception:
-        print(exception)
+        print(f"{client}: {exception}")
+
+    print(f"{client}: api_fb_v1 (OK)")

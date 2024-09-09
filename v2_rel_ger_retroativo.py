@@ -61,7 +61,7 @@ dic_nomes = {
     "luvic": "Luvic",
     "morina": "Morina",
     "mun": "Mun",
-    "munä": "Muna",
+    "muna": "Muna",
     "nobu": "Nobu",
     "othergirls": "Other Girls",
     "paconcept": "P.A Concept",
