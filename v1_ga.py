@@ -49,11 +49,12 @@ c_list = [
     "othergirls",
     "rery",
     "talgui",
+    "tob",
     "una",
     "uniquechic",
 ]
 
-# c_list = ["muna"]
+# c_list = ["tob"]
 
 # DICIONÁRIO DE NOMES
 
@@ -74,6 +75,7 @@ dic_nomes = {
     "paconcept": "P.A Concept",
     "rery": "Rery",
     "talgui": "Talgui",
+    "tob": "Tob",
     "una": "Una",
     "uniquechic": "Unique Chic",
 }

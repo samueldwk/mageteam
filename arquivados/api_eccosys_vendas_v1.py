@@ -230,7 +230,8 @@ for client in c_list:
         df_ecco_ped, how="left", left_on="idVenda", right_on="idVenda"
     )
 
-    # COLOCAR DESCONTO DO PRODUTO
+    # COLOCAR DESCONTO DO PRODUTO / VERIFICAR O CUSTO DO PRODUTO E ARRUMAR SE PRECISO
+
     # Eccosys API: GET Listar todos os produtos
 
     url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$opcEcommerce=S"
@@ -243,7 +244,13 @@ for client in c_list:
     df_ecco_produto = pd.DataFrame.from_dict(dic_ecco_produto)
 
     # COLUMNS TO KEEP
-    columns_to_keep = ["id", "precoDe", "precoCusto"]
+    columns_to_keep = [
+        "id",
+        "idProdutoMaster",
+        "precoDe",
+        "precoCusto",
+        "nome",
+    ]
 
     df_ecco_produto = df_ecco_produto[columns_to_keep]
 
@@ -251,24 +258,125 @@ for client in c_list:
     df_ecco_produto.rename(
         columns={
             "id": "idProduto",
+            "nome": "nomeProduto",
             "precoDe": "precoLancamentoProduto",
             "precoCusto": "precoCustoProdutoUnit",
         },
         inplace=True,
     )
 
-    # Determinar faixa de desconto de produto
+    # Converter tipo de valores
+    columns_to_convert = ["precoLancamentoProduto", "precoCustoProdutoUnit"]
+
+    df_ecco_produto[columns_to_convert] = df_ecco_produto[
+        columns_to_convert
+    ].astype(float)
+
+    ### VERIFICAR SE O CUSTO É RAZOÁVEL E ARRUMAR SE NECESSÁRIO
+
+    # Criar coluna grupo_produto para depois calcular custo médio por grupo e ser usado para corrigir custos errados
+    df_ecco_produto["nomeProduto"] = df_ecco_produto["nomeProduto"].str.strip()
+    df_ecco_produto["grupo_produto"] = (
+        df_ecco_produto["nomeProduto"].str.split(" ").str[0]
+    )
+
+    # Criar uma df apenas com produtos pai e seus custos (poder ser que tenha filhos como pais)
+    df_ecco_produto_pai = df_ecco_produto[
+        df_ecco_produto["idProdutoMaster"] == "0"
+    ]
+
+    # Renomear colunas da df_ecco_produto_pai
+    df_ecco_produto_pai.rename(
+        columns={
+            "id": "idProduto",
+            "precoLancamentoProduto": "precoLancamentoProdutoPai",
+            "precoCustoProdutoUnit": "precoCustoProdutoPaiUnit",
+        },
+        inplace=True,
+    )
+
+    # Trazer o custo do produto pai pelo campo idProdutoMaster
+    df_ecco_produto_custo_arrumado = df_ecco_produto.merge(
+        df_ecco_produto_pai,
+        how="left",
+        left_on="idProdutoMaster",
+        right_on="idProduto",
+    )
+
+    # Replace NaN values in 'precoCustoProdutoPaiUnit' with values from 'precoCustoProdutoPaiUnit_media'
+    df_ecco_produto_custo_arrumado[
+        "precoCustoProdutoPaiUnit"
+    ] = df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"].fillna(
+        df_ecco_produto_custo_arrumado["precoCustoProdutoUnit"]
+    )
+
+    ## Criar uma tabela de custo médio por grupo de produto para ser usado caso o custo do produto não seja razoável
+
+    columns_to_keep = [
+        "idProduto_x",
+        "idProdutoMaster_x",
+        "nomeProduto_x",
+        "precoCustoProdutoPaiUnit",
+        "grupo_produto_x",
+    ]
+    df_ecco_produto_custo_grupo = df_ecco_produto_custo_arrumado[
+        columns_to_keep
+    ]
+
+    # Manter apenas linhas onde custo é maior que 1 ou menor que 1000
+    df_ecco_produto_custo_grupo = df_ecco_produto_custo_grupo[
+        (df_ecco_produto_custo_grupo["precoCustoProdutoPaiUnit"] >= 1)
+        & (df_ecco_produto_custo_grupo["precoCustoProdutoPaiUnit"] <= 1000)
+    ]
+    df_ecco_produto_custo_grupo = df_ecco_produto_custo_grupo.dropna()
+
+    # Calcular média de custo por grupo de produto e criar uma df com essas médias
+    df_grupo_produto_custo_media = (
+        df_ecco_produto_custo_grupo.groupby("grupo_produto_x")[
+            "precoCustoProdutoPaiUnit"
+        ]
+        .mean()
+        .reset_index()
+    )
+
+    ## Verificar se o custo do produto pai é razoável e arrumar custos e criar uma lista de produtos com custo errado
+
+    # Step 1: Identify the wrong costs (smaller than 1 or greater than 1000)
+    mask_wrong_costs = (
+        df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"] < 1
+    ) | (df["precoCustoProdutoPaiUnit"] > 1000)
+
+    # Step 2: List of products with wrong costs
+    products_with_wrong_costs = df[mask_wrong_costs]
+
+    # Step 3: Substituting wrong costs by group average
+
+    # Assuming df_grupo_produto_custo_media has 'grupo_produto' and 'average_cost'
+    # Merging the average cost dataframe with the original df on 'grupo_produto'
+    df = df.merge(
+        df_grupo_produto_custo_media[
+            ["grupo_produto", "precoCustoProdutoPaiUnit"]
+        ],
+        on="grupo_produto",
+        suffixes=("", "_media"),
+    )
+
+    # Step 4: Replace wrong costs with group average where cost is invalid
+    df.loc[mask_wrong_costs, "precoCustoProdutoPaiUnit"] = df.loc[
+        mask_wrong_costs, "precoCustoProdutoPaiUnit_media"
+    ]
+
+    # Step 5: Drop the auxiliary 'precoCustoProdutoPaiUnit_media' column
+    df.drop(columns=["precoCustoProdutoPaiUnit_media"], inplace=True)
+
+    # The DataFrame now has corrected costs, and products_with_wrong_costs has the products with wrong costs.
+
+    ### DETERMINAR A FAIXA DE DESCONTO DO PRODUTO
+
     # Trazer precoLancamentoProduto para tabela de vendas produto
     df_ecco_ped_prod = df_ecco_ped_prod.merge(
         df_ecco_produto, how="left", on="idProduto"
     )
-
-    # CONVERT COLUMNS TYPE
-    columns_to_convert = ["precoLancamentoProduto"]
-
-    df_ecco_ped_prod[columns_to_convert] = df_ecco_ped_prod[
-        columns_to_convert
-    ].astype(float)
 
     # Calcular PorcentagemDescontoProduto
     df_ecco_ped_prod["PorcentagemDescontoProduto"] = 1 - (

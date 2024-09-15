@@ -16,7 +16,7 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 9, 5).date()
+# d1 = datetime.datetime(2024, 9, 10).date()
 
 datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
@@ -35,11 +35,12 @@ c_list = [
     "othergirls",
     "rery",
     "talgui",
+    "tob",
     "una",
     "uniquechic",
 ]
 
-# c_list = ["basicler"]
+c_list = ["french"]
 
 # DICIONÁRIO DE NOMES
 
@@ -60,6 +61,7 @@ dic_nomes = {
     "paconcept": "P.A Concept",
     "rery": "Rery",
     "talgui": "Talgui",
+    "tob": "Tob",
     "una": "Una",
     "uniquechic": "Unique Chic",
 }
@@ -82,6 +84,7 @@ c_list_sku_15 = {
         "muna",
         "paconcept",
         "rery",
+        "tob",
         "uniquechic",
     ],
     "Index": 40,
@@ -372,19 +375,22 @@ for cliente in c_list:
             subset=["Cod. Modelo + Cor"]
         )
 
-    df_vendas = pd.merge(
+    df_vendas_ped_prod = pd.merge(
         df_vendas, df_produtos2, on="Cod. Modelo + Cor", how="left"
     )
 
     # ADD CMV TO df_vendas
 
-    df_vendas["CMV"] = df_vendas["Preco de Custo"] * df_vendas["Quantidade"]
+    df_vendas_ped_prod["CMV"] = (
+        df_vendas_ped_prod["Preco de Custo"] * df_vendas_ped_prod["Quantidade"]
+    )
 
     # CALCULAR VALOR DE VENDA PRODUTO TOTAL TO df_vendas
 
-    df_vendas["Valor de Venda Produto Total"] = (
-        df_vendas["Preco de Venda Produto Un"] * df_vendas["Quantidade"]
-    ) - df_vendas["Desconto item"]
+    df_vendas_ped_prod["Valor de Venda Produto Total"] = (
+        df_vendas_ped_prod["Preco de Venda Produto Un"]
+        * df_vendas_ped_prod["Quantidade"]
+    ) - df_vendas_ped_prod["Desconto item"]
 
     # COLUMNS TO KEEP ON df_vendas_prod
 
@@ -397,7 +403,7 @@ for cliente in c_list:
         "Valor de Venda Produto Total",
         "Preco Anterior",
     ]
-    df_vendas_prod = df_vendas[
+    df_vendas_prod = df_vendas_ped_prod[
         columns_to_keep1
     ].copy()  # Make a copy to avoid modifying the original DataFrame
 
@@ -418,7 +424,7 @@ for cliente in c_list:
         "CMV",
         "Valor de Venda Produto Total",
     ]
-    df_vendas_ped = df_vendas[
+    df_vendas_ped = df_vendas_ped_prod[
         columns_to_keep2
     ].copy()  # Make a copy to avoid modifying the original DataFrame
 
