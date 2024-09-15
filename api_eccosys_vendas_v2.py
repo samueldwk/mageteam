@@ -397,7 +397,7 @@ for client in c_list:
         inplace=True,
     )
 
-    # DETERMINAR A FAIXA DE DESCONTO DO PRODUTO E TRAZER CUSTO CERTO
+    ### DETERMINAR A FAIXA DE DESCONTO DO PRODUTO E TRAZER CUSTO CERTO
 
     # Trazer precoLancamentoProduto para tabela de vendas produto
     df_ecco_ped_prod = df_ecco_ped_prod.merge(
@@ -418,7 +418,7 @@ for client in c_list:
         print(f"{client} - df_ecco_ped_prod: Não contém NAN")
 
     # Arredondar o desconto de produto
-    precision = 5
+    precision = 2
     df_ecco_ped_prod.loc[:, "PorcentagemDescontoProduto"] = df_ecco_ped_prod[
         "PorcentagemDescontoProduto"
     ].round(precision)

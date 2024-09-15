@@ -40,7 +40,7 @@ c_list = [
     "uniquechic",
 ]
 
-c_list = ["french"]
+# c_list = ["french"]
 
 # DICIONÁRIO DE NOMES
 

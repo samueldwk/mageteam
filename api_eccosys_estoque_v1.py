@@ -38,7 +38,7 @@ c_list = [
     # "uniquechic",
 ]
 
-# c_list = ["talgui"]
+# c_list = ["french"]
 
 # API HEADER
 
@@ -174,7 +174,7 @@ for client in c_list:
     df_ecco_estoque_final.fillna(0, inplace=True)
 
     # Arredondar o desconto de produto
-    precision = 5
+    precision = 2
     df_ecco_estoque_final.loc[
         :, "PorcentagemDescontoProduto"
     ] = df_ecco_estoque_final["PorcentagemDescontoProduto"].round(precision)
