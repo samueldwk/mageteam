@@ -27,12 +27,14 @@ datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 # CLIENT LIST
 c_list = [
     "alanis",
+    "basicler",
     # "dadri",
     "french",
     "haut",
     # "infini",
     "kle",
     "mun",
+    "muna",
     "nobu",
     "othergirls",
     "rery",
