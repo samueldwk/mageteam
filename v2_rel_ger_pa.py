@@ -16,7 +16,7 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 9, 7).date()
+# d1 = datetime.datetime(2024, 8, 29).date()
 
 datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
@@ -523,6 +523,7 @@ for cliente in c_list:
     ]
 
     df_rel_ger_ecco = rel_ger[desired_order]
+    # df_rel_ger = df_rel_ger_ecco
 
     # %% FB ADS DATA
 

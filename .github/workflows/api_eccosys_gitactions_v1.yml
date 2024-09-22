@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Code Eccosys Produto
         run: |
-          python api_eccosys_produto_v1.py
+          python api_eccosys_produto_v1.1.py
           
       - name: Run Code Eccosys Venda
         run: |

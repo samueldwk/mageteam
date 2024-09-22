@@ -14,7 +14,7 @@ d1 = datef.dmenos(hj).date()
 
 # Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 8, 30).date()
+# d1 = datetime.datetime(2024, 9, 13).date()
 
 (
     datatxt,
@@ -36,8 +36,8 @@ c_list = [
     # "infini",
     # "kle",
     # "mun",
-    "muna",
     "morina",
+    "muna",
     # "nobu",
     # "othergirls",
     # "talgui",

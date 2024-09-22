@@ -1,5 +1,6 @@
-# api_eccosys_produto_v1 gitactions
-# substituido por api_eccosys_produto_v1.1 em 22/09/2024
+# api_eccosys_produto_v1.1 gitactions
+# api que consegue lidar com lista grande de produtos na hora de fazer upsert no database
+# oficial desde 22/09/2024
 
 import requests
 import pandas as pd
@@ -8,6 +9,8 @@ import datetime
 import dotenv
 import os
 import time
+import math
+
 
 dotenv.load_dotenv()
 
@@ -39,7 +42,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["french"]
+# c_list = ["rery"]
 
 # API HEADER
 
@@ -54,7 +57,7 @@ for client in c_list:
 
     # In[1]: Eccosys API: GET Listar todos os produtos
 
-    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$opcEcommerce=S"
+    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$situacao=A&$opcEcommerce=S"
 
     response_prod = requests.request(
         "GET", url_prod, headers=headers, data=payload
@@ -116,14 +119,28 @@ for client in c_list:
 
     dic_ecco_produto = df_ecco_produto.to_dict(orient="records")
 
-    try:
-        response = (
-            supabase.table("mage_eccosys_produto_v1")
-            .upsert(dic_ecco_produto)
-            .execute()
-        )
+    # Set batch size (e.g., 10000 records per batch)
+    batch_size = 10000
 
-    except Exception as exception:
-        print(f"{client}: {exception}")
+    # Calculate how many batches we need
+    num_batches = math.ceil(len(dic_ecco_produto) / batch_size)
 
-    print(f"{client}: api_eccosys_produto_v1")
+    # Loop through the data and upsert it in batches
+    for i in range(num_batches):
+        # Create a batch by slicing the dictionary
+        batch = dic_ecco_produto[i * batch_size : (i + 1) * batch_size]
+
+        try:
+            # Upsert this batch into the database
+            response = (
+                supabase.table("mage_eccosys_produto_v1")
+                .upsert(batch)
+                .execute()
+            )
+            print(
+                f"{client}: api_eccosys_produto_v1 Batch {i + 1}/{num_batches} inserted successfully."
+            )
+        except Exception as exception:
+            print(
+                f"{client}: api_eccosys_produto_v1 Batch {i + 1} failed: {exception}"
+            )

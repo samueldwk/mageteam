@@ -1,4 +1,4 @@
-# api_fb_v1 gitactions
+# api_fb_v1.1 gitactions (tentando fazer o funil completo)
 
 import requests
 import pandas as pd
@@ -23,14 +23,14 @@ month = date_object.month
 year = date_object.year
 
 # #Para puxar de uma data específica
-# d1 = datetime.datetime(2024, 6, 8).date()
+d1 = datetime.datetime(2024, 9, 18).date()
 
 # CLIENT LIST
 c_list = [
     # "ajobrand",
     # "alanis",
     # "dadri",
-    "french",
+    # "french",
     # "haverroth",
     # "haut",
     # "infini",
@@ -51,13 +51,17 @@ c_list = [
 for client in c_list:
     # In[01]: Google Analytics API e montar df final de google analytics
 
-    # Run in git actions
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
-    # # Run in local machine
-    # os.environ[
-    #     "GOOGLE_APPLICATION_CREDENTIALS"
-    # ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
+    # # Debug step, checar se esta usando o caminho certo
+    # print(
+    #     f"GOOGLE_APPLICATION_CREDENTIALS path: {os.environ['GOOGLE_APPLICATION_CREDENTIALS']}"
+    # )
+
+    # Run in local machine
+    os.environ[
+        "GOOGLE_APPLICATION_CREDENTIALS"
+    ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
 
     from google.analytics.data_v1beta import BetaAnalyticsDataClient
     from google.analytics.data_v1beta.types import (
@@ -75,15 +79,17 @@ for client in c_list:
 
     request = RunReportRequest(
         property=f"properties/{os.getenv(f'ga_id_{client}')}",
-        dimensions=[Dimension(name="date")],
+        dimensions=[Dimension(name="date"), Dimension(name="pagePath")],
         metrics=[
-            Metric(name="sessions"),
-            Metric(name="bounceRate"),
-            Metric(name="engagedSessions"),
-            Metric(name="addToCarts"),
+            # Metric(name="sessions"),
+            # Metric(name="bounceRate"),
+            # Metric(name="engagedSessions"),
+            # Metric(name="addToCarts"),
+            # Metric(name="checkouts"),
+            # Metric(name="sessionKeyEventRate"),
+            # Metric(name="ecommercePurchases"),
             Metric(name="checkouts"),
-            Metric(name="sessionKeyEventRate"),
-            Metric(name="ecommercePurchases"),
+            Metric(name="activeUsers"),
         ],
         date_ranges=[DateRange(start_date=dataname2, end_date=dataname)],
     )
@@ -126,25 +132,25 @@ for client in c_list:
 
     df_relger_ga_final["mage_cliente"] = client
 
-    # In[02]: Enviar informações para DB
+    # # In[02]: Enviar informações para DB
 
-    from supabase import create_client, Client
-    import supabase
+    # from supabase import create_client, Client
+    # import supabase
 
-    url: str = os.environ.get("SUPABASE_BI_URL")
-    key: str = os.environ.get("SUPABASE_BI_KEY")
-    supabase: Client = create_client(url, key)
+    # url: str = os.environ.get("SUPABASE_BI_URL")
+    # key: str = os.environ.get("SUPABASE_BI_KEY")
+    # supabase: Client = create_client(url, key)
 
-    dic_df_relger_ga_final = df_relger_ga_final.to_dict(orient="records")
+    # dic_df_relger_ga_final = df_relger_ga_final.to_dict(orient="records")
 
-    try:
-        response = (
-            supabase.table(f"mage_ga_v1")
-            .upsert(dic_df_relger_ga_final)
-            .execute()
-        )
+    # try:
+    #     response = (
+    #         supabase.table(f"mage_ga_v1")
+    #         .upsert(dic_df_relger_ga_final)
+    #         .execute()
+    #     )
 
-    except Exception as exception:
-        print(f"{client}: {exception}")
+    # except Exception as exception:
+    #     print(f"{client}: {exception}")
 
-    print(f"{client}: api_ga_v1")
+    # print(f"{client}: api_ga_v1 (OK)")

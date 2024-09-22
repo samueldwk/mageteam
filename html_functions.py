@@ -13,6 +13,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import TimeoutException
+
 
 pause_time = 10
 
@@ -114,10 +116,19 @@ def download_eccosys(
         cadastros.click()
 
         time.sleep(pause_time + 5)
-        filtro_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/table/tbody/tr/td[1]/div/div[1]/div[3]/a"
-        wait.until(
-            EC.element_to_be_clickable((By.XPATH, filtro_xpath))
-        ).click()
+
+        # Lidar com tela quando vem aviso no eccosys que o cliente nao pagou a mensalidade
+        try:
+            filtro_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/table/tbody/tr/td[1]/div/div[1]/div[3]/a"
+            wait.until(
+                EC.element_to_be_clickable((By.XPATH, filtro_xpath))
+            ).click()
+
+        except TimeoutException:
+            filtro_xpath = "/html/body/div[7]/div/div[2]/div[2]/div[1]/div[5]/table/tbody/tr/td[1]/div/div[1]/div[3]/a"
+            wait.until(
+                EC.element_to_be_clickable((By.XPATH, filtro_xpath))
+            ).click()
 
         ativos_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/table/tbody/tr/td[1]/div/div[1]/div[4]/div/div[1]/div[1]/ul/li[4]/a"
         driver.find_element(By.XPATH, ativos_xpath).click()
@@ -193,10 +204,12 @@ def download_eccosys(
         driver.find_element(By.XPATH, preco_ant_xpath).click()
 
         time.sleep(8)
+
         # # Path original para download produto quando não esta tendo manutenção no site
         # download_xpath = (
         #     "/html/body/div[5]/div/div[2]/div[2]/div/form/div[4]/input"
         # )
+        # driver.find_element(By.XPATH, download_xpath).click()
 
         # Path para download produto quando esta tendo manutenção no site 20240907
         download_xpath = (
