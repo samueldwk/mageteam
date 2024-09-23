@@ -1,4 +1,6 @@
-# api_eccosys_vendas_v1 (3 dias de venda anterior) por pedido e por produto gitactions
+# api_eccosys_vendas_v2 (3 dias de venda anterior) por pedido e por produto gitactions
+# Atualização em relação a V.1 é como lidar com custos errados
+# Versão oficial desde 22/09/2024
 
 import requests
 import pandas as pd
@@ -21,16 +23,25 @@ datatxt, dataname1, datasql, dataname2, dataname3 = datef.dates(d1)
 # CLIENT LIST
 
 c_list = [
+    "alanis",
+    "basicler",
     # "dadri",
     "french",
+    "haut",
     # "infini",
-    # "mun",
-    # "othergirls",
+    "kle",
+    "mun",
+    "muna",
+    "nobu",
+    "othergirls",
+    "rery",
     "talgui",
-    # "una",
+    "paconcept",
+    "una",
+    "uniquechic",
 ]
 
-# c_list = ["french"]
+# c_list = ["rery"]
 
 # API HEADER
 
@@ -71,11 +82,6 @@ for client in c_list:
     df_ecco_ped[columns_to_convert] = df_ecco_ped[columns_to_convert].astype(
         float
     )
-
-    # columns_to_convert = ["id", "idContato", "numeroPedido", "primeiraCompra"]
-    # df_ecco_ped[columns_to_convert] = df_ecco_ped[columns_to_convert].astype(
-    #     int
-    # )
 
     # PRODUCTS SALES VALE WITHOUT DISCOUNT
 
@@ -173,7 +179,7 @@ for client in c_list:
     except Exception as exception:
         print(f"{client}: {exception}")
 
-    print(f"{client}: api_eccosys_pedidos_v1 (OK)")
+    print(f"{client}: api_eccosys_pedidos_v2")
 
     # In[3]: CALL PRODUCTS FROM EACH ORDER AND MAKE PEDIDOS X PRODUTOS
     df_order_ids = df_ecco_ped["idVenda"]
@@ -248,6 +254,7 @@ for client in c_list:
         "id",
         "idProdutoMaster",
         "precoDe",
+        "preco",
         "precoCusto",
         "nome",
     ]
@@ -260,17 +267,32 @@ for client in c_list:
             "id": "idProduto",
             "nome": "nomeProduto",
             "precoDe": "precoLancamentoProduto",
+            "preco": "precoAtualProduto",
             "precoCusto": "precoCustoProdutoUnit",
         },
         inplace=True,
     )
 
     # Converter tipo de valores
-    columns_to_convert = ["precoLancamentoProduto", "precoCustoProdutoUnit"]
+    columns_to_convert = [
+        "precoLancamentoProduto",
+        "precoCustoProdutoUnit",
+        "precoAtualProduto",
+    ]
 
     df_ecco_produto[columns_to_convert] = df_ecco_produto[
         columns_to_convert
     ].astype(float)
+
+    # VERIFICAR SE O PREÇO DE LANÇAMENTO ESTÁ CERTO E ARRUMAR SE NECESSÁRIO
+
+    # Replace 0 values in 'precoLancamentoProduto' with corresponding values from 'precoAtualProduto'
+    df_ecco_produto["precoLancamentoProduto"] = df_ecco_produto.apply(
+        lambda row: row["precoAtualProduto"]
+        if row["precoLancamentoProduto"] == 0
+        else row["precoLancamentoProduto"],
+        axis=1,
+    )
 
     # VERIFICAR SE O CUSTO É RAZOÁVEL E ARRUMAR SE NECESSÁRIO
 
@@ -485,7 +507,7 @@ for client in c_list:
 
     try:
         response = (
-            supabase.table(f"mage_eccosys_vendas_produto_v1")
+            supabase.table("mage_eccosys_vendas_produto_v1")
             .upsert(dic_ecco_ped_prod)
             .execute()
         )
@@ -493,4 +515,4 @@ for client in c_list:
     except Exception as exception:
         print(f"{client}: {exception}")
 
-    print(f"{client}: api_eccosys_vendas_produto_v1 (OK)")
+    print(f"{client}: api_eccosys_vendas_produto_v2")

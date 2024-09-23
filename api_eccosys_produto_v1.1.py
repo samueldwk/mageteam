@@ -135,14 +135,14 @@ for client in c_list:
         try:
             # Upsert this batch into the database
             response = (
-                supabase.table("mage_eccosys_produto_v1")
+                supabase.table("mage_eccosys_produto_v1.1")
                 .upsert(batch)
                 .execute()
             )
             print(
-                f"{client}: api_eccosys_produto_v1 Batch {i + 1}/{num_batches} inserted successfully."
+                f"{client}: api_eccosys_produto_v1.1 Batch {i + 1}/{num_batches} inserted successfully."
             )
         except Exception as exception:
             print(
-                f"{client}: api_eccosys_produto_v1 Batch {i + 1} failed: {exception}"
+                f"{client}: api_eccosys_produto_v1.1 Batch {i + 1} failed: {exception}"
             )

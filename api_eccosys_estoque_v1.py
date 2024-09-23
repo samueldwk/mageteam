@@ -7,6 +7,8 @@ import datetime
 import dotenv
 import os
 import time
+import math
+
 
 dotenv.load_dotenv()
 
@@ -22,23 +24,25 @@ datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
 # CLIENT LIST
 c_list = [
-    # "alanis",
+    "alanis",
+    "basicler",
     # "dadri",
     "french",
-    # "haut",
+    "haut",
     # "infini",
-    # "kle",
-    # "mun",
-    # "nobu",
-    # "othergirls",
-    # "rery",
+    "kle",
+    "mun",
+    "muna",
+    "nobu",
+    "othergirls",
+    "rery",
     "talgui",
-    # "paconcept",
-    # "una",
-    # "uniquechic",
+    "paconcept",
+    "una",
+    "uniquechic",
 ]
 
-# c_list = ["paconcept"]
+# c_list = ["uniquechic"]
 
 # API HEADER
 
@@ -165,6 +169,18 @@ for client in c_list:
         columns_to_convert
     ].astype(float)
 
+    # VERIFICAR SE O PREÇO DE LANÇAMENTO ESTÁ CERTO E ARRUMAR SE NECESSÁRIO
+
+    # Replace 0 values in 'precoLancamentoProduto' with corresponding values from 'precoAtualProduto'
+    df_ecco_estoque_final[
+        "precoLancamentoProduto"
+    ] = df_ecco_estoque_final.apply(
+        lambda row: row["precoProduto"]
+        if row["precoLancamentoProduto"] == 0
+        else row["precoLancamentoProduto"],
+        axis=1,
+    )
+
     # Calcular PorcentagemDescontoProduto
     df_ecco_estoque_final["PorcentagemDescontoProduto"] = 1 - (
         df_ecco_estoque_final["precoProduto"]
@@ -204,6 +220,8 @@ for client in c_list:
     # Colocar coluna mage_cliente
     df_ecco_estoque_final["mage_cliente"] = client
 
+    # df_ecco_estoque_final.dtypes
+
     # In[11]: Enviar informações para DB
 
     from supabase import create_client, Client
@@ -215,14 +233,38 @@ for client in c_list:
 
     dic_ecco_estoque_final = df_ecco_estoque_final.to_dict(orient="records")
 
-    try:
-        response = (
-            supabase.table("mage_eccosys_estoque_v1")
-            .upsert(dic_ecco_estoque_final)
-            .execute()
-        )
+    # Set batch size (e.g., 10000 records per batch)
+    batch_size = 10000
 
-    except Exception as exception:
-        print(f"{client}: {exception}")
+    # Calculate how many batches we need
+    num_batches = math.ceil(len(dic_ecco_estoque_final) / batch_size)
 
-    print(f"{client}: api_eccosys_estoque_v1 (OK)")
+    # Dictionary to hold the DataFrames, where keys are the batch names
+    batches_df = {}
+
+    # Loop through the data and upsert it in batches
+    for i in range(num_batches):
+        # Create a batch by slicing the dictionary
+        batch = dic_ecco_estoque_final[i * batch_size : (i + 1) * batch_size]
+
+        try:
+            # Create a unique name for each batch DataFrame
+            batch_name = f"df_batch_{i + 1}"
+
+            # Convert the batch into a DataFrame and store it in the dictionary
+            batches_df[batch_name] = pd.DataFrame(batch)
+
+            # Upsert this batch into the database
+            response = (
+                supabase.table("mage_eccosys_estoque_v1")
+                .upsert(batch)
+                .execute()
+            )
+
+            print(
+                f"{client}: api_eccosys_estoque_v1 Batch {i + 1}/{num_batches} inserted successfully."
+            )
+        except Exception as exception:
+            print(
+                f"{client}: api_eccosys_estoque_v1 Batch {i + 1} failed: {exception}"
+            )
