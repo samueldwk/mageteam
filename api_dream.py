@@ -3,19 +3,11 @@
 import requests
 import pandas as pd
 
-
-# GET https://api.magedream.com.br/public/products/photos
-#     ?size=100
-#     &page=1
-# Authorization: Bearer apiKey
-# x-store: store-code
-
-
 url = "https://api.magedream.com.br/public/products/photos"
 
 headers = {
-    "Authorization": "D.EUnTtFWz8mYLkQbZc4",
-    # "Authorization": "m5YEjOn7wgEQPcbtoFSzWvZjvrIOJ8gQ468OXJme",
+    # "Authorization": "Bearer D.EUnTtFWz8mYLkQbZc4",
+    "Authorization": "Bearer m5YEjOn7wgEQPcbtoFSzWvZjvrIOJ8gQ468OXJme",
     "x-store": "lojahaut",
 }
 params = {"size": 100, "page": 1}

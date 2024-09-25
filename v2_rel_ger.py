@@ -21,14 +21,14 @@ d1 = datef.dmenos(hj).date()
 datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
 c_list = [
-    "alanis",
-    "basicler",
-    "dadri",
-    "french",
-    "haut",
-    "infini",
-    "kle",
-    "morina",
+    # "alanis",
+    # "basicler",
+    # "dadri",
+    # "french",
+    # "haut",
+    # "infini",
+    # "kle",
+    # "morina",
     "mun",
     "muna",
     "nobu",
