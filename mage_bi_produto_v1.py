@@ -1,6 +1,4 @@
-# api_eccosys_produto_v1.1 gitactions
-# api que consegue lidar com lista grande de produtos na hora de fazer upsert no database
-# oficial desde 22/09/2024
+# mage_bi_produto_v1
 
 import requests
 import pandas as pd
@@ -9,8 +7,6 @@ import datetime
 import dotenv
 import os
 import time
-import math
-
 
 dotenv.load_dotenv()
 
@@ -22,29 +18,27 @@ d1 = datef.dmenos(hj).date()
 
 # d1 = datetime.datetime(2024, 6, 8).date()
 
-datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
+datatxt1, dataname1, datasql, dataname2 = datef.dates(d1)
 
 # CLIENT LIST
 c_list = [
-    "alanis",
-    "basicler",
+    # "alanis",
     # "dadri",
     "french",
-    "haut",
+    # "haut",
     # "infini",
-    "kle",
+    # "kle",
     "mun",
-    # "muna",
-    "nobu",
-    "othergirls",
-    "rery",
-    "talgui",
-    "paconcept",
-    "una",
-    "uniquechic",
+    # "nobu",
+    # "othergirls",
+    # "rery",
+    # "talgui",
+    # "paconcept",
+    # "una",
+    # "uniquechic",
 ]
 
-# c_list = ["muna"]
+c_list = ["mun"]
 
 # API HEADER
 
@@ -59,7 +53,7 @@ for client in c_list:
 
     # In[1]: Eccosys API: GET Listar todos os produtos
 
-    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$situacao=A&$opcEcommerce=S"
+    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$opcEcommerce=S"
 
     response_prod = requests.request(
         "GET", url_prod, headers=headers, data=payload
@@ -98,17 +92,7 @@ for client in c_list:
     )
 
     # Colocar coluna de data cadastro
-    df_ecco_produto["data"] = dataname
-
-    # Colocar coluna mage_cliente
-    df_ecco_produto["mage_cliente"] = client
-
-    # # Salvar df produto em excel
-    # # Specify the file name you want to save the Excel file as
-    # file_name = "output.xlsx"
-
-    # # Save the DataFrame to an Excel file
-    # df_ecco_produto.to_excel(file_name, index=False)
+    df_ecco_produto["Data"] = dataname1
 
     # In[11]: Enviar informações para DB
 
@@ -121,28 +105,12 @@ for client in c_list:
 
     dic_ecco_produto = df_ecco_produto.to_dict(orient="records")
 
-    # Set batch size (e.g., 10000 records per batch)
-    batch_size = 10000
+    try:
+        response = (
+            supabase.table(f"mage_bi_produto_{client}_v1")
+            .upsert(dic_ecco_produto)
+            .execute()
+        )
 
-    # Calculate how many batches we need
-    num_batches = math.ceil(len(dic_ecco_produto) / batch_size)
-
-    # Loop through the data and upsert it in batches
-    for i in range(num_batches):
-        # Create a batch by slicing the dictionary
-        batch = dic_ecco_produto[i * batch_size : (i + 1) * batch_size]
-
-        try:
-            # Upsert this batch into the database
-            response = (
-                supabase.table("mage_eccosys_produto_v1")
-                .upsert(batch)
-                .execute()
-            )
-            print(
-                f"{client}: api_eccosys_produto_v1.1 Batch {i + 1}/{num_batches} inserted successfully."
-            )
-        except Exception as exception:
-            print(
-                f"{client}: api_eccosys_produto_v1.1 Batch {i + 1} failed: {exception}"
-            )
+    except Exception as exception:
+        print(exception)

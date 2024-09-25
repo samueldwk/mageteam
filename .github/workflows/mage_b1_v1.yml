@@ -1,0 +1,62 @@
+name: Scheduled [mage_bi_v1.0]
+
+on:
+  schedule:
+    - cron: '15 4 * * *'  # Every day at 01:15 AM (BRT) 
+    - cron: '15 7 * * *'  # Every day at 04:15 AM (BRT) 
+
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    env:
+      ecco_aut_alanis: ${{ secrets.ECCO_AUT_ALANIS }}    
+      ecco_aut_dadri: ${{ secrets.ECCO_AUT_DADRI }}   
+      ecco_aut_french: ${{ secrets.ECCO_AUT_FRENCH }}
+      ecco_aut_haut: ${{ secrets.ECCO_AUT_HAUT }}
+      ecco_aut_infini: ${{ secrets.ECCO_AUT_INFINI }}
+      ecco_aut_kle: ${{ secrets.ECCO_AUT_KLE }}     
+      ecco_aut_mun: ${{ secrets.ECCO_AUT_MUN }}
+      ecco_aut_nobu: ${{ secrets.ECCO_AUT_NOBU }}
+      ecco_aut_othergirls: ${{ secrets.ECCO_AUT_OTHERGIRLS }}
+      ecco_aut_paconcept: ${{ secrets.ECCO_AUT_PACONCEPT }}
+      ecco_aut_rery: ${{ secrets.ECCO_AUT_RERY }}
+      ecco_aut_talgui: ${{ secrets.ECCO_AUT_TALGUI }}
+      ecco_aut_una: ${{ secrets.ECCO_AUT_UNA }}
+      SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
+      SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
+      
+    strategy:
+      matrix:
+        python-version: [3.11]
+        
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Install dependencies 2
+        run: |
+          pip install pandas==2.1.4 python-dotenv requests workalendar supabase
+
+      - name: Run Code Eccosys Estoque
+        run: |
+          python mage_bi_estoque_v1.py
+
+      - name: Run Code Eccosys Produto
+        run: |
+          python mage_bi_produto_v1.py
+
+
+        

@@ -34,7 +34,7 @@ c_list = [
     # "infini",
     "kle",
     "mun",
-    # "muna",
+    "muna",
     "nobu",
     "othergirls",
     "rery",
@@ -44,7 +44,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["muna"]
+c_list = ["rery"]
 
 # API HEADER
 
@@ -103,46 +103,21 @@ for client in c_list:
     # Colocar coluna mage_cliente
     df_ecco_produto["mage_cliente"] = client
 
-    # # Salvar df produto em excel
-    # # Specify the file name you want to save the Excel file as
-    # file_name = "output.xlsx"
+    # Salvar df produto em excel
+    # Specify the file name you want to save the Excel file as
+    file_name = f"{client}: vinculos.xlsx"
 
-    # # Save the DataFrame to an Excel file
-    # df_ecco_produto.to_excel(file_name, index=False)
+    # Save the DataFrame to an Excel file
+    df_ecco_produto.to_excel(file_name, index=False)
 
-    # In[11]: Enviar informações para DB
+    # SALVAR VINCULOS
 
-    from supabase import create_client, Client
-    import supabase
+    directory = r"C:\Users\Samuel Kim\OneDrive\Documentos\mage_performance\Python\excel"
 
-    url: str = os.environ.get("SUPABASE_BI_URL")
-    key: str = os.environ.get("SUPABASE_BI_KEY")
-    supabase: Client = create_client(url, key)
+    file_name = f"{client}_vinculos.xlsx"
 
-    dic_ecco_produto = df_ecco_produto.to_dict(orient="records")
+    # Define the full file path
+    file_path = os.path.join(directory, file_name)
 
-    # Set batch size (e.g., 10000 records per batch)
-    batch_size = 10000
-
-    # Calculate how many batches we need
-    num_batches = math.ceil(len(dic_ecco_produto) / batch_size)
-
-    # Loop through the data and upsert it in batches
-    for i in range(num_batches):
-        # Create a batch by slicing the dictionary
-        batch = dic_ecco_produto[i * batch_size : (i + 1) * batch_size]
-
-        try:
-            # Upsert this batch into the database
-            response = (
-                supabase.table("mage_eccosys_produto_v1")
-                .upsert(batch)
-                .execute()
-            )
-            print(
-                f"{client}: api_eccosys_produto_v1.1 Batch {i + 1}/{num_batches} inserted successfully."
-            )
-        except Exception as exception:
-            print(
-                f"{client}: api_eccosys_produto_v1.1 Batch {i + 1} failed: {exception}"
-            )
+    # Save DataFrame to Excel file
+    df_ecco_produto.to_excel(file_path, index=False)

@@ -1,53 +1,27 @@
-# api_eccosys_vendas_v2 (3 dias de venda anterior) por pedido e por produto gitactions
-# Atualização em relação a V.1 é como lidar com custos errados
-# Versão oficial desde 22/09/2024
+# ANALISE DE VENDAS DIARIA POR PRODUTO E ESTOQUE FINAL
 
 import requests
 import pandas as pd
-import date_functions as datef
-from datetime import timedelta, date
 import dotenv
 import os
 import time
-
+import datetime
 
 dotenv.load_dotenv()
 
 # DATE FUCTIONS
+d1 = datetime.datetime(2024, 9, 23).date()  # SELECT DATE TO
+d2 = datetime.datetime(2024, 9, 11).date()  # SELECT DATE FROM
 
-d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
-# d1 = datetime.datetime(2024, 1, 10).date()  # SELECT DATE
-
-datatxt, dataname1, datasql, dataname2, dataname3 = datef.dates(d1)
+dataname1 = str(d1)
+dataname2 = str(d2)
 
 # CLIENT LIST
-
-c_list = [
-    "alanis",
-    "basicler",
-    # "dadri",
-    "french",
-    "haut",
-    # "infini",
-    "kle",
-    "mun",
-    # "muna",
-    "nobu",
-    "othergirls",
-    "rery",
-    "talgui",
-    "paconcept",
-    "una",
-    "uniquechic",
-]
-
-# c_list = ["alanis"]
+c_list = ["morina"]
 
 # API HEADER
-
 payload = {}
 files = {}
-
 
 for client in c_list:
     headers = {
@@ -57,7 +31,7 @@ for client in c_list:
 
     # In[1]: GET LIST OF ORDERS
 
-    url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname3}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
+    url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname2}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
 
     response_ped = requests.request(
         "GET", url_ped, headers=headers, data=payload, files=files
@@ -157,29 +131,6 @@ for client in c_list:
 
     # Colocar coluna mage_cliente
     df_ecco_ped["mage_cliente"] = client
-
-    # In[2]: Enviar informações para DB
-
-    from supabase import create_client, Client
-    import supabase
-
-    url: str = os.environ.get("SUPABASE_BI_URL")
-    key: str = os.environ.get("SUPABASE_BI_KEY")
-    supabase: Client = create_client(url, key)
-
-    dic_ecco_ped = df_ecco_ped.to_dict(orient="records")
-
-    try:
-        response = (
-            supabase.table("mage_eccosys_pedidos_v1")
-            .upsert(dic_ecco_ped)
-            .execute()
-        )
-
-    except Exception as exception:
-        print(f"{client}: {exception}")
-
-    print(f"{client}: api_eccosys_pedidos_v2")
 
     # In[3]: CALL PRODUCTS FROM EACH ORDER AND MAKE PEDIDOS X PRODUTOS
     df_order_ids = df_ecco_ped["idVenda"]
@@ -494,25 +445,190 @@ for client in c_list:
     # Colocar coluna mage_cliente
     df_ecco_ped_prod["mage_cliente"] = client
 
-    # In[4]: Enviar informações para DB
+    # In[1]: Eccosys API: GET Listar quantidades em estoque
 
-    from supabase import create_client, Client
-    import supabase
+    url_estoque = "https://empresa.eccosys.com.br/api/estoques?&$offset=0&$count=10000000"
 
-    url: str = os.environ.get("SUPABASE_BI_URL")
-    key: str = os.environ.get("SUPABASE_BI_KEY")
-    supabase: Client = create_client(url, key)
+    response_estoque = requests.request(
+        "GET", url_estoque, headers=headers, data=payload, files=files
+    )
 
-    dic_ecco_ped_prod = df_ecco_ped_prod.to_dict(orient="records")
+    contador = 0
 
-    try:
-        response = (
-            supabase.table("mage_eccosys_vendas_produto_v1")
-            .upsert(dic_ecco_ped_prod)
-            .execute()
+    while response_estoque.status_code != 200:
+        print(
+            f"{client}: Status_code response = {response_estoque.status_code}"
         )
 
-    except Exception as exception:
-        print(f"{client}: {exception}")
+        time.sleep(300)
 
-    print(f"{client}: api_eccosys_vendas_produto_v2")
+        contador = contador + 1
+
+        response_estoque = requests.request(
+            "GET", url_estoque, headers=headers, data=payload, files=files
+        )
+
+        if contador == 60:
+            print(f"{client}: request url_estoque reached try limit")
+
+            break
+
+    dic_ecco_estoque = response_estoque.json()
+    df_ecco_estoque_cru = pd.DataFrame.from_dict(dic_ecco_estoque)
+
+    # SUBSTITUTE ALL NEGATIVE VALUES BY 0
+    df_ecco_estoque_limpo = df_ecco_estoque_cru.copy()
+
+    df_ecco_estoque_limpo["estoqueReal"] = df_ecco_estoque_limpo[
+        "estoqueReal"
+    ].apply(lambda x: x if x > 0 else 0)
+
+    df_ecco_estoque_limpo["estoqueDisponivel"] = df_ecco_estoque_limpo[
+        "estoqueDisponivel"
+    ].apply(lambda x: x if x > 0 else 0)
+
+    # Colocar coluna de data estoque
+    df_ecco_estoque_limpo["data"] = dataname1
+
+    # Tranformar formato coluna estoque para int
+    columns_to_convert = ["estoqueDisponivel", "estoqueReal"]
+
+    df_ecco_estoque_limpo[columns_to_convert] = df_ecco_estoque_limpo[
+        columns_to_convert
+    ].astype(int)
+
+    # Renomear os nomes das colunas
+    df_ecco_estoque_limpo.rename(
+        columns={"codigo": "codigoProduto", "nome": "nomeProduto"},
+        inplace=True,
+    )
+
+    # In[2]: Eccosys API: GET Listar todos os produtos
+
+    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data"
+
+    response_prod = requests.request(
+        "GET", url_prod, headers=headers, data=payload
+    )
+
+    dic_ecco_prod = response_prod.json()
+    df_ecco_prod = pd.DataFrame.from_dict(dic_ecco_prod)
+
+    # COLUMNS TO KEEP
+    columns_to_keep = [
+        "id",
+        "preco",
+        "precoDe",
+        "precoCusto",
+        "situacao",
+    ]
+
+    df_ecco_prod = df_ecco_prod[columns_to_keep]
+
+    # Renomear os nomes das colunas
+    df_ecco_prod.rename(
+        columns={
+            "id": "idProduto",
+            "preco": "precoProduto",
+            "precoDe": "precoLancamentoProduto",
+            "precoCusto": "precoCustoProdutoUnit",
+            "situacao": "statusProduto",
+        },
+        inplace=True,
+    )
+
+    # Tranformar formato coluna idProduto para int
+    columns_to_convert = ["idProduto"]
+    df_ecco_prod[columns_to_convert] = df_ecco_prod[columns_to_convert].astype(
+        int
+    )
+
+    # Trazer informação de produto para estoque
+    df_ecco_estoque_final = df_ecco_estoque_limpo.merge(
+        df_ecco_prod, on="idProduto", how="left"
+    )
+
+    # CONVERT COLUMNS TYPE
+    columns_to_convert = [
+        "precoLancamentoProduto",
+        "precoProduto",
+        "precoCustoProdutoUnit",
+    ]
+
+    df_ecco_estoque_final[columns_to_convert] = df_ecco_estoque_final[
+        columns_to_convert
+    ].astype(float)
+
+    # VERIFICAR SE O PREÇO DE LANÇAMENTO ESTÁ CERTO E ARRUMAR SE NECESSÁRIO
+
+    # Replace 0 values in 'precoLancamentoProduto' with corresponding values from 'precoAtualProduto'
+    df_ecco_estoque_final[
+        "precoLancamentoProduto"
+    ] = df_ecco_estoque_final.apply(
+        lambda row: row["precoProduto"]
+        if row["precoLancamentoProduto"] == 0
+        else row["precoLancamentoProduto"],
+        axis=1,
+    )
+
+    # Calcular PorcentagemDescontoProduto
+    df_ecco_estoque_final["PorcentagemDescontoProduto"] = 1 - (
+        df_ecco_estoque_final["precoProduto"]
+        / df_ecco_estoque_final["precoLancamentoProduto"]
+    )
+
+    df_ecco_estoque_final.fillna(0, inplace=True)
+
+    # Arredondar o desconto de produto
+    precision = 2
+    df_ecco_estoque_final.loc[
+        :, "PorcentagemDescontoProduto"
+    ] = df_ecco_estoque_final["PorcentagemDescontoProduto"].round(precision)
+
+    # Criar faixas de desconto de produto
+    bins = [-float("inf"), 0, 0.25, 0.45, 0.6, float("inf")]
+    labels = [
+        "E: <= 0%",
+        "E: > 0% and <= 25%",
+        "E: > 25% and <= 45%",
+        "E: > 45% and <= 60%",
+        "E: > 60%",
+    ]
+
+    # Adicionar nova coluna com faixa de desconto de produto
+    df_ecco_estoque_final.loc[:, "FaixaDescontoProduto"] = pd.cut(
+        df_ecco_estoque_final["PorcentagemDescontoProduto"],
+        bins=bins,
+        labels=labels,
+    )
+
+    # Drop columns que nao precisa mandar para database
+    df_ecco_estoque_final = df_ecco_estoque_final.drop(
+        columns=["precoLancamentoProduto"]
+    )
+
+    # Colocar coluna mage_cliente
+    df_ecco_estoque_final["mage_cliente"] = client
+
+    # In[3]: Define the directory where you want to save the file
+    directory = r"C:\Users\Samuel Kim\OneDrive\Documentos\mage_performance\Python\excel"  # Update this to the desired directory
+
+    # SALVAR VENDAS
+
+    file_name = f"{client}_vendas.xlsx"
+
+    # Define the full file path
+    file_path = os.path.join(directory, file_name)
+
+    # Save DataFrame to Excel file
+    df_ecco_ped_prod.to_excel(file_path, index=False)
+
+    # SALVAR ESTOQUE
+
+    file_name = f"{client}_estoque.xlsx"
+
+    # Define the full file path
+    file_path = os.path.join(directory, file_name)
+
+    # Save DataFrame to Excel file
+    df_ecco_estoque_final.to_excel(file_path, index=False)
