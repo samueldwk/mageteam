@@ -9,6 +9,7 @@ from datetime import timedelta, date
 import dotenv
 import os
 import time
+from pushover_notification import send_pushover_notification
 
 
 dotenv.load_dotenv()
@@ -41,7 +42,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["alanis"]
+# c_list = ["infini"]
 
 # API HEADER
 
@@ -531,4 +532,9 @@ for client in c_list:
         print(f"{client}: api_eccosys_vendas_produto_v2")
 
     except Exception as e:
-        print(f"*****ERRO: {client} | api_eccosys_vendas_produto_v2 | {e}")
+        print(
+            f"*****ERRO: {client} | api_eccosys_vendas_produto_v2 | {e} [{dataname1}]"
+        )
+        send_pushover_notification(
+            f"*****ERRO: {client} | api_eccosys_vendas_produto_v2 | {e} [{dataname1}]"
+        )

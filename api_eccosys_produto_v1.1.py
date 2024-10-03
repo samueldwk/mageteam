@@ -10,7 +10,7 @@ import dotenv
 import os
 import time
 import math
-
+from pushover_notification import send_pushover_notification
 
 dotenv.load_dotenv()
 
@@ -44,7 +44,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["muna"]
+# c_list = ["infini"]
 
 # API HEADER
 
@@ -149,4 +149,9 @@ for client in c_list:
                 )
 
     except Exception as e:
-        print(f"*****ERRO: {client} | api_eccosys_produto_v1.1 | {e}")
+        print(
+            f"*****ERRO: {client} | api_eccosys_produto_v1.1 | {e} [{dataname}]"
+        )
+        send_pushover_notification(
+            f"*****ERRO: {client} | api_eccosys_produto_v1.1 | {e} [{dataname}]"
+        )
