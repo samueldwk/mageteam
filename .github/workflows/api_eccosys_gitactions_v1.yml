@@ -55,7 +55,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests==2.31.0 workalendar==17.0.0 supabase==2.2.0
+          pip install pandas==2.1.4 python-dotenv requests workalendar supabase
 
       - name: Run Code Eccosys Estoque
         run: |

@@ -60,7 +60,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests==2.31.0 supabase==2.2.0 numpy==1.26.2 datetime==5.3 workalendar==17.0.0 google-analytics-data==0.18.7
+          pip install pandas==2.1.4 python-dotenv requests supabase numpy datetime workalendar google-analytics-data
       
       - name: Decode and save Google credentials
         run: |
