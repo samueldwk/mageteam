@@ -43,7 +43,7 @@ c_list = [
     "uniquechic",
 ]
 
-c_list = ["infini"]
+# c_list = ["infini"]
 
 # API HEADER
 

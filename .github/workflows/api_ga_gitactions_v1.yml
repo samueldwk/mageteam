@@ -14,20 +14,27 @@ jobs:
     
     env:
       ga_id_alanis: ${{ secrets.GA_ID_ALANIS }}    
+      ga_id_basicler: ${{ secrets.GA_ID_BASICLER }}    
       ga_id_dadri: ${{ secrets.GA_ID_DADRI }}   
       ga_id_french: ${{ secrets.GA_ID_FRENCH }}
       ga_id_haut: ${{ secrets.GA_ID_HAUT }}
       ga_id_infini: ${{ secrets.GA_ID_INFINI }}
       ga_id_kle: ${{ secrets.GA_ID_KLE }}     
+      ga_id_morina: ${{ secrets.GA_ID_MORINA }}
       ga_id_mun: ${{ secrets.GA_ID_MUN }}
+      ga_id_muna: ${{ secrets.GA_ID_MUNA }}
       ga_id_nobu: ${{ secrets.GA_ID_NOBU }}
       ga_id_othergirls: ${{ secrets.GA_ID_OTHERGIRLS }}
       ga_id_paconcept: ${{ secrets.GA_ID_PACONCEPT }}
       ga_id_rery: ${{ secrets.GA_ID_RERY }}
       ga_id_talgui: ${{ secrets.GA_ID_TALGUI }}
+      ga_id_tob: ${{ secrets.GA_ID_TOB }}
       ga_id_una: ${{ secrets.GA_ID_UNA }}
+      ga_id_uniquechic: ${{ secrets.GA_ID_UNIQUECHIC }}
       SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
       SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
+      PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+      PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
       
     strategy:
       matrix:
@@ -53,7 +60,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests supabase numpy datetime workalendar google-analytics-data
+          pip install pandas==2.1.4 python-dotenv requests==2.31.0 supabase==2.2.0 numpy==1.26.2 datetime==5.3 workalendar==17.0.0 google-analytics-data==0.18.7
       
       - name: Decode and save Google credentials
         run: |

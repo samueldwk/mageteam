@@ -13,22 +13,29 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      fb_act_alanis: ${{ secrets.FB_ACT_ALANIS }}    
+      fb_act_alanis: ${{ secrets.FB_ACT_ALANIS }}
+      fb_act_basicler: ${{ secrets.FB_ACT_BASICLER }}
       fb_act_dadri: ${{ secrets.FB_ACT_DADRI }}   
       fb_act_french: ${{ secrets.FB_ACT_FRENCH }}
       fb_act_haut: ${{ secrets.FB_ACT_HAUT }}
       fb_act_infini: ${{ secrets.FB_ACT_INFINI }}
-      fb_act_kle: ${{ secrets.FB_ACT_KLE }}     
+      fb_act_kle: ${{ secrets.FB_ACT_KLE }}   
+      fb_act_morina: ${{ secrets.FB_ACT_MORINA }}
       fb_act_mun: ${{ secrets.FB_ACT_MUN }}
+      fb_act_muna: ${{ secrets.FB_ACT_MUNA }}
       fb_act_nobu: ${{ secrets.FB_ACT_NOBU }}
       fb_act_othergirls: ${{ secrets.FB_ACT_OTHERGIRLS }}
       fb_act_paconcept: ${{ secrets.FB_ACT_PACONCEPT }}
       fb_act_rery: ${{ secrets.FB_ACT_RERY }}
       fb_act_talgui: ${{ secrets.FB_ACT_TALGUI }}
+      fb_act_tob: ${{ secrets.FB_ACT_TOB }}
       fb_act_una: ${{ secrets.FB_ACT_UNA }}
+      fb_act_uniquechic: ${{ secrets.FB_ACT_UNIQUECHIC }}
       fb_llt: ${{ secrets.FB_LLT }}          
       SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
       SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
+      PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+      PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
       
     strategy:
       matrix:
@@ -49,7 +56,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests workalendar supabase numpy datetime flatten_json
+          pip install pandas==2.1.4 python-dotenv requests==2.31.0 workalendar==17.0.0 supabase==2.2.0 numpy==1.26.2 datetime==5.3 flatten_json==0.1.14
 
       - name: Run Code fb_api
         run: |

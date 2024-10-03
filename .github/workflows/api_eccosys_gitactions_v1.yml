@@ -13,21 +13,28 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      ecco_aut_alanis: ${{ secrets.ECCO_AUT_ALANIS }}    
+      ecco_aut_alanis: ${{ secrets.ECCO_AUT_ALANIS }}
+      ecco_aut_basicler: ${{ secrets.ECCO_AUT_BASICLER }}
       ecco_aut_dadri: ${{ secrets.ECCO_AUT_DADRI }}   
       ecco_aut_french: ${{ secrets.ECCO_AUT_FRENCH }}
       ecco_aut_haut: ${{ secrets.ECCO_AUT_HAUT }}
       ecco_aut_infini: ${{ secrets.ECCO_AUT_INFINI }}
       ecco_aut_kle: ${{ secrets.ECCO_AUT_KLE }}     
+      ecco_aut_morina: ${{ secrets.ECCO_AUT_MORINA }}
       ecco_aut_mun: ${{ secrets.ECCO_AUT_MUN }}
+      ecco_aut_muna: ${{ secrets.ECCO_AUT_MUNA }}
       ecco_aut_nobu: ${{ secrets.ECCO_AUT_NOBU }}
       ecco_aut_othergirls: ${{ secrets.ECCO_AUT_OTHERGIRLS }}
       ecco_aut_paconcept: ${{ secrets.ECCO_AUT_PACONCEPT }}
       ecco_aut_rery: ${{ secrets.ECCO_AUT_RERY }}
       ecco_aut_talgui: ${{ secrets.ECCO_AUT_TALGUI }}
+      ecco_aut_tob: ${{ secrets.ECCO_AUT_TOB }}
       ecco_aut_una: ${{ secrets.ECCO_AUT_UNA }}
+      ecco_aut_uniquechic: ${{ secrets.ECCO_AUT_UNIQUECHIC }}
       SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
       SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
+      PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+      PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
       
     strategy:
       matrix:
