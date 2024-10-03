@@ -54,7 +54,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["tob"]
+# c_list = ["nobu"]
 
 # DICIONÁRIO DE NOMES
 

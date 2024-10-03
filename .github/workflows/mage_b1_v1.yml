@@ -1,4 +1,4 @@
-name: Scheduled [api_eccosys_gitactions_v1.0]
+name: Scheduled [mage_bi_v1.0]
 
 on:
   schedule:
@@ -48,19 +48,15 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests==2.31.0 workalendar==17.0.0 supabase==2.2.0
+          pip install pandas==2.1.4 python-dotenv requests workalendar supabase
 
       - name: Run Code Eccosys Estoque
         run: |
-          python api_eccosys_estoque_v1.py
+          python mage_bi_estoque_v1.py
 
       - name: Run Code Eccosys Produto
         run: |
-          python api_eccosys_produto_v1.1.py
-          
-      - name: Run Code Eccosys Venda
-        run: |
-          python api_eccosys_vendas_v2.py
+          python mage_bi_produto_v1.py
 
 
         

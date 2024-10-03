@@ -16,19 +16,19 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 9, 19).date()
+# d1 = datetime.datetime(2024, 9, 29).date()
 
 datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
 c_list = [
-    # "alanis",
-    # "basicler",
-    # "dadri",
-    # "french",
-    # "haut",
-    # "infini",
-    # "kle",
-    # "morina",
+    "alanis",
+    "basicler",
+    "dadri",
+    "french",
+    "haut",
+    "infini",
+    "kle",
+    "morina",
     "mun",
     "muna",
     "nobu",
@@ -40,7 +40,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["morina"]
+# c_list = ["haut"]
 
 # DICIONÁRIO DE NOMES
 

@@ -6,7 +6,6 @@ import pandas as pd
 url = "https://api.magedream.com.br/public/products/photos"
 
 headers = {
-    # "Authorization": "Bearer D.EUnTtFWz8mYLkQbZc4",
     "Authorization": "Bearer m5YEjOn7wgEQPcbtoFSzWvZjvrIOJ8gQ468OXJme",
     "x-store": "lojahaut",
 }
