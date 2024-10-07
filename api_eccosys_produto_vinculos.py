@@ -73,11 +73,8 @@ for client in c_list:
         "id",
         "nome",
         "codigo",
-        "preco",
         "situacao",
-        "precoCusto",
         "idProdutoMaster",
-        "precoDe",
     ]
 
     df_ecco_produto = df_ecco_produto[columns_to_keep]
@@ -88,11 +85,8 @@ for client in c_list:
             "id": "idProduto",
             "nome": "nomeProduto",
             "codigo": "codigoProduto",
-            "preco": "precoProduto",
             "situacao": "statusProduto",
-            "precoCusto": "precoCustoProduto",
             "idProdutoMaster": "idProdutoPai",
-            "precoDe": "precoLancamentoProduto",
         },
         inplace=True,
     )

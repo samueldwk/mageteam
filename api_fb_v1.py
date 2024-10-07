@@ -34,7 +34,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["french"]
+# c_list = ["alanis"]
 
 # Date functions
 hj = datetime.datetime.now()
@@ -61,7 +61,9 @@ for client in c_list:
                 response = requests.get(url)
 
                 if response.status_code != 200:
-                    # print(f"Error: Received status code {response.status_code}")
+                    print(
+                        f"*****ERRO: {client} | api fb | Received status code {response.status_code}"
+                    )
                     break
 
                 data = response.json()

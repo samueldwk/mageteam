@@ -43,7 +43,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["infini"]
+# c_list = ["french"]
 
 # API HEADER
 
@@ -98,6 +98,15 @@ for client in c_list:
         df_ecco_estoque_limpo["estoqueDisponivel"] = df_ecco_estoque_limpo[
             "estoqueDisponivel"
         ].apply(lambda x: x if x > 0 else 0)
+
+        # Remover do dataframe todos produtos que tem estoque disp e real = 0
+
+        df_ecco_estoque_limpo = df_ecco_estoque_limpo[
+            ~(
+                (df_ecco_estoque_limpo["estoqueReal"] == 0)
+                & (df_ecco_estoque_limpo["estoqueDisponivel"] == 0)
+            )
+        ]
 
         # Colocar coluna de data estoque
         df_ecco_estoque_limpo["data"] = dataname
