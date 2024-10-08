@@ -1,4 +1,4 @@
-name: Scheduled [atualizar_relatorio_gerencial]
+name: Scheduled [atualizar_relatorio_gerencial_gitactions]
 
 on:
   schedule:
@@ -37,6 +37,10 @@ jobs:
       - name: Install dependencies 2
         run: |
           pip install pandas==2.1.4 python-dotenv requests supabase gspread workalendar
+          
+      - name: Decode and save Google credentials
+        run: |
+          echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
 
       - name: Run Code Atualizar Relatorio Gerencial
         run: |

@@ -12,6 +12,10 @@ import gspread
 
 dotenv.load_dotenv()
 
+# Run in git actions
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+
+
 # DATE FUCTIONS
 hj = datetime.now()
 d1 = datef.dmenos(hj).date()
