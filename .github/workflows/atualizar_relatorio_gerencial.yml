@@ -36,7 +36,7 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests supabase gspread
+          pip install pandas==2.1.4 python-dotenv requests supabase gspread workalendar
 
       - name: Run Code Atualizar Relatorio Gerencial
         run: |
