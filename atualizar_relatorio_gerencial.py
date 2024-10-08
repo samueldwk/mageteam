@@ -181,7 +181,11 @@ for client in c_list:
 
         # %% UPDATE GOOGLE SHEETS
 
-        gc = gspread.oauth()
+        # # Run in local computer
+        # gc = gspread.oauth()
+
+        # Run in gitactions
+        gc = gspread.service_account(filename="credentials.json")
 
         sh = gc.open(
             f"{dic_nomes[client]} - Relatório Gerencial E-Commerce"
