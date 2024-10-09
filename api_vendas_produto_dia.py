@@ -10,14 +10,14 @@ import datetime
 dotenv.load_dotenv()
 
 # DATE FUCTIONS
-d1 = datetime.datetime(2024, 9, 29).date()  # SELECT DATE TO
-d2 = datetime.datetime(2024, 8, 5).date()  # SELECT DATE FROM
+d1 = datetime.datetime(2024, 10, 7).date()  # SELECT DATE TO
+d2 = datetime.datetime(2024, 9, 29).date()  # SELECT DATE FROM
 
 dataname1 = str(d1)
 dataname2 = str(d2)
 
 # CLIENT LIST
-c_list = ["una"]
+c_list = ["alanis"]
 
 # API HEADER
 payload = {}
