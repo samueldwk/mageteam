@@ -36,11 +36,11 @@ jobs:
 
       - name: Install dependencies 2
         run: |
-          pip install pandas==2.1.4 python-dotenv requests supabase gspread workalendar
+          pip install pandas==2.1.4 python-dotenv requests supabase gspread workalendar google-analytics-data
           
       - name: Decode and save Google credentials
         run: |
-          echo ${{ secrets.GOOGLE_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/credentials.json
+          echo ${{ secrets.GOOGLE_SHEETS_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/mage---performan-1705337009329-52b7dddd6d54.json
 
       - name: Run Code Atualizar Relatorio Gerencial
         run: |
