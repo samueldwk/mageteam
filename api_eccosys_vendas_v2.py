@@ -11,6 +11,8 @@ import os
 import time
 from pushover_notification import send_pushover_notification
 
+supabase_admin_user = os.environ.get("supabase_admin_user")
+supabase_admin_password = os.environ.get("supabase_admin_password")
 
 dotenv.load_dotenv()
 
@@ -42,7 +44,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["infini"]
+c_list = ["mun"]
 
 # API HEADER
 
@@ -175,19 +177,24 @@ for client in c_list:
         key: str = os.environ.get("SUPABASE_BI_KEY")
         supabase: Client = create_client(url, key)
 
+        # Autentificar usuário
+        auth_response = supabase.auth.sign_in_with_password(
+            {"email": supabase_admin_user, "password": supabase_admin_password}
+        )
+
         dic_ecco_ped = df_ecco_ped.to_dict(orient="records")
 
         try:
             response = (
                 supabase.table("mage_eccosys_pedidos_v1")
-                .upsert(dic_ecco_ped)
+                .upsert(dic_ecco_ped, returning="minimal")
                 .execute()
             )
 
         except Exception as exception:
             print(f"{client}: {exception}")
 
-        print(f"{client}: api_eccosys_pedidos_v2")
+        print(f"{client}: api_eccosys_pedidos_v1")
 
         # In[3]: CALL PRODUCTS FROM EACH ORDER AND MAKE PEDIDOS X PRODUTOS
         df_order_ids = df_ecco_ped["idVenda"]
@@ -476,6 +483,12 @@ for client in c_list:
             labels=labels,
         )
 
+        # Converter tipo de valores
+        columns_to_convert = [
+            "idVenda",
+            "idProduto",
+        ]
+
         # RENAME COLUMNS NAME
         df_ecco_ped_prod = df_ecco_ped_prod.rename(
             columns={
@@ -485,6 +498,25 @@ for client in c_list:
                 "valorDesconto": "ValorDescontoPedido",
                 "descricao": "NomeProduto",
                 "codigo": "CodigoProduto",
+            }
+        )
+
+        # Group rows por idPedido e idProduto quando são exatamente os mesmos
+
+        # Group by "idPedido" and "idProduto" and aggregate other columns
+        df_ecco_ped_prod_final = df_ecco_ped_prod.groupby(
+            ["idPedido", "idProduto"], as_index=False
+        ).agg(
+            {
+                "QuantidadeVenda": "sum",
+                "precoCustoProdutoPaiUnit": "first",
+                "ValorVendaUnit": "first",
+                "PorcentagemDescontoProduto": "first",
+                "FaixaDescontoProduto": "first",
+                "NomeProduto": "first",
+                "ValorDescontoPedido": "sum",
+                "CodigoProduto": "first",
+                "DataVendaPedido": "first",
             }
         )
 
@@ -503,10 +535,14 @@ for client in c_list:
             "DataVendaPedido",
         ]
 
-        df_ecco_ped_prod = df_ecco_ped_prod[columns_to_keep]
+        df_ecco_ped_prod_final = df_ecco_ped_prod_final[columns_to_keep]
 
         # Colocar coluna mage_cliente
-        df_ecco_ped_prod["mage_cliente"] = client
+        df_ecco_ped_prod_final["mage_cliente"] = client
+
+        # df_ecco_ped_prod.dtypes
+
+        # print(df_ecco_ped_prod)
 
         # In[4]: Enviar informações para DB
 
@@ -517,17 +553,23 @@ for client in c_list:
         key: str = os.environ.get("SUPABASE_BI_KEY")
         supabase: Client = create_client(url, key)
 
-        dic_ecco_ped_prod = df_ecco_ped_prod.to_dict(orient="records")
+        # Autentificar usuário
+        auth_response = supabase.auth.sign_in_with_password(
+            {"email": supabase_admin_user, "password": supabase_admin_password}
+        )
 
+        dic_ecco_ped_prod = df_ecco_ped_prod_final.to_dict(orient="records")
+
+        # print(dic_ecco_ped_prod)
         try:
             response = (
                 supabase.table("mage_eccosys_vendas_produto_v1")
-                .upsert(dic_ecco_ped_prod)
+                .upsert(dic_ecco_ped_prod, returning="minimal")
                 .execute()
             )
 
         except Exception as exception:
-            print(f"{client}: {exception}")
+            print(f"*****ERRO: {client}: {exception}")
 
         print(f"{client}: api_eccosys_vendas_produto_v2")
 

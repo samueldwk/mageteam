@@ -40,7 +40,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["rery"]
+c_list = ["tob"]
 
 # DICIONÁRIO DE NOMES
 

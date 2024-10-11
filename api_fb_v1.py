@@ -34,7 +34,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["alanis"]
+# c_list = ["tob"]
 
 # Date functions
 hj = datetime.datetime.now()
@@ -145,9 +145,26 @@ for client in c_list:
         df_fb_campaigns_cru = df_fb_campaigns_cru.fillna(0)
 
         # If no "web_in_store_purchase" on df_fb_campaigns add column if value 0
-
         if "web_in_store_purchase" not in df_fb_campaigns_cru.columns:
             df_fb_campaigns_cru["web_in_store_purchase"] = 0
+
+        # If no "actions_values_web_in_store_purchase" on df_fb_campaigns add column if value 0
+        if (
+            "actions_values_web_in_store_purchase"
+            not in df_fb_campaigns_cru.columns
+        ):
+            df_fb_campaigns_cru["actions_values_web_in_store_purchase"] = 0
+
+        # If no "actions_web_in_store_purchase" on df_fb_campaigns add column if value 0
+        if "actions_web_in_store_purchase" not in df_fb_campaigns_cru.columns:
+            df_fb_campaigns_cru["actions_web_in_store_purchase"] = 0
+
+        # If no "action_values_web_in_store_purchase" on df_fb_campaigns add column if value 0
+        if (
+            "action_values_web_in_store_purchase"
+            not in df_fb_campaigns_cru.columns
+        ):
+            df_fb_campaigns_cru["action_values_web_in_store_purchase"] = 0
 
         # In[02]: Calcular os valores finais de facebook
 
@@ -252,16 +269,24 @@ for client in c_list:
         from supabase import create_client, Client
         import supabase
 
+        supabase_admin_user = os.environ.get("supabase_admin_user")
+        supabase_admin_password = os.environ.get("supabase_admin_password")
+
         url: str = os.environ.get("SUPABASE_BI_URL")
         key: str = os.environ.get("SUPABASE_BI_KEY")
         supabase: Client = create_client(url, key)
+
+        # Autentificar usuário
+        auth_response = supabase.auth.sign_in_with_password(
+            {"email": supabase_admin_user, "password": supabase_admin_password}
+        )
 
         dic_df_relger_fb_final = df_relger_fb_final.to_dict(orient="records")
 
         try:
             response = (
                 supabase.table("mage_fb_v1")
-                .upsert(dic_df_relger_fb_final)
+                .upsert(dic_df_relger_fb_final, returning="minimal")
                 .execute()
             )
 
