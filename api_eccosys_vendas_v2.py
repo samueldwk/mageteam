@@ -11,9 +11,6 @@ import os
 import time
 from pushover_notification import send_pushover_notification
 
-supabase_admin_user = os.environ.get("supabase_admin_user")
-supabase_admin_password = os.environ.get("supabase_admin_password")
-
 dotenv.load_dotenv()
 
 # DATE FUCTIONS
@@ -44,9 +41,28 @@ c_list = [
     "uniquechic",
 ]
 
-c_list = ["mun"]
+# c_list = ["othergirls"]
 
-# API HEADER
+# SUPABASE AUTH
+
+from supabase import create_client, Client
+import supabase
+
+supabase_admin_user = os.environ.get("supabase_admin_user")
+supabase_admin_password = os.environ.get("supabase_admin_password")
+
+url: str = os.environ.get("SUPABASE_BI_URL")
+key: str = os.environ.get("SUPABASE_BI_KEY")
+supabase: Client = create_client(url, key)
+
+# Autentificar usuário
+auth_response = supabase.auth.sign_in_with_password(
+    {"email": supabase_admin_user, "password": supabase_admin_password}
+)
+
+time.sleep(15)
+
+# ECCOSYS API HEADER
 
 payload = {}
 files = {}
@@ -79,6 +95,8 @@ for client in c_list:
         )
 
         # CONVERT COLUMNS TYPE
+
+        df_ecco_ped["desconto"] = df_ecco_ped["desconto"].str.replace(".", "")
 
         df_ecco_ped["desconto"] = df_ecco_ped["desconto"].str.replace(",", ".")
 
@@ -169,18 +187,6 @@ for client in c_list:
         df_ecco_ped["mage_cliente"] = client
 
         # In[2]: Enviar informações para DB
-
-        from supabase import create_client, Client
-        import supabase
-
-        url: str = os.environ.get("SUPABASE_BI_URL")
-        key: str = os.environ.get("SUPABASE_BI_KEY")
-        supabase: Client = create_client(url, key)
-
-        # Autentificar usuário
-        auth_response = supabase.auth.sign_in_with_password(
-            {"email": supabase_admin_user, "password": supabase_admin_password}
-        )
 
         dic_ecco_ped = df_ecco_ped.to_dict(orient="records")
 
@@ -545,18 +551,6 @@ for client in c_list:
         # print(df_ecco_ped_prod)
 
         # In[4]: Enviar informações para DB
-
-        from supabase import create_client, Client
-        import supabase
-
-        url: str = os.environ.get("SUPABASE_BI_URL")
-        key: str = os.environ.get("SUPABASE_BI_KEY")
-        supabase: Client = create_client(url, key)
-
-        # Autentificar usuário
-        auth_response = supabase.auth.sign_in_with_password(
-            {"email": supabase_admin_user, "password": supabase_admin_password}
-        )
 
         dic_ecco_ped_prod = df_ecco_ped_prod_final.to_dict(orient="records")
 

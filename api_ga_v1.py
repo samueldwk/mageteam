@@ -17,15 +17,15 @@ dotenv.load_dotenv()
 hj = datetime.datetime.now()
 d1 = datef.dmenos(hj).date()
 
-datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
+# Para puxar de uma data específica
+# d1 = datetime.datetime(2024, 10, 10).date()
 
+datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 date_object = datetime.datetime.strptime(dataname, "%Y-%m-%d")
 
 month = date_object.month
 year = date_object.year
 
-# #Para puxar de uma data específica
-# d1 = datetime.datetime(2024, 6, 8).date()
 
 # CLIENT LIST
 c_list = [
@@ -48,8 +48,26 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["french"]
+# c_list = ["talgui"]
 
+# SUPABASE AUTH
+
+from supabase import create_client, Client
+import supabase
+
+supabase_admin_user = os.environ.get("supabase_admin_user")
+supabase_admin_password = os.environ.get("supabase_admin_password")
+
+url: str = os.environ.get("SUPABASE_BI_URL")
+key: str = os.environ.get("SUPABASE_BI_KEY")
+supabase: Client = create_client(url, key)
+
+# Autentificar usuário
+auth_response = supabase.auth.sign_in_with_password(
+    {"email": supabase_admin_user, "password": supabase_admin_password}
+)
+
+time.sleep(15)
 
 for client in c_list:
     try:
@@ -135,21 +153,6 @@ for client in c_list:
         df_relger_ga_final["mage_cliente"] = client
 
         # In[02]: Enviar informações para DB
-
-        from supabase import create_client, Client
-        import supabase
-
-        supabase_admin_user = os.environ.get("supabase_admin_user")
-        supabase_admin_password = os.environ.get("supabase_admin_password")
-
-        url: str = os.environ.get("SUPABASE_BI_URL")
-        key: str = os.environ.get("SUPABASE_BI_KEY")
-        supabase: Client = create_client(url, key)
-
-        # Autentificar usuário
-        auth_response = supabase.auth.sign_in_with_password(
-            {"email": supabase_admin_user, "password": supabase_admin_password}
-        )
 
         dic_df_relger_ga_final = df_relger_ga_final.to_dict(orient="records")
 
