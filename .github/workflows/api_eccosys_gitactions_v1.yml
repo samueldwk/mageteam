@@ -33,6 +33,8 @@ jobs:
       ecco_aut_uniquechic: ${{ secrets.ECCO_AUT_UNIQUECHIC }}
       SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
       SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
+      supabase_admin_password: ${{ secrets.supabase_admin_password }}
+      supabase_admin_user: ${{ secrets.supabase_admin_user }}      
       PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
       PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
       
