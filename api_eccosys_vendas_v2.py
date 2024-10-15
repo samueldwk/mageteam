@@ -23,22 +23,22 @@ datatxt, dataname1, datasql, dataname2, dataname3 = datef.dates(d1)
 # CLIENT LIST
 
 c_list = [
-    "alanis",
-    "basicler",
+    # "alanis",
+    # "basicler",
     # "dadri",
     "french",
-    "haut",
+    # "haut",
     # "infini",
-    "kle",
-    "mun",
+    # "kle",
+    # "mun",
     # "muna",
-    "nobu",
-    "othergirls",
-    "rery",
+    # "nobu",
+    # "othergirls",
+    # "rery",
     "talgui",
-    "paconcept",
-    "una",
-    "uniquechic",
+    # "paconcept",
+    # "una",
+    # "uniquechic",
 ]
 
 # c_list = ["othergirls"]
@@ -60,7 +60,7 @@ auth_response = supabase.auth.sign_in_with_password(
     {"email": supabase_admin_user, "password": supabase_admin_password}
 )
 
-time.sleep(15)
+time.sleep(10)
 
 # ECCOSYS API HEADER
 
