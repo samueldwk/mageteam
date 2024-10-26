@@ -38,7 +38,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["uniquechic"]
+# c_list = ["nobu"]
 
 #### FILE PATHS ####
 

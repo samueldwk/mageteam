@@ -1,4 +1,4 @@
-# API DREAM V.1
+# API DREAM V.1 (fotos)
 
 import requests
 import pandas as pd
@@ -6,7 +6,7 @@ from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
 import os
 
 
-url = "https://api.magedream.com.br/public/products/events"
+url = "https://api.magedream.com.br/public/products/photos"
 
 headers = {
     "Authorization": "Bearer m5YEjOn7wgEQPcbtoFSzWvZjvrIOJ8gQ468OXJme",
@@ -66,7 +66,7 @@ def fetch_all_pages(url):
 # Fetch all pages
 data = fetch_all_pages(url)
 
-df_url = pd.DataFrame(data)
+df_url_fotos = pd.DataFrame(data)
 
 # SALVAR url_fotos como excel no computador
 
@@ -80,4 +80,4 @@ file_name = "url_fotos.xlsx"
 file_path = os.path.join(directory, file_name)
 
 # Save DataFrame to Excel file
-df_url.to_excel(file_path, index=False)
+df_url_fotos.to_excel(file_path, index=False)

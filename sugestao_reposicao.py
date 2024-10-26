@@ -36,7 +36,7 @@ c_list = [
     # "alanis",
     "basicler",
     # "dadri",
-    # "french",
+    # "french",opaa ai
     # "haut",
     # "infini",
     # "kle",
@@ -51,13 +51,13 @@ c_list = [
     # "uniquechic",
 ]
 
-c_list = ["alanis"]
+# c_list = ["alanis"]
 
 # DICIONÁRIO DE NOMES
 
 dic_nomes = {
     "alanis": "Alanis",
-    "basicler": "Basicler",
+    "basicler": "Mixxon/Basicler",
     "dadri": "Dadri",
     "french": "French",
     "haut": "Haut",

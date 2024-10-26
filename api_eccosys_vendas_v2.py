@@ -60,7 +60,7 @@ auth_response = supabase.auth.sign_in_with_password(
     {"email": supabase_admin_user, "password": supabase_admin_password}
 )
 
-time.sleep(10)
+time.sleep(5)
 
 # ECCOSYS API HEADER
 
@@ -193,7 +193,7 @@ for client in c_list:
         try:
             response = (
                 supabase.table("mage_eccosys_pedidos_v1")
-                .upsert(dic_ecco_ped, returning="minimal")
+                .upsert(dic_ecco_ped)
                 .execute()
             )
 
@@ -416,6 +416,7 @@ for client in c_list:
                 df_grupo_produto_custo_media[
                     ["grupo_produto_x", "precoCustoProdutoPaiUnit"]
                 ],
+                how="left",
                 on="grupo_produto_x",
                 suffixes=("", "_media"),
             )
@@ -488,12 +489,6 @@ for client in c_list:
             bins=bins,
             labels=labels,
         )
-
-        # Converter tipo de valores
-        columns_to_convert = [
-            "idVenda",
-            "idProduto",
-        ]
 
         # RENAME COLUMNS NAME
         df_ecco_ped_prod = df_ecco_ped_prod.rename(

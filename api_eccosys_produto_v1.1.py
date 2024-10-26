@@ -44,7 +44,7 @@ c_list = [
     # "uniquechic",
 ]
 
-# c_list = ["infini"]
+# c_list = ["una"]
 
 # SUPABASE AUTH
 
@@ -63,7 +63,7 @@ auth_response = supabase.auth.sign_in_with_password(
     {"email": supabase_admin_user, "password": supabase_admin_password}
 )
 
-time.sleep(15)
+time.sleep(5)
 
 # ECCOSYS API HEADER
 
@@ -107,32 +107,204 @@ for client in c_list:
             columns={
                 "id": "idProduto",
                 "nome": "nomeProduto",
-                "codigo": "codigoProduto",
-                "preco": "precoProduto",
-                "situacao": "statusProduto",
-                "precoCusto": "precoCustoProduto",
-                "idProdutoMaster": "idProdutoPai",
                 "precoDe": "precoLancamentoProduto",
+                "preco": "precoAtualProduto",
+                "precoCusto": "precoCustoProdutoUnit",
+                "situacao": "statusProduto",
             },
             inplace=True,
         )
 
+        # Converter tipo de valores
+        columns_to_convert = [
+            "precoLancamentoProduto",
+            "precoCustoProdutoUnit",
+            "precoAtualProduto",
+        ]
+
+        df_ecco_produto[columns_to_convert] = df_ecco_produto[
+            columns_to_convert
+        ].astype(float)
+
+        # VERIFICAR SE O CUSTO É RAZOÁVEL E ARRUMAR SE NECESSÁRIO
+
+        # Criar coluna grupo_produto para depois calcular custo médio por grupo e ser usado para corrigir custos errados
+        df_ecco_produto["nomeProduto"] = df_ecco_produto[
+            "nomeProduto"
+        ].str.strip()
+        df_ecco_produto["grupo_produto"] = (
+            df_ecco_produto["nomeProduto"].str.split(" ").str[0]
+        )
+
+        # Criar uma df apenas com produtos pai e seus custos (poder ser que tenha filhos como pais)
+        df_ecco_produto_pai = df_ecco_produto[
+            df_ecco_produto["idProdutoMaster"] == "0"
+        ].copy()
+
+        # Renomear colunas da df_ecco_produto_pai
+        df_ecco_produto_pai.rename(
+            columns={
+                "id": "idProduto",
+                "precoLancamentoProduto": "precoLancamentoProdutoPai",
+                "precoCustoProdutoUnit": "precoCustoProdutoPaiUnit",
+            },
+            inplace=True,
+        )
+
+        # Trazer o custo do produto pai pelo campo idProdutoMaster
+        df_ecco_produto_custo_arrumado = df_ecco_produto.merge(
+            df_ecco_produto_pai,
+            how="left",
+            left_on="idProdutoMaster",
+            right_on="idProduto",
+        )
+
+        # Replace NaN values in 'precoCustoProdutoPaiUnit' with values from 'precoCustoProdutoUnit'
+        df_ecco_produto_custo_arrumado[
+            "precoCustoProdutoPaiUnit"
+        ] = df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"].fillna(
+            df_ecco_produto_custo_arrumado["precoCustoProdutoUnit"]
+        )
+
+        # Criar uma tabela de custo médio por grupo de produto para ser usado caso o custo do produto não seja razoável
+        columns_to_keep = [
+            "idProduto_x",
+            "idProdutoMaster_x",
+            "nomeProduto_x",
+            "precoCustoProdutoPaiUnit",
+            "grupo_produto_x",
+        ]
+
+        df_ecco_produto_custo_grupo = df_ecco_produto_custo_arrumado[
+            columns_to_keep
+        ]
+
+        #### Manter apenas linhas onde custo é maior que 1 ou menor que 1000
+
+        df_ecco_produto_custo_grupo = df_ecco_produto_custo_grupo[
+            (df_ecco_produto_custo_grupo["precoCustoProdutoPaiUnit"] >= 1)
+            & (df_ecco_produto_custo_grupo["precoCustoProdutoPaiUnit"] <= 1000)
+        ]
+        df_ecco_produto_custo_grupo = df_ecco_produto_custo_grupo.dropna()
+
+        # Calcular média de custo por grupo de produto e criar uma df com essas médias
+        df_grupo_produto_custo_media = (
+            df_ecco_produto_custo_grupo.groupby("grupo_produto_x")[
+                "precoCustoProdutoPaiUnit"
+            ]
+            .mean()
+            .reset_index()
+        )
+
+        #### Verificar se o custo do produto pai é razoável e arrumar custos e criar uma lista de produtos com custo errado
+
+        df_ecco_produto_custo_arrumado["mkp_lancamento_produto"] = (
+            df_ecco_produto_custo_arrumado["precoLancamentoProduto"]
+            / df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"]
+        )
+
+        # Step 1: Identify wrong costs based on both conditions
+        mask_wrong_costs = (
+            (df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"] < 1)
+            | (
+                df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"]
+                > 1000
+            )
+        ) | (
+            (df_ecco_produto_custo_arrumado["mkp_lancamento_produto"] < 0.5)
+            | (df_ecco_produto_custo_arrumado["mkp_lancamento_produto"] > 10)
+        )
+
+        # Step 2: List products with wrong costs
+        df_produtos_cadastro_preco_errado = df_ecco_produto_custo_arrumado[
+            mask_wrong_costs
+        ]
+
+        # Step 3: Substituting wrong costs by group average
+        # Assuming df_grupo_produto_custo_media has 'grupo_produto_x' and 'precoCustoProdutoPaiUnit'
+        # Merging the average cost dataframe with the original df on 'grupo_produto'
+        df_ecco_produto_custo_arrumado_final = (
+            df_ecco_produto_custo_arrumado.merge(
+                df_grupo_produto_custo_media[
+                    ["grupo_produto_x", "precoCustoProdutoPaiUnit"]
+                ],
+                how="left",
+                on="grupo_produto_x",
+                suffixes=("", "_media"),
+            )
+        )
+
+        # Step 4: Replace wrong costs with group average where cost is invalid
+        df_ecco_produto_custo_arrumado_final.loc[
+            mask_wrong_costs, "precoCustoProdutoPaiUnit"
+        ] = df_ecco_produto_custo_arrumado_final.loc[
+            mask_wrong_costs, "precoCustoProdutoPaiUnit_media"
+        ]
+
+        # Step 5: Drop the auxiliary 'columns
+        df_ecco_produto_custo_arrumado_final.drop(
+            columns=[
+                "precoCustoProdutoUnit",
+                "grupo_produto_x",
+                "idProduto_y",
+                "idProdutoMaster_y",
+                "nomeProduto_y",
+                "grupo_produto_y",
+                "mkp_lancamento_produto",
+                "precoCustoProdutoPaiUnit_media",
+            ],
+            inplace=True,
+        )
+
+        # Tranformar formato coluna idProduto para int
+        columns_to_convert = ["idProduto_x"]
+        df_ecco_produto_custo_arrumado_final[
+            columns_to_convert
+        ] = df_ecco_produto_custo_arrumado_final[columns_to_convert].astype(
+            int
+        )
+
+        # Renomear os nomes das colunas
+        df_ecco_produto_custo_arrumado_final.rename(
+            columns={
+                "idProduto_x": "idProduto",
+                "nomeProduto_x": "nomeProduto",
+                "codigo_x": "codigoProduto",
+                "precoAtualProduto_x": "precoProduto",
+                "statusProduto_x": "statusProduto",
+                "precoCustoProdutoPaiUnit": "precoCustoProduto",
+                "idProdutoMaster_x": "idProdutoPai",
+            },
+            inplace=True,
+        )
+
+        # COLUMNS TO KEEP para dataframe final que vai ir para o banco
+        columns_to_keep = [
+            "idProduto",
+            "nomeProduto",
+            "codigoProduto",
+            "precoLancamentoProduto",
+            "precoProduto",
+            "statusProduto",
+            "precoCustoProduto",
+            "idProdutoPai",
+        ]
+
+        df_ecco_produto_custo_arrumado_final = (
+            df_ecco_produto_custo_arrumado_final[columns_to_keep]
+        )
+
         # Colocar coluna de data cadastro
-        df_ecco_produto["data"] = dataname
+        df_ecco_produto_custo_arrumado_final["data"] = dataname
 
         # Colocar coluna mage_cliente
-        df_ecco_produto["mage_cliente"] = client
-
-        # # Salvar df produto em excel
-        # # Specify the file name you want to save the Excel file as
-        # file_name = "output.xlsx"
-
-        # # Save the DataFrame to an Excel file
-        # df_ecco_produto.to_excel(file_name, index=False)
+        df_ecco_produto_custo_arrumado_final["mage_cliente"] = client
 
         # In[11]: Enviar informações para DB
 
-        dic_ecco_produto = df_ecco_produto.to_dict(orient="records")
+        dic_ecco_produto = df_ecco_produto_custo_arrumado_final.to_dict(
+            orient="records"
+        )
 
         # Set batch size (e.g., 10000 records per batch)
         batch_size = 10000
