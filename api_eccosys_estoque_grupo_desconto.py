@@ -218,44 +218,55 @@ for client in c_list:
         )
 
         # Colocar coluna grupo de produtos
-
         df_ecco_estoque_final["grupo_produto"] = (
             df_ecco_estoque_final["nomeProduto"].str.split(" ").str[0]
         )
 
+        # Colocar coluna de valor_venda_estoque
+        df_ecco_estoque_final["valor_venda_estoque"] = (
+            df_ecco_estoque_final["estoqueDisponivel"]
+            * df_ecco_estoque_final["precoProduto"]
+        )
+
+        # Filtrar apenas produtos ativos
+        df_ecco_estoque_ativo_final = df_ecco_estoque_final[
+            df_ecco_estoque_final["statusProduto"] == "A"
+        ]
+
         # COLUMNS TO KEEP para dataframe final que vai ir para o banco
         columns_to_keep = [
-            "estoqueReal",
-            "estoqueDisponivel",
-            "codigoProduto",
-            "nomeProduto",
-            "idProduto",
-            "precoLancamentoProduto",
-            "precoProduto",
-            "precoCustoProdutoUnit",
-            "statusProduto",
-            "PorcentagemDescontoProduto",
-            "FaixaDescontoProduto",
+            # "estoqueReal",
+            # "estoqueDisponivel",
+            # "codigoProduto",
+            # "nomeProduto",
+            # "idProduto",
+            # "precoLancamentoProduto",
+            # "precoProduto",
+            "valor_venda_estoque",
+            # "precoCustoProdutoUnit",
+            # "statusProduto",
+            # "PorcentagemDescontoProduto",
+            # "FaixaDescontoProduto",
             "grupo_produto",
         ]
 
         df_ecco_estoque_final = df_ecco_estoque_final[columns_to_keep]
+
+        # Juntar grupos regata, colete, top e cropped com blusa
+        df_ecco_estoque_final["grupo_produto"] = df_ecco_estoque_final[
+            "grupo_produto"
+        ].replace(["Regata", "Colete", "Top", "Cropped"], "Blusa")
+
+        # Agrupar estoque por grupo
+        df_ecco_estoque_agrupado_final = df_ecco_estoque_final.groupby(
+            "grupo_produto"
+        ).sum()
+
         # Colocar coluna mage_cliente
-        df_ecco_estoque_final["mage_cliente"] = client
+        df_ecco_estoque_agrupado_final["mage_cliente"] = client
 
-        # df_ecco_estoque_final.dtypes
-
-        # SALVAR url_fotos como excel no computador
-
-        directory = r"C:\Users\Samuel Kim\OneDrive\Documentos\mage_performance\Python\excel"
-
-        file_name = "api_eccosys_estoque_grupo_desconto.xlsx"
-
-        # Define the full file path
-        file_path = os.path.join(directory, file_name)
-
-        # Save DataFrame to Excel file
-        df_ecco_estoque_final.to_excel(file_path, index=False)
+        # Colocar coluna data estoque
+        df_ecco_estoque_agrupado_final["data_estoque"] = dataname
 
     except Exception as e:
         print(

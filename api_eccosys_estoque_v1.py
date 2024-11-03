@@ -50,17 +50,19 @@ c_list = [
 from supabase import create_client, Client
 import supabase
 
-supabase_admin_user = os.environ.get("supabase_admin_user")
-supabase_admin_password = os.environ.get("supabase_admin_password")
+# supabase_admin_user = os.environ.get("supabase_admin_user")
+# supabase_admin_password = os.environ.get("supabase_admin_password")
 
-url: str = os.environ.get("SUPABASE_BI_URL")
-key: str = os.environ.get("SUPABASE_BI_KEY")
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
-# Autentificar usuário
-auth_response = supabase.auth.sign_in_with_password(
-    {"email": supabase_admin_user, "password": supabase_admin_password}
-)
+# # Autentificar usuário
+# auth_response = supabase.auth.sign_in_with_password(
+#     {"email": supabase_admin_user, "password": supabase_admin_password}
+# )
+
+# print(auth_response)
 
 time.sleep(5)
 

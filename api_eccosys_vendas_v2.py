@@ -48,19 +48,19 @@ c_list = [
 from supabase import create_client, Client
 import supabase
 
-supabase_admin_user = os.environ.get("supabase_admin_user")
-supabase_admin_password = os.environ.get("supabase_admin_password")
+# supabase_admin_user = os.environ.get("supabase_admin_user")
+# supabase_admin_password = os.environ.get("supabase_admin_password")
 
-url: str = os.environ.get("SUPABASE_BI_URL")
-key: str = os.environ.get("SUPABASE_BI_KEY")
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
-# Autentificar usuário
-auth_response = supabase.auth.sign_in_with_password(
-    {"email": supabase_admin_user, "password": supabase_admin_password}
-)
+# # Autentificar usuário
+# auth_response = supabase.auth.sign_in_with_password(
+#     {"email": supabase_admin_user, "password": supabase_admin_password}
+# )
 
-time.sleep(5)
+# time.sleep(5)
 
 # ECCOSYS API HEADER
 
@@ -190,10 +190,34 @@ for client in c_list:
 
         dic_ecco_ped = df_ecco_ped.to_dict(orient="records")
 
+        # def upsert_with_retry(data, retries=5):
+        #     for attempt in range(retries):
+        #         try:
+        #             # Attempt the upsert operation
+        #             response = (
+        #                 supabase.table("mage_eccosys_pedidos_v1")
+        #                 .upsert(data)
+        #                 .execute()
+        #             )
+        #             print("Upsert successful")
+        #             return response
+        #         except Exception as e:
+        #             print(f"Attempt {attempt + 1}: {e}")
+        #             if "401" in str(e) and attempt < retries - 1:
+        #                 print("Retrying with backoff...")
+        #                 time.sleep(
+        #                     2**attempt
+        #                 )  # Exponential backoff (2, 4, 8... seconds)
+        #             else:
+        #                 raise e
+
+        # # Call the upsert function with retries
+        # upsert_with_retry(dic_ecco_ped)
+
         try:
             response = (
                 supabase.table("mage_eccosys_pedidos_v1")
-                .upsert(dic_ecco_ped)
+                .upsert(dic_ecco_ped, returning="minimal")
                 .execute()
             )
 

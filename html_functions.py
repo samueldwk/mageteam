@@ -125,16 +125,19 @@ def download_eccosys(
             ).click()
 
         except TimeoutException:
-            filtro_xpath = "/html/body/div[7]/div/div[2]/div[2]/div[1]/div[5]/table/tbody/tr/td[1]/div/div[1]/div[3]/a"
+            # filtro_xpath = "/html/body/div[7]/div/div[2]/div[2]/div[1]/div[5]/table/tbody/tr/td[1]/div/div[1]/div[3]/a"
+            filtro_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/div[1]/div[2]/div[3]/a"
             wait.until(
                 EC.element_to_be_clickable((By.XPATH, filtro_xpath))
             ).click()
 
-        ativos_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/table/tbody/tr/td[1]/div/div[1]/div[4]/div/div[1]/div[1]/ul/li[4]/a"
+        ativos_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/div[1]/div[2]/div[4]/div/div[1]/div[1]/ul/li[4]/a"
+        # ativos_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/div[1]/div[1]/div[4]/div/div[1]/div[1]/ul/li[4]/a"
         driver.find_element(By.XPATH, ativos_xpath).click()
 
         time.sleep(pause_time)
-        acoes_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/table/tbody/tr/td[1]/div/div[1]/div[3]/div/a[2]"
+        acoes_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/div[1]/div[2]/div[3]/div/a[2]"
+        # acoes_xpath = "/html/body/div[5]/div/div[2]/div[2]/div[1]/div[5]/div[1]/div[1]/div[3]/div/a[2]"
         driver.find_element(By.XPATH, acoes_xpath).click()
 
         time.sleep(pause_time)
