@@ -20,7 +20,7 @@ d1 = datef.dmenos(hj).date()
 # Para puxar de uma data específica
 # d1 = datetime.datetime(2024, 10, 10).date()
 
-datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
+datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 date_object = datetime.datetime.strptime(dataname, "%Y-%m-%d")
 
 month = date_object.month

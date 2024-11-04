@@ -27,10 +27,14 @@ client = BetaAnalyticsDataClient()
 ### DATA FUNCTIONS
 
 d2 = date.today() - timedelta(days=2)
-datatxt2, dataname2, datasql2, datanamex, dataname3 = datef.dates(d2)
+datatxt2, dataname2, datasql2, datanamex, dataname3, dataname4 = datef.dates(
+    d2
+)
 
 d1 = date.today() - timedelta(days=1)
-datatxt1, dataname1, datasql1, datanamex, dataname3 = datef.dates(d1)
+datatxt1, dataname1, datasql1, datanamex, dataname3, dataname4 = datef.dates(
+    d1
+)
 
 # CLIENTES
 
