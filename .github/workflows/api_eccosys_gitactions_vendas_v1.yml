@@ -1,9 +1,8 @@
-name: Scheduled [api_eccosys_gitactions_produto_estoque_v1.0]
+name: Scheduled [api_eccosys_gitactions_vendas_v1.0]
 
 on:
   schedule:
-    - cron: '15 4 * * *'  # Every day at 01:15 AM (BRT) 
-    - cron: '15 7 * * *'  # Every day at 04:15 AM (BRT) 
+    - cron: '15 * * * *'  # Runs at the 15th minute of every hour
 
   workflow_dispatch:
 
@@ -58,14 +57,10 @@ jobs:
       - name: Install dependencies 2
         run: |
           pip install pandas==2.1.4 python-dotenv requests workalendar supabase
-
-      - name: Run Code Eccosys Estoque
+          
+      - name: Run Code Eccosys Venda
         run: |
-          python api_eccosys_estoque_v1.py
-
-      - name: Run Code Eccosys Produto
-        run: |
-          python api_eccosys_produto_v1.1.py
+          python api_eccosys_vendas_v2.py
 
 
         

@@ -23,25 +23,27 @@ datatxt, dataname1, datasql, dataname2, dataname3 = datef.dates(d1)
 # CLIENT LIST
 
 c_list = [
-    # "alanis",
-    # "basicler",
+    "alanis",
+    "basicler",
     # "dadri",
     "french",
-    # "haut",
+    "haut",
     # "infini",
-    # "kle",
-    # "mun",
-    # "muna",
+    "kle",
+    "morina",
+    "mun",
+    "muna",
     # "nobu",
-    # "othergirls",
-    # "rery",
+    "othergirls",
+    "rery",
     "talgui",
-    # "paconcept",
-    # "una",
-    # "uniquechic",
+    "tob",
+    "paconcept",
+    "una",
+    "uniquechic",
 ]
 
-# c_list = ["othergirls"]
+# c_list = ["nobu"]
 
 # SUPABASE AUTH
 
@@ -143,7 +145,6 @@ for client in c_list:
         columns_to_keep = [
             "id",
             "idContato",
-            "numeroPedido",
             "data",
             "desconto",
             "totalProdutos",
@@ -169,7 +170,6 @@ for client in c_list:
             columns={
                 "id": "idVenda",
                 "idContato": "idCliente",
-                "numeroPedido": "NumeroPedido",
                 "data": "DataVendaPedido",
                 "desconto": "DescontoPedido",
                 "totalProdutos": "ValorVendaProdutoBruto",
@@ -189,30 +189,6 @@ for client in c_list:
         # In[2]: Enviar informações para DB
 
         dic_ecco_ped = df_ecco_ped.to_dict(orient="records")
-
-        # def upsert_with_retry(data, retries=5):
-        #     for attempt in range(retries):
-        #         try:
-        #             # Attempt the upsert operation
-        #             response = (
-        #                 supabase.table("mage_eccosys_pedidos_v1")
-        #                 .upsert(data)
-        #                 .execute()
-        #             )
-        #             print("Upsert successful")
-        #             return response
-        #         except Exception as e:
-        #             print(f"Attempt {attempt + 1}: {e}")
-        #             if "401" in str(e) and attempt < retries - 1:
-        #                 print("Retrying with backoff...")
-        #                 time.sleep(
-        #                     2**attempt
-        #                 )  # Exponential backoff (2, 4, 8... seconds)
-        #             else:
-        #                 raise e
-
-        # # Call the upsert function with retries
-        # upsert_with_retry(dic_ecco_ped)
 
         try:
             response = (

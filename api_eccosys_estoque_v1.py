@@ -25,25 +25,27 @@ datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
 # CLIENT LIST
 c_list = [
-    # "alanis",
-    # "basicler",
+    "alanis",
+    "basicler",
     # "dadri",
     "french",
-    # "haut",
+    "haut",
     # "infini",
-    # "kle",
-    # "mun",
-    # "muna",
+    "kle",
+    "morina",
+    "mun",
+    "muna",
     # "nobu",
-    # "othergirls",
-    # "rery",
+    "othergirls",
+    "rery",
     "talgui",
-    # "paconcept",
-    # "una",
-    # "uniquechic",
+    "tob",
+    "paconcept",
+    "una",
+    "uniquechic",
 ]
 
-# c_list = ["french"]
+# c_list = ["tob"]
 
 # SUPABASE AUTH
 

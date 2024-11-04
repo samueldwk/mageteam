@@ -26,25 +26,27 @@ datatxt, dataname, datasql, dataname2, dataname3 = datef.dates(d1)
 
 # CLIENT LIST
 c_list = [
-    # "alanis",
-    # "basicler",
+    "alanis",
+    "basicler",
     # "dadri",
     "french",
-    # "haut",
+    "haut",
     # "infini",
-    # "kle",
-    # "mun",
-    # "muna",
+    "kle",
+    "morina",
+    "mun",
+    "muna",
     # "nobu",
-    # "othergirls",
-    # "rery",
+    "othergirls",
+    "rery",
     "talgui",
-    # "paconcept",
-    # "una",
-    # "uniquechic",
+    "tob",
+    "paconcept",
+    "una",
+    "uniquechic",
 ]
 
-# c_list = ["una"]
+# c_list = ["tob"]
 
 # SUPABASE AUTH
 
@@ -299,6 +301,10 @@ for client in c_list:
 
         # Colocar coluna mage_cliente
         df_ecco_produto_custo_arrumado_final["mage_cliente"] = client
+
+        df_ecco_produto_custo_arrumado_final = (
+            df_ecco_produto_custo_arrumado_final.fillna(0)
+        )
 
         # In[11]: Enviar informações para DB
 

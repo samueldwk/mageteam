@@ -80,8 +80,8 @@ dic_nomes = {
 
 
 # Initialize Supabase client
-SUPABASE_URL = os.environ.get("SUPABASE_BI_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_BI_KEY")
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 
 
 def get_row_by_two_columns(
@@ -93,7 +93,6 @@ def get_row_by_two_columns(
         response = (
             supabase.table("relatorio_gerencial_geral")
             .select("*")
-            # .eq("data", f"{dataname_date_format}")
             .gte("data", dataname3_date_format)
             .lte("data", dataname_date_format)
             .eq("mage_cliente", f"{client}")
