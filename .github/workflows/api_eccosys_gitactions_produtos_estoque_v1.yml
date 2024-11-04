@@ -31,10 +31,8 @@ jobs:
       ecco_aut_tob: ${{ secrets.ECCO_AUT_TOB }}
       ecco_aut_una: ${{ secrets.ECCO_AUT_UNA }}
       ecco_aut_uniquechic: ${{ secrets.ECCO_AUT_UNIQUECHIC }}
-      SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
-      SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
-      supabase_admin_password: ${{ secrets.supabase_admin_password }}
-      supabase_admin_user: ${{ secrets.supabase_admin_user }}      
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
       PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
       
