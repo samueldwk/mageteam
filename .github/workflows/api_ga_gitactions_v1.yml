@@ -31,10 +31,8 @@ jobs:
       ga_id_tob: ${{ secrets.GA_ID_TOB }}
       ga_id_una: ${{ secrets.GA_ID_UNA }}
       ga_id_uniquechic: ${{ secrets.GA_ID_UNIQUECHIC }}
-      SUPABASE_BI_KEY: ${{ secrets.SUPABASE_BI_KEY }}
-      SUPABASE_BI_URL: ${{ secrets.SUPABASE_BI_URL }}
-      supabase_admin_password: ${{ secrets.supabase_admin_password }}
-      supabase_admin_user: ${{ secrets.supabase_admin_user }}            
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
       PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
       
