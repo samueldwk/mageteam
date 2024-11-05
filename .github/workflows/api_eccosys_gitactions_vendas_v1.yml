@@ -2,7 +2,8 @@ name: Scheduled [api_eccosys_gitactions_vendas_v1.0]
 
 on:
   schedule:
-    - cron: '15 * * * *'  # Runs at the 15th minute of every hour
+    - cron: '15 5 * * *'  # Every day at 02:15 AM (BRT) 
+    - cron: '15 8 * * *'  # Every day at 05:15 AM (BRT) 
 
   workflow_dispatch:
 

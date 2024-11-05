@@ -15,14 +15,13 @@ dotenv.load_dotenv()
 
 # DATE FUCTIONS
 
-d1 = date.today() - timedelta(days=0)  # TODAY DATE
+d1 = date.today() - timedelta(days=1)  # TODAY DATE
 # d1 = datetime(2024, 11, 1).date()  # SELECT DATE
 
 datatxt, dataname1, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
-
 dataname4_date_format = datetime.strptime(dataname4, "%Y-%m-%d").date()
 dataname3_date_format = datetime.strptime(dataname3, "%Y-%m-%d").date()
-datanam2_date_format = datetime.strptime(dataname2, "%Y-%m-%d").date()
+dataname2_date_format = datetime.strptime(dataname2, "%Y-%m-%d").date()
 dataname1_date_format = datetime.strptime(dataname1, "%Y-%m-%d").date()
 
 
@@ -75,7 +74,7 @@ for client in c_list:
 
         # In[1]: GET LIST OF ORDERS
 
-        url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname4}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
+        url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname3}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
 
         response_ped = requests.request(
             "GET", url_ped, headers=headers, data=payload, files=files
