@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      SUPABASE_BI_KEY: ${{ secrets.SUPABASE_KEY }}
-      SUPABASE_BI_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
       PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
       
