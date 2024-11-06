@@ -16,7 +16,7 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 10, 30).date()
+# d1 = datetime.datetime(2024, 11, 4).date()
 
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
@@ -41,7 +41,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["alanis"]
+# c_list = ["pueri"]
 
 # DICIONÁRIO DE NOMES
 

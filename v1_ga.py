@@ -51,6 +51,7 @@ c_list = [
     "muna",
     "nobu",
     "othergirls",
+    "pueri",
     "rery",
     "talgui",
     "tob",
@@ -58,7 +59,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["talgui"]
+# c_list = ["pueri"]
 
 # DICIONÁRIO DE NOMES
 
@@ -76,6 +77,7 @@ dic_nomes = {
     "muna": "Muna",
     "nobu": "Nobu",
     "othergirls": "Other Girls",
+    "pueri": "Pueri Santi",
     "paconcept": "P.A Concept",
     "rery": "Rery",
     "talgui": "Talgui",

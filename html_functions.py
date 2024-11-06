@@ -164,6 +164,7 @@ def download_eccosys(
             or cliente == "haut"
             or cliente == "morina"
             or cliente == "rery"
+            or cliente == "pueri"
             or cliente == "uniquechic"
             or cliente == "muna"
             or cliente == "tob"
