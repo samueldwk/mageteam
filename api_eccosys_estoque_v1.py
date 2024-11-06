@@ -45,7 +45,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["tob"]
+# c_list = ["alanis"]
 
 # SUPABASE AUTH
 

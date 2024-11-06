@@ -28,7 +28,6 @@ d1 = datef.dmenos(hj).date()
     dataname2,
     datatxt3,
     dataname3,
-    dataname4,
 ) = datef.dates(d1)
 
 

@@ -15,7 +15,7 @@ dotenv.load_dotenv()
 
 # DATE FUCTIONS
 
-d1 = date.today() - timedelta(days=1)  # TODAY DATE
+d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
 # d1 = datetime(2024, 11, 1).date()  # SELECT DATE
 
 datatxt, dataname1, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
@@ -48,7 +48,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["french"]
+# c_list = ["alanis"]
 
 # SUPABASE AUTH
 
@@ -206,8 +206,8 @@ for client in c_list:
                 supabase: Client = create_client(url, key)
 
                 response = (
-                    supabase.table("mage_eccosys_pedidos_v1")
-                    .select("idVenda")
+                    supabase.table("mage_eccosys_vendas_produto_v1")
+                    .select("idPedido")
                     .gte("DataVendaPedido", dataname3_date_format)
                     .lte("DataVendaPedido", dataname_date_format)
                     .eq("mage_cliente", f"{client}")
@@ -241,15 +241,19 @@ for client in c_list:
 
         df_order_ids = df_order_ids.to_frame(name="idVenda")
         df_order_ids = df_order_ids.astype(str)
-        df_orders_ids_database["idVenda"] = df_orders_ids_database[
-            "idVenda"
+        df_orders_ids_database["idPedido"] = df_orders_ids_database[
+            "idPedido"
         ].astype(str)
 
         # Filtrar apenas orders novos
 
         # Perform a left merge with an indicator column to identify unmatched rows
         df_merged = df_order_ids.merge(
-            df_orders_ids_database, on="idVenda", how="left", indicator=True
+            df_orders_ids_database,
+            left_on="idVenda",
+            right_on="idPedido",
+            how="left",
+            indicator=True,
         )
 
         # Keep only rows that are in df_order_ids but not in df_orders_ids_database

@@ -31,6 +31,7 @@ c_list = [
     "rery",
     "talgui",
     "tob",
+    "paconcept",
     "una",
     "uniquechic",
 ]

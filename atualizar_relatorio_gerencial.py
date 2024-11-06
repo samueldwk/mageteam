@@ -28,7 +28,6 @@ d1 = datef.dmenos(hj).date()
     dataname2,
     datatxt3,
     dataname3,
-    dataname4,
 ) = datef.dates(d1)
 
 dataname3_date_format = datetime.strptime(dataname3, "%Y-%m-%d").date()
@@ -184,17 +183,17 @@ for client in c_list:
 
         # %% UPDATE GOOGLE SHEETS
 
-        # # Run in local computer
-        # gc = gspread.oauth()
+        # Run in local computer
+        gc = gspread.oauth()
 
-        # Run in gitactions
-        try:
-            gc = gspread.service_account(
-                filename="mage---performan-1705337009329-52b7dddd6d54.json"
-            )
-            print("Service account successfully authenticated")
-        except Exception as e:
-            print(f"Error authenticating with service account: {e}")
+        # # Run in gitactions
+        # try:
+        #     gc = gspread.service_account(
+        #         filename="mage---performan-1705337009329-52b7dddd6d54.json"
+        #     )
+        #     print("Service account successfully authenticated")
+        # except Exception as e:
+        #     print(f"Error authenticating with service account: {e}")
 
         sh = gc.open(
             f"{dic_nomes[client]} - Relatório Gerencial E-Commerce"
@@ -213,7 +212,7 @@ for client in c_list:
                     range_name = f"A{row_number}:AD{row_number}"
 
                     # Update the row with the current row_data
-                    sh.update(range_name, [row_data])
+                    sh.update(range_name=range_name, values=[row_data])
                     print(f"Updated row {row_number} with data: {row_data}")
                 except gspread.exceptions.CellNotFound:
                     print(f"Date {date_value} not found in the sheet.")

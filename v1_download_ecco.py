@@ -33,12 +33,13 @@ c_list = [
     "talgui",
     "tob",
     "paconcept",
+    "pueri",
     "rery",
     "una",
     "uniquechic",
 ]
 
-# c_list = ["basicler"]
+# c_list = ["pueri"]
 
 #### FILE PATHS ####
 
