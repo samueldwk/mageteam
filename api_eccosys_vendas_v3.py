@@ -10,13 +10,15 @@ import dotenv
 import os
 import time
 from pushover_notification import send_pushover_notification
+import numpy as np
+
 
 dotenv.load_dotenv()
 
 # DATE FUCTIONS
 
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
-# d1 = datetime(2024, 11, 1).date()  # SELECT DATE
+# d1 = datetime(2024, 11, 8).date()  # SELECT DATE
 
 datatxt, dataname1, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 dataname4_date_format = datetime.strptime(dataname4, "%Y-%m-%d").date()
@@ -48,7 +50,7 @@ c_list = [
     "uniquechic",
 ]
 
-# c_list = ["alanis"]
+# c_list = ["muna"]
 
 # SUPABASE AUTH
 
@@ -235,6 +237,22 @@ for client in c_list:
 
         except Exception as e:
             print(e)
+
+        #  ### teste (para arrumar problema da MUNA)
+
+        # supabase: Client = create_client(url, key)
+
+        # response_db_ped_prod = (
+        #     supabase.table("mage_eccosys_vendas_produto_v1")
+        #     .select("idPedido")
+        #     .gte("DataVendaPedido", dataname3_date_format)
+        #     .lte("DataVendaPedido", dataname1_date_format)
+        #     .eq("mage_cliente", f"{client}")
+        #     .execute()
+        # )
+
+        # dic_db_ped_prod = response_db_ped_prod.json()
+        # df_db_ped_prod = pd.DataFrame(dic_db_ped_prod)
 
         # In[3]: CALL PRODUCTS FROM EACH ORDER AND MAKE PEDIDOS X PRODUTOS
         df_order_ids = df_ecco_ped["idVenda"]
@@ -540,6 +558,13 @@ for client in c_list:
                 df_ecco_ped_prod["valor"]
                 / df_ecco_ped_prod["precoLancamentoProduto"]
             )
+
+            # Lidar com produtos com preço de lançamento e atual = 0
+
+            # Replace -inf with 0 in a specific column (e.g., column 'A')
+            df_ecco_ped_prod["PorcentagemDescontoProduto"] = df_ecco_ped_prod[
+                "PorcentagemDescontoProduto"
+            ].replace(-np.inf, 0)
 
             try:
                 df_ecco_ped_prod.fillna(0, inplace=True)

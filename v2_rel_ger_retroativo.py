@@ -15,7 +15,7 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 10, 27).date()
+# d1 = datetime.datetime(2024, 11, 6).date()
 
 (
     datatxt,
@@ -25,7 +25,7 @@ d1 = datef.dmenos(hj).date()
     dataname2,
     datatxt3,
     dataname3,
-    dataname4,
+    # dataname4,
 ) = datef.dates(d1)
 
 c_list = [

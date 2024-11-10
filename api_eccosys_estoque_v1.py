@@ -9,6 +9,7 @@ import os
 import time
 import math
 from pushover_notification import send_pushover_notification
+import numpy as np
 
 
 dotenv.load_dotenv()
@@ -370,6 +371,15 @@ for client in c_list:
         df_ecco_estoque_final["PorcentagemDescontoProduto"] = 1 - (
             df_ecco_estoque_final["precoAtualProduto_x"]
             / df_ecco_estoque_final["precoLancamentoProduto"]
+        )
+
+        # Lidar com produtos com preço de lançamento e atual = 0
+
+        # Replace -inf with 0 in a specific column (e.g., column 'A')
+        df_ecco_estoque_final[
+            "PorcentagemDescontoProduto"
+        ] = df_ecco_estoque_final["PorcentagemDescontoProduto"].replace(
+            -np.inf, 0
         )
 
         df_ecco_estoque_final.fillna(0, inplace=True)
