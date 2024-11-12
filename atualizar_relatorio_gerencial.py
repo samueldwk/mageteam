@@ -56,7 +56,7 @@ c_list = [
     "uniquechic",
 ]
 
-c_list = ["french", "talgui"]
+c_list = ["french", "talgui", "rery", "una"]
 
 # DICIONÁRIO DE NOMES
 dic_nomes = {
