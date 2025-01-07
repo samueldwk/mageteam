@@ -36,27 +36,27 @@ dataname1_date_format = datetime.strptime(dataname1, "%Y-%m-%d").date()
 
 # CLIENT LIST
 c_list = [
-    "alanis",
-    "basicler",
+    # "alanis",
+    # "basicler",
     # "dadri",
     "french",
-    "haut",
+    # "haut",
     # "infini",
-    "kle",
-    "morina",
-    "mun",
-    "muna",
+    # "kle",
+    # "morina",
+    # "mun",
+    # "muna",
     # "nobu",
-    "othergirls",
-    "rery",
+    # "othergirls",
+    # "rery",
     "talgui",
-    "tob",
-    "paconcept",
-    "una",
-    "uniquechic",
+    # "tob",
+    # "paconcept",
+    # "una",
+    # "uniquechic",
 ]
 
-c_list = ["french", "talgui", "rery", "una"]
+# c_list = ["french", "talgui"]
 
 # DICIONÁRIO DE NOMES
 dic_nomes = {
