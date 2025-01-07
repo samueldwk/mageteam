@@ -44,6 +44,5 @@ jobs:
 
       - name: Run Code Atualizar Relatorio Gerencial
         run: |
-	  node ./relatorio_gerencial_v2/
-          python ./relatorio_gerencial_v2/atualizar_relatorio_gerencial.py
+          python atualizar_relatorio_gerencial.py
         
