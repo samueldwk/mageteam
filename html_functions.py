@@ -160,7 +160,7 @@ def download_eccosys(
         # Exceção de select caso cliente = una, todos os produtos
         if (
             cliente == "una"
-            or cliente == "basicler"
+            or cliente == "mixxon"
             or cliente == "haut"
             or cliente == "morina"
             or cliente == "rery"
@@ -168,6 +168,7 @@ def download_eccosys(
             or cliente == "uniquechic"
             or cliente == "muna"
             or cliente == "tob"
+            or cliente == "vogabox"
         ):
             option_index_to_select = 0
             dropdown.select_by_index(option_index_to_select)
@@ -222,7 +223,21 @@ def download_eccosys(
 
         driver.find_element(By.XPATH, download_xpath).click()
 
-        time.sleep(pause_time + 60)
+        if (
+            cliente == "rery"
+            or cliente == "paconcept"
+            or cliente == "vogabox"
+            or cliente == "talgui"
+            or cliente == "french"
+            or cliente == "othergirls"
+            or cliente == "uniquechic"
+            or cliente == "basicler"
+        ):
+            time.sleep(pause_time + 90)
+
+        else:
+            time.sleep(pause_time + 30)
+
         # time.sleep(pause_time)  # FOR MAINTENANCE ONLY
 
         rename_last_downloaded_file(download_path, final_path, filename_prod)

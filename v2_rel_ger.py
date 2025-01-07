@@ -16,18 +16,18 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2024, 11, 7).date()
+# d1 = datetime.datetime(2025, 1, 1).date()
 
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
 c_list = [
     "alanis",
-    "basicler",
     "dadri",
     "french",
     "haut",
     "infini",
     "kle",
+    "mixxon",
     "morina",
     "mun",
     "muna",
@@ -39,21 +39,21 @@ c_list = [
     "tob",
     "una",
     "uniquechic",
+    "vogabox",
 ]
 
-# c_list = ["muna"]
+# c_list = ["french"]
 
 # DICIONÁRIO DE NOMES
 
 dic_nomes = {
     "alanis": "Alanis",
-    "basicler": "Basicler",
     "dadri": "Dadri",
     "french": "French",
     "haut": "Haut",
     "infini": "Infini",
     "kle": "Kle",
-    "luvic": "Luvic",
+    "mixxon": "Mixxon",
     "morina": "Morina",
     "mun": "Mun",
     "muna": "Muna",
@@ -66,6 +66,7 @@ dic_nomes = {
     "tob": "Tob",
     "una": "Una",
     "uniquechic": "Unique Chic",
+    "vogabox": "Vogabox",
 }
 
 ##### DICTS PARA SLICE DO CODIGO SKU #####
@@ -79,7 +80,7 @@ c_list_sku_8 = {
 c_list_sku_9 = {"Cliente": ["ajobrand", "french", "una"], "Index": 9}
 c_list_sku_15 = {
     "Cliente": [
-        "basicler",
+        "mixxon",
         "haut",
         "kle",
         "morina",
@@ -89,6 +90,7 @@ c_list_sku_15 = {
         "rery",
         "tob",
         "uniquechic",
+        "vogabox",
     ],
     "Index": 40,
 }  ###get all sku, doesnt need to slice

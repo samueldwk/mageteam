@@ -40,12 +40,12 @@ datatxt1, dataname1, datasql1, datanamex, dataname3, dataname4 = datef.dates(
 
 c_list = [
     "alanis",
-    "basicler",
     "dadri",
     "french",
     "haut",
     "infini",
     "kle",
+    "mixxon",
     "morina",
     "mun",
     "muna",
@@ -57,21 +57,21 @@ c_list = [
     "tob",
     "una",
     "uniquechic",
+    "vogabox",
 ]
 
-# c_list = ["pueri"]
+# c_list = ["tob"]
 
 # DICIONÁRIO DE NOMES
 
 dic_nomes = {
     "alanis": "Alanis",
-    "basicler": "Basicler",
     "dadri": "Dadri",
     "french": "French",
     "haut": "Haut",
     "infini": "Infini",
     "kle": "Kle",
-    "luvic": "Luvic",
+    "mixxon": "Mixxon",
     "morina": "Morina",
     "mun": "Mun",
     "muna": "Muna",
@@ -84,6 +84,7 @@ dic_nomes = {
     "tob": "Tob",
     "una": "Una",
     "uniquechic": "Unique Chic",
+    "vogabox": "Vogabox",
 }
 
 

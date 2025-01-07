@@ -30,7 +30,7 @@ d1 = datef.dmenos(hj).date()
 
 c_list = [
     # "alanis",
-    "basicler",
+    "mixxon",
     # "dadri",
     # "french",
     # "haut",
@@ -53,7 +53,7 @@ c_list = [
 
 dic_nomes = {
     "alanis": "Alanis",
-    "basicler": "Basicler",
+    "mixxon": "Mixxon",
     "dadri": "Dadri",
     "french": "French",
     "haut": "Haut",

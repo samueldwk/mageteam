@@ -10,7 +10,7 @@ url = "https://api.magedream.com.br/public/products/events"
 
 headers = {
     "Authorization": "Bearer m5YEjOn7wgEQPcbtoFSzWvZjvrIOJ8gQ468OXJme",
-    "x-store": "paconcept",
+    "x-store": "dadri",
 }
 params = {"size": 100, "page": 1}
 

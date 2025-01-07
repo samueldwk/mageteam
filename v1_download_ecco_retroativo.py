@@ -30,7 +30,7 @@ d1 = datef.dmenos(hj).date()
 
 c_list = [
     # "alanis",
-    "basicler",
+    "mixxon",
     # "dadri",
     # "french",
     # "haut",
@@ -48,7 +48,7 @@ c_list = [
     # "uniquechic",
 ]
 
-# c_list = ["muna"]
+# c_list = ["morina"]
 
 # In[1] #### FILE PATHS #### d1
 
