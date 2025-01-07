@@ -43,6 +43,6 @@ jobs:
           echo ${{ secrets.GOOGLE_SHEETS_CREDENTIALS_BASE64 }} | base64 --decode > $GITHUB_WORKSPACE/mage---performan-1705337009329-52b7dddd6d54.json
 
       - name: Run Code Atualizar Relatorio Gerencial
-        run: |
+        run: | node ./api relatorio gerencial/
           python atualizar_relatorio_gerencial.py
         
