@@ -2,8 +2,7 @@ name: Scheduled [Lofty - product_stock_snap]
 
 on:
   schedule:
-    - cron: '15 4 * * *'  # Every day at 01:15 AM (BRT) 
-    - cron: '15 7 * * *'  # Every day at 04:15 AM (BRT) 
+    - cron: '15 10 * * *'  # Every day at 07:15 AM (BRT) 
 
   workflow_dispatch:
 
