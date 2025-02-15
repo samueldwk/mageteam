@@ -137,6 +137,7 @@ def download_fb(client, dataname1):
     df_fb_campaigns_filtrado = df_fb_campaigns_cru[
         (df_fb_campaigns_cru["Objective"] == "OUTCOME_SALES")
         | (df_fb_campaigns_cru["Objective"] == "CONVERSIONS")
+        | (df_fb_campaigns_cru["Objective"] == "PRODUCT_CATALOG_SALES")
     ]
 
     # Filtar apenas campanhas de varejo ecommerce (drop atacado)

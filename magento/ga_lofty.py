@@ -4,7 +4,6 @@ import numpy as np
 import dotenv
 import date_functions as datef
 from datetime import timedelta, date
-import gspread
 
 dotenv.load_dotenv()
 
@@ -38,56 +37,16 @@ datatxt1, dataname1, datasql1, datanamex, dataname3, dataname4 = datef.dates(
 
 # CLIENTES
 
-c_list = [
-    "alanis",
-    "dadri",
-    "french",
-    "haut",
-    "infini",
-    "kle",
-    "mixxon",
-    "morina",
-    "mun",
-    "muna",
-    "nobu",
-    "othergirls",
-    "presage",
-    "pueri",
-    "rery",
-    "talgui",
-    "tob",
-    "una",
-    "uniquechic",
-    "vogabox",
-]
+c_list = ["lofty"]
 
-# c_list = ["french"]
+# SUPABASE AUTH
 
-# DICIONÁRIO DE NOMES
+from supabase import create_client, Client
+import supabase
 
-dic_nomes = {
-    "alanis": "Alanis",
-    "dadri": "Dadri",
-    "french": "French",
-    "haut": "Haut",
-    "infini": "Infini",
-    "kle": "Kle",
-    "mixxon": "Mixxon",
-    "morina": "Morina",
-    "mun": "Mun",
-    "muna": "Muna",
-    "nobu": "Nobu",
-    "othergirls": "Other Girls",
-    "presage": "Presage",
-    "pueri": "Pueri Santi",
-    "paconcept": "P.A Concept",
-    "rery": "Rery",
-    "talgui": "Talgui",
-    "tob": "Tob",
-    "una": "Una",
-    "uniquechic": "Unique Chic",
-    "vogabox": "Vogabox",
-}
+url: str = os.environ.get("SUPABASE_LOFTY_URL")
+key: str = os.environ.get("SUPABASE_LOFTY_KEY")
+supabase: Client = create_client(url, key)
 
 
 # %% FORMAT REPORT - run report method
@@ -131,6 +90,7 @@ def download_ga(cliente, dataname2, dataname1):
         property=f"properties/{os.getenv(f'ga_id_{cliente}')}",
         dimensions=[Dimension(name="date")],
         metrics=[
+            Metric(name="sessions"),
             Metric(name="sessionKeyEventRate"),
             Metric(name="bounceRate"),
         ],
@@ -140,44 +100,41 @@ def download_ga(cliente, dataname2, dataname1):
     # Generate and format the report
     output_df = format_report(request)
 
-    return output_df[["bounceRate", "sessionKeyEventRate"]]
+    return output_df[["sessions", "bounceRate", "sessionKeyEventRate"]]
 
 
 for cliente in c_list:
     df_rel_ger_ga = download_ga(cliente, dataname2, dataname1)
-    df_rel_ger_ga = df_rel_ger_ga.sort_index(ascending=True)
 
-    # %% UPDATE GOOGLE SHEETS
+    # Adicionar a coluna de data do g.a
 
-    gc = gspread.oauth()
+    # Convert index to a column
+    df_rel_ger_ga.reset_index(inplace=True)
 
-    list_final = df_rel_ger_ga.values.tolist()
+    # Rename the index column to 'date'
+    df_rel_ger_ga.rename(columns={"index": "date"}, inplace=True)
 
-    sh = gc.open(
-        f"{dic_nomes[cliente]} - Relatório Gerencial E-Commerce"
-    ).worksheet("Diário")
+    # Convert 'date' to string and then to datetime format
+    df_rel_ger_ga["ga_date"] = pd.to_datetime(
+        df_rel_ger_ga["date"].astype(str), format="%Y%m%d"
+    ).dt.strftime("%Y-%m-%d")
 
-    # Definir qual a celula do google sheets deve ser atualizado
-    cell_d2 = sh.find(datatxt2).row
-    cell_d1 = sh.find(datatxt1).row
+    # Drop the old 'date' column if no longer needed
+    df_rel_ger_ga.drop(columns=["date"], inplace=True)
 
-    # Lidar com lista de request diferente (vazia)
-    print("Contents of list_final before filling:", list_final)
+    # In[6]: Gravar informações de ga na db
 
-    # Ensure list_final has at least two lists (fill with [0, 0] if necessary)
-    while len(list_final) < 2:
-        list_final.append([0, 0])
+    dic_rel_ger_ga = df_rel_ger_ga.to_dict(orient="records")
 
-    # Ensure both lists have at least two elements (fill with 0s if necessary)
-    for sublist in list_final:
-        while len(sublist) < 2:
-            sublist.append(0)
+    try:
+        response = (
+            supabase.table("GoogleAnalytics")
+            .upsert(dic_rel_ger_ga, returning="minimal")
+            .execute()
+        )
 
-    # print("Contents of list_final after filling:", list_final)
+    except Exception as e:
+        print(e)
 
-    # Now perform the updates safely
-    sh.update_cell(cell_d2, 29, list_final[0][0])
-    sh.update_cell(cell_d2, 30, list_final[0][1])
-
-    sh.update_cell(cell_d1, 29, list_final[1][0])
-    sh.update_cell(cell_d1, 30, list_final[1][1])
+    except Exception as exception:
+        print(f"*****ERRO: UPSERT {client}: {exception}")

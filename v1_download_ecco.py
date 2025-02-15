@@ -11,10 +11,9 @@ dotenv.load_dotenv()
 hj = datetime.datetime.now()
 d1 = datef.dmenos(hj).date()
 
-# #Para puxar de uma data específica
+# Para puxar de uma data específica
 
-
-# d1 = datetime.datetime(2025, 1, 1).date()
+# d1 = datetime.datetime(2025, 2, 8).date()
 
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
@@ -31,17 +30,18 @@ c_list = [
     "muna",
     "nobu",
     "othergirls",
+    "paconcept",
+    "presage",
+    "pueri",
     "talgui",
     "tob",
-    "paconcept",
-    "pueri",
     "rery",
     "una",
     "uniquechic",
     "vogabox",
 ]
 
-# c_list = ["rery"]
+# c_list = ["vogabox"]
 
 #### FILE PATHS ####
 

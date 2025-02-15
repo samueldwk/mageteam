@@ -1,7 +1,3 @@
-# api_eccosys_produto_v1.1 gitactions
-# api que consegue lidar com lista grande de produtos na hora de fazer upsert no database
-# oficial desde 22/09/2024
-
 import requests
 import pandas as pd
 import date_functions as datef
@@ -59,14 +55,47 @@ for client in c_list:
 
     # In[1]: Eccosys API: GET Listar todos os produtos
 
-    url_prod = "https://empresa.eccosys.com.br/api/produtos?$offset=0&$count=1000000000&$dataConsiderada=data&$situacao=A&$opcEcommerce=S"
+    # Base URL for the API
+    url_prod = "https://empresa.eccosys.com.br/api/produtos"
+    count = 1000  # Number of products per request
+    offset = 0  # Start from the first product
 
-    response_prod = requests.request(
-        "GET", url_prod, headers=headers, data=payload
-    )
+    # Initialize an empty list to store product data
+    all_products = []
 
-    dic_ecco_produto = response_prod.json()
-    df_ecco_produto = pd.DataFrame.from_dict(dic_ecco_produto)
+    while True:
+        # Build the query string with dynamic offset
+        params = {
+            "$offset": offset,
+            "$count": count,
+            "$dataConsiderada": "data",
+            "$situacao": "A",
+            "$opcEcommerce": "S",
+        }
+
+        # Make the API request
+        response_prod = requests.get(url_prod, params=params, headers=headers)
+
+        # Handle errors or end of products
+        if response_prod.status_code == 404:
+            print("No more products found. Finishing loop.")
+            break
+        elif response_prod.status_code != 200:
+            print(f"Error: {response_prod.status_code} - {response_prod.text}")
+            break
+
+        # Parse response JSON
+        products = response_prod.json()
+        # products = data.get("products", [])  # Adjust based on the API's response structure
+
+        # Add products to the list
+        all_products.extend(products)
+
+        # Increment offset for the next request
+        offset += count
+
+    # Convert the list of products into a DataFrame
+    df_ecco_produto = pd.DataFrame(all_products)
 
     # COLUMNS TO KEEP
     columns_to_keep = [

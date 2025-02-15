@@ -61,7 +61,7 @@ c_list = [
     "vogabox",
 ]
 
-# c_list = ["french"]
+# c_list = ["presage"]
 
 # DICIONÁRIO DE NOMES
 

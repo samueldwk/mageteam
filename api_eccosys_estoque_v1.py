@@ -26,7 +26,7 @@ datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
 # CLIENT LIST
 c_list = [
-    # "alanis",
+    "alanis",
     # "basicler",
     # "dadri",
     "french",
@@ -46,7 +46,7 @@ c_list = [
     # "uniquechic",
 ]
 
-# c_list = ["basicler"]
+# c_list = ["alanis"]
 
 # SUPABASE AUTH
 
@@ -233,9 +233,11 @@ for client in c_list:
 
         # Replace 0 values in 'precoLancamentoProduto' with corresponding values from 'precoAtualProduto'
         df_ecco_produto["precoLancamentoProduto"] = df_ecco_produto.apply(
-            lambda row: row["precoAtualProduto"]
-            if row["precoLancamentoProduto"] == 0
-            else row["precoLancamentoProduto"],
+            lambda row: (
+                row["precoAtualProduto"]
+                if row["precoLancamentoProduto"] == 0
+                else row["precoLancamentoProduto"]
+            ),
             axis=1,
         )
 
@@ -273,10 +275,10 @@ for client in c_list:
         )
 
         # Replace NaN values in 'precoCustoProdutoPaiUnit' with values from 'precoCustoProdutoPaiUnit_media'
-        df_ecco_produto_custo_arrumado[
-            "precoCustoProdutoPaiUnit"
-        ] = df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"].fillna(
-            df_ecco_produto_custo_arrumado["precoCustoProdutoUnit"]
+        df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"] = (
+            df_ecco_produto_custo_arrumado["precoCustoProdutoPaiUnit"].fillna(
+                df_ecco_produto_custo_arrumado["precoCustoProdutoUnit"]
+            )
         )
 
         # Criar uma tabela de custo médio por grupo de produto para ser usado caso o custo do produto não seja razoável
@@ -372,10 +374,10 @@ for client in c_list:
 
         # Tranformar formato coluna idProduto para int
         columns_to_convert = ["idProduto_x"]
-        df_ecco_produto_custo_arrumado_final[
-            columns_to_convert
-        ] = df_ecco_produto_custo_arrumado_final[columns_to_convert].astype(
-            int
+        df_ecco_produto_custo_arrumado_final[columns_to_convert] = (
+            df_ecco_produto_custo_arrumado_final[columns_to_convert].astype(
+                int
+            )
         )
 
         # In[3]: Juntar estoque com produto
@@ -408,20 +410,20 @@ for client in c_list:
         # Lidar com produtos com preço de lançamento e atual = 0
 
         # Replace -inf with 0 in a specific column (e.g., column 'A')
-        df_ecco_estoque_final[
-            "PorcentagemDescontoProduto"
-        ] = df_ecco_estoque_final["PorcentagemDescontoProduto"].replace(
-            -np.inf, 0
+        df_ecco_estoque_final["PorcentagemDescontoProduto"] = (
+            df_ecco_estoque_final["PorcentagemDescontoProduto"].replace(
+                -np.inf, 0
+            )
         )
 
         df_ecco_estoque_final.fillna(0, inplace=True)
 
         # Arredondar o desconto de produto
         precision = 2
-        df_ecco_estoque_final.loc[
-            :, "PorcentagemDescontoProduto"
-        ] = df_ecco_estoque_final["PorcentagemDescontoProduto"].round(
-            precision
+        df_ecco_estoque_final.loc[:, "PorcentagemDescontoProduto"] = (
+            df_ecco_estoque_final["PorcentagemDescontoProduto"].round(
+                precision
+            )
         )
 
         # Criar faixas de desconto de produto

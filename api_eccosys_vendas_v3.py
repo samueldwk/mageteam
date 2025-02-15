@@ -50,7 +50,7 @@ c_list = [
     # "uniquechic",
 ]
 
-# c_list = ["french"]
+c_list = ["french"]
 
 # SUPABASE AUTH
 
@@ -69,135 +69,135 @@ files = {}
 
 for client in c_list:
     try:
-        headers = {
-            "Authorization": os.getenv(f"ecco_aut_{client}"),
-            "Content-Type": "application/json;charset=utf-8",
-        }
+        #     headers = {
+        #         "Authorization": os.getenv(f"ecco_aut_{client}"),
+        #         "Content-Type": "application/json;charset=utf-8",
+        #     }
 
-        # In[1]: GET LIST OF ORDERS
+        #     # In[1]: GET LISTAR TODOS OS PEDIDOS
 
-        url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname3}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
+        #     url_ped = f"https://empresa.eccosys.com.br/api/pedidos?$fromDate={dataname3}&$toDate={dataname1}&$offset=0&$count=50000&$dataConsiderada=data"
 
-        response_ped = requests.request(
-            "GET", url_ped, headers=headers, data=payload, files=files
-        )
+        #     response_ped = requests.request(
+        #         "GET", url_ped, headers=headers, data=payload, files=files
+        #     )
 
-        dic_ecco_ped = response_ped.json()
-        df_ecco_ped = pd.DataFrame(dic_ecco_ped)
+        #     dic_ecco_ped = response_ped.json()
+        #     df_ecco_ped = pd.DataFrame(dic_ecco_ped)
 
-        # PRIMEIRA COMPRA 1 = SIM , VAZIO = NAO
+        #     # PRIMEIRA COMPRA 1 = SIM , VAZIO = NAO
 
-        df_ecco_ped.fillna("", inplace=True)
+        #     df_ecco_ped.fillna("", inplace=True)
 
-        df_ecco_ped["primeiraCompra"] = df_ecco_ped["primeiraCompra"].replace(
-            {"1": "sim", "": "nao"}
-        )
+        #     df_ecco_ped["primeiraCompra"] = df_ecco_ped["primeiraCompra"].replace(
+        #         {"1": "sim", "": "nao"}
+        #     )
 
-        # CONVERT COLUMNS TYPE
+        #     # CONVERT COLUMNS TYPE
 
-        df_ecco_ped["desconto"] = df_ecco_ped["desconto"].str.replace(".", "")
+        #     df_ecco_ped["desconto"] = df_ecco_ped["desconto"].str.replace(".", "")
 
-        df_ecco_ped["desconto"] = df_ecco_ped["desconto"].str.replace(",", ".")
+        #     df_ecco_ped["desconto"] = df_ecco_ped["desconto"].str.replace(",", ".")
 
-        columns_to_convert = [
-            "totalProdutos",
-            "desconto",
-            "totalVenda",
-            "frete",
-        ]
-        df_ecco_ped[columns_to_convert] = df_ecco_ped[
-            columns_to_convert
-        ].astype(float)
+        #     columns_to_convert = [
+        #         "totalProdutos",
+        #         "desconto",
+        #         "totalVenda",
+        #         "frete",
+        #     ]
+        #     df_ecco_ped[columns_to_convert] = df_ecco_ped[
+        #         columns_to_convert
+        #     ].astype(float)
 
-        # PRODUCTS SALES VALE WITHOUT DISCOUNT
+        #     # PRODUCTS SALES VALE WITHOUT DISCOUNT
 
-        df_ecco_ped["Vendas Produto Liquido"] = (
-            df_ecco_ped["totalProdutos"] - df_ecco_ped["desconto"]
-        )
+        #     df_ecco_ped["Vendas Produto Liquido"] = (
+        #         df_ecco_ped["totalProdutos"] - df_ecco_ped["desconto"]
+        #     )
 
-        # STATUS CODE X NAME
+        #     # STATUS CODE X NAME
 
-        dic_status_name = {
-            "-1": "Aguardando pagamento",
-            "0": "Em aberto",
-            "1": "Atendido",
-            "2": "Cancelado",
-            "3": "Pronto para picking",
-            "4": "Pagamento em análise",
-        }
+        #     dic_status_name = {
+        #         "-1": "Aguardando pagamento",
+        #         "0": "Em aberto",
+        #         "1": "Atendido",
+        #         "2": "Cancelado",
+        #         "3": "Pronto para picking",
+        #         "4": "Pagamento em análise",
+        #     }
 
-        df_status_name = pd.DataFrame(
-            list(dic_status_name.items()),
-            columns=["Status Code", "Status Name"],
-        )
+        #     df_status_name = pd.DataFrame(
+        #         list(dic_status_name.items()),
+        #         columns=["Status Code", "Status Name"],
+        #     )
 
-        # MERGE PEDIDOS WITH STATUS NAME ON SITUACAO
+        #     # MERGE PEDIDOS WITH STATUS NAME ON SITUACAO
 
-        df_ecco_ped = df_ecco_ped.merge(
-            df_status_name, left_on="situacao", right_on="Status Code"
-        )
+        #     df_ecco_ped = df_ecco_ped.merge(
+        #         df_status_name, left_on="situacao", right_on="Status Code"
+        #     )
 
-        # COLUMNS TO KEEP
+        #     # COLUMNS TO KEEP
 
-        columns_to_keep = [
-            "id",
-            "idContato",
-            "data",
-            "desconto",
-            "totalProdutos",
-            "totalVenda",
-            "frete",
-            "primeiraCompra",
-            "Status Name",
-            "Vendas Produto Liquido",
-        ]
+        #     columns_to_keep = [
+        #         "id",
+        #         "idContato",
+        #         "data",
+        #         "desconto",
+        #         "totalProdutos",
+        #         "totalVenda",
+        #         "frete",
+        #         "primeiraCompra",
+        #         "Status Name",
+        #         "Vendas Produto Liquido",
+        #     ]
 
-        df_ecco_ped = df_ecco_ped[columns_to_keep]
+        #     df_ecco_ped = df_ecco_ped[columns_to_keep]
 
-        # KEEP ONLY THE ORDERS WITH STATUS NAME = Em aberto, Atendido e Pronto para picking
+        #     # KEEP ONLY THE ORDERS WITH STATUS NAME = Em aberto, Atendido e Pronto para picking
 
-        status_name_keep = ["Em aberto", "Atendido", "Pronto para picking"]
+        #     status_name_keep = ["Em aberto", "Atendido", "Pronto para picking"]
 
-        df_ecco_ped = df_ecco_ped[
-            df_ecco_ped["Status Name"].isin(status_name_keep)
-        ]
+        #     df_ecco_ped = df_ecco_ped[
+        #         df_ecco_ped["Status Name"].isin(status_name_keep)
+        #     ]
 
-        # RENAME COLUMNS NAME
-        df_ecco_ped = df_ecco_ped.rename(
-            columns={
-                "id": "idVenda",
-                "idContato": "idCliente",
-                "data": "DataVendaPedido",
-                "desconto": "DescontoPedido",
-                "totalProdutos": "ValorVendaProdutoBruto",
-                "totalVenda": "ValorTotalVenda",
-                "frete": "ValorFrete",
-                "primeiraCompra": "PrimeiraCompra",
-                "Status Name": "StatusPedido",
-                "Vendas Produto Liquido": "ValorVendaProdutoLiquido",
-            }
-        )
+        #     # RENAME COLUMNS NAME
+        #     df_ecco_ped = df_ecco_ped.rename(
+        #         columns={
+        #             "id": "idVenda",
+        #             "idContato": "idCliente",
+        #             "data": "DataVendaPedido",
+        #             "desconto": "DescontoPedido",
+        #             "totalProdutos": "ValorVendaProdutoBruto",
+        #             "totalVenda": "ValorTotalVenda",
+        #             "frete": "ValorFrete",
+        #             "primeiraCompra": "PrimeiraCompra",
+        #             "Status Name": "StatusPedido",
+        #             "Vendas Produto Liquido": "ValorVendaProdutoLiquido",
+        #         }
+        #     )
 
-        # df_ecco_ped.dtypes
+        #     # df_ecco_ped.dtypes
 
-        # Colocar coluna mage_cliente
-        df_ecco_ped["mage_cliente"] = client
+        #     # Colocar coluna mage_cliente
+        #     df_ecco_ped["mage_cliente"] = client
 
-        # In[2]: Enviar informações para DB
+        #     # In[2]: Enviar informações para DB
 
-        dic_ecco_ped = df_ecco_ped.to_dict(orient="records")
+        #     dic_ecco_ped = df_ecco_ped.to_dict(orient="records")
 
-        try:
-            response = (
-                supabase.table("mage_eccosys_pedidos_v1")
-                .upsert(dic_ecco_ped, returning="minimal")
-                .execute()
-            )
+        #     try:
+        #         response = (
+        #             supabase.table("mage_eccosys_pedidos_v1")
+        #             .upsert(dic_ecco_ped, returning="minimal")
+        #             .execute()
+        #         )
 
-        except Exception as exception:
-            print(f"{client}: {exception}")
+        #     except Exception as exception:
+        #         print(f"{client}: {exception}")
 
-        print(f"{client}: api_eccosys_pedidos_v1")
+        #     print(f"{client}: api_eccosys_pedidos_v1")
 
         # In[3]: Trazer da db quais pedidos eu já tenho gravado para nao precisar pegar itens de todos pedidos
 
@@ -418,9 +418,11 @@ for client in c_list:
 
             # Replace 0 values in 'precoLancamentoProduto' with corresponding values from 'precoAtualProduto'
             df_ecco_produto["precoLancamentoProduto"] = df_ecco_produto.apply(
-                lambda row: row["precoAtualProduto"]
-                if row["precoLancamentoProduto"] == 0
-                else row["precoLancamentoProduto"],
+                lambda row: (
+                    row["precoAtualProduto"]
+                    if row["precoLancamentoProduto"] == 0
+                    else row["precoLancamentoProduto"]
+                ),
                 axis=1,
             )
 

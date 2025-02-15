@@ -95,6 +95,17 @@ def download_eccosys(
         # Click the button
         driver.find_element(By.XPATH, button_xpath).click()
 
+        ############### HOMEPAGE ###############
+
+        time.sleep(pause_time + 2)
+        button_text = "Início"
+        inicio = wait.until(
+            EC.element_to_be_clickable(
+                (By.XPATH, f"//*[text()='{button_text}']")
+            )
+        )
+        inicio.click()
+
         ############### PRODUTOS ###############
 
         time.sleep(pause_time + 2)
@@ -164,6 +175,7 @@ def download_eccosys(
             or cliente == "haut"
             or cliente == "morina"
             or cliente == "rery"
+            or cliente == "presage"
             or cliente == "pueri"
             or cliente == "uniquechic"
             or cliente == "muna"
