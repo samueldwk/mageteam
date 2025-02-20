@@ -10,7 +10,7 @@ url = "https://api.magedream.com.br/public/products/photos"
 
 headers = {
     "Authorization": "Bearer m5YEjOn7wgEQPcbtoFSzWvZjvrIOJ8gQ468OXJme",
-    "x-store": "alanisbrand",
+    "x-store": "dadrishop",
 }
 params = {"size": 100, "page": 1}
 

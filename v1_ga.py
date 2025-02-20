@@ -39,6 +39,7 @@ datatxt1, dataname1, datasql1, datanamex, dataname3, dataname4 = datef.dates(
 # CLIENTES
 
 c_list = [
+    "alamanda",
     "alanis",
     "dadri",
     "french",
@@ -61,11 +62,12 @@ c_list = [
     "vogabox",
 ]
 
-# c_list = ["french"]
+# c_list = ["alamanda"]
 
 # DICIONÁRIO DE NOMES
 
 dic_nomes = {
+    "alamanda": "Alamanda",
     "alanis": "Alanis",
     "dadri": "Dadri",
     "french": "French",

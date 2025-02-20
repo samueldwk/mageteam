@@ -16,7 +16,7 @@ dotenv.load_dotenv()
 # DATE FUCTIONS
 
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
-# d1 = datetime(2025, 2, 8).date()  # SELECT DATE
+# d1 = datetime(2025, 2, 15).date()  # SELECT DATE
 
 datasql, datatxt, dataname1, dataname2, dataname3, dataname4 = datef.dates(d1)
 # dataname4_date_format = datetime.strptime(dataname4, "%Y-%m-%d").date()
@@ -502,7 +502,7 @@ for client in c_list:
         df_relger_view_date["Data"] = datatxt
         df_relger_view_date["Mês"] = pd.to_datetime(
             df_relger_view_date["Data"], dayfirst=True
-        ).dt.day
+        ).dt.month
         df_relger_view_date["Ano"] = pd.to_datetime(
             df_relger_view_date["Data"], dayfirst=True
         ).dt.year

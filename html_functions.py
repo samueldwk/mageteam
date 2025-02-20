@@ -171,6 +171,7 @@ def download_eccosys(
         # Exceção de select caso cliente = una, todos os produtos
         if (
             cliente == "una"
+            or cliente == "alamanda"
             or cliente == "mixxon"
             or cliente == "haut"
             or cliente == "morina"

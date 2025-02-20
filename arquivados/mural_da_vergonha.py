@@ -59,8 +59,8 @@ def create_pdf_with_images(input_excel, output_pdf):
         "Nome",
         "Foto",
         "Preço Lançamento",
-        "Preço Médio Vendido",
-        "Desconto Médio",
+        "Qtd Vendida",
+        "MKP Final",
     ]
     if not all(col in df.columns for col in required_columns):
         raise ValueError("Missing required columns in Excel file")
@@ -91,7 +91,7 @@ def create_pdf_with_images(input_excel, output_pdf):
                 image = image.convert("RGB")
 
             # Prepare text overlay
-            text_overlay = f"SKU: {row['Codigo SKU']}\nNome: {row['Nome']}\nPreço de Lançamento: R$ {row['Preço Lançamento']}\nPreço Médio Vendido: R$ {row['Preço Médio Vendido']}\nDesconto: {row['Desconto Médio']}"
+            text_overlay = f"SKU: {row['Codigo SKU']}\nNome: {row['Nome']}\nPreço de Lançamento: R$ {row['Preço Lançamento']}\nQTD Vendida: R$ {row['Qtd Vendida']}\nMKP Final: {row['MKP Final']}"
             image = overlay_text_on_image(image, text_overlay)
 
             # Maintain proportions while fitting into PDF
@@ -127,6 +127,6 @@ def create_pdf_with_images(input_excel, output_pdf):
 
 
 # Usage example
-input_file = r"C:\Users\Samuel Kim\Desktop\alanis mural da vergonha final.xlsx"  # Change this to your Excel file path
+input_file = r"C:\Users\Samuel Kim\Desktop\Dadri Mural da Riqueza.xlsx"  # Change this to your Excel file path
 output_file = "products_with_images.pdf"
 create_pdf_with_images(input_file, output_file)

@@ -1,4 +1,5 @@
 # lofty product_stock_snap, ler o estoque atual no final do dia por produto do db e gravar no banco um snap por faixa de desconto tirando produtos com problema no cadastro
+# v2 tem a mudança das faixas de desconto
 
 import pandas as pd
 import date_functions as datef
@@ -223,19 +224,21 @@ for client in c_list:
             "product_price_discount"
         ] = df_product_stock_disp["product_price_discount"].round(precision)
 
-        bins = [-float("inf"), 0, 0.25, 0.45, 0.6, float("inf")]
+        bins = [-float("inf"), 0, 0.2, 0.3, 0.4, 0.5, float("inf")]
         labels = [
-            "E: <= 0%",
-            "E: > 0% and <= 25%",
-            "E: > 25% and <= 45%",
-            "E: > 45% and <= 60%",
-            "E: > 60%",
+            "E: 0%",
+            "E: 20%",
+            "E: 30%",
+            "E: 40%",
+            "E: 50%",
+            "E: 50% +",
         ]
 
         df_product_stock_disp["product_discount_range"] = pd.cut(
             df_product_stock_disp["product_price_discount"],
             bins=bins,
             labels=labels,
+            right=True,
         )
 
         result_discount_range = (
@@ -267,7 +270,7 @@ for client in c_list:
 
         try:
             response = (
-                supabase.table("Summary")
+                supabase.table("SummaryStock")
                 .upsert(dic_stock_discount_range, returning="minimal")
                 .execute()
             )

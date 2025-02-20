@@ -63,7 +63,7 @@ import pandas as pd
 import json
 
 # Define the file path
-file_path = r"C:\Users\Samuel Kim\Desktop\Magento API\orderList2.json"
+file_path = r"C:\Users\Samuel Kim\Desktop\Magento API\orderList.json"
 
 # Load the JSON data
 with open(file_path, "r", encoding="utf-8") as file:

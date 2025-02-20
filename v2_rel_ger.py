@@ -16,11 +16,12 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2025, 1, 21).date()
+# d1 = datetime.datetime(2025, 2, 15).date()
 
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
 c_list = [
+    "alamanda",
     "alanis",
     "dadri",
     "french",
@@ -43,11 +44,12 @@ c_list = [
     "vogabox",
 ]
 
-# c_list = ["french"]
+# c_list = ["una"]
 
 # DICIONÁRIO DE NOMES
 
 dic_nomes = {
+    "alamanda": "Alamanda",
     "alanis": "Alanis",
     "dadri": "Dadri",
     "french": "French",
@@ -79,9 +81,10 @@ c_list_sku_8 = {
     "Cliente": ["alanis", "dadri", "othergirls", "talgui"],
     "Index": 8,
 }
-c_list_sku_9 = {"Cliente": ["ajobrand", "french", "una"], "Index": 9}
+c_list_sku_9 = {"Cliente": ["ajobrand", "french"], "Index": 9}
 c_list_sku_15 = {
     "Cliente": [
+        "alamanda",
         "mixxon",
         "haut",
         "kle",
@@ -92,6 +95,7 @@ c_list_sku_15 = {
         "pueri",
         "rery",
         "tob",
+        "una",
         "uniquechic",
         "vogabox",
     ],
@@ -1709,6 +1713,22 @@ for cliente in c_list:
                     lambda x: any(codigo in x for codigo in codigos_excluir)
                 )
                 .any(),
+                axis=1,
+            )
+        ]
+
+    if cliente == "una":
+        estoque_preco_df = estoque_preco_df[
+            ~estoque_preco_df.apply(
+                lambda row: row.astype(str).str.contains("SC").any(),
+                axis=1,
+            )
+        ]
+
+    if cliente == "una":
+        estoque_preco_df = estoque_preco_df[
+            ~estoque_preco_df.apply(
+                lambda row: row.astype(str).str.contains("CX").any(),
                 axis=1,
             )
         ]

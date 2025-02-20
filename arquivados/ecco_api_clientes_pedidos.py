@@ -15,7 +15,7 @@ datanamef = "2025-01-01"
 datanamet = datetime.datetime.now().date()
 
 # CLIENT LIST
-c_list = ["mun"]
+c_list = ["tob"]
 
 # API HEADER
 
@@ -271,6 +271,8 @@ for client in c_list:
         df_ecco_ped_cliente["valor_total_venda_produto"]
         / df_ecco_ped_cliente["cmv"]
     )
+
+    df_ecco_cliente["id"] = df_ecco_cliente["id"].astype(str)
 
     # Trazer inf. do cliente para tabela de venda por cliente
     df_ecco_ped_cliente_completo = pd.merge(
