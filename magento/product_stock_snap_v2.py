@@ -65,9 +65,6 @@ for client in c_list:
                         # )  # Debugging
                         all_data.extend(response.data)
                         if len(response.data) < limit - 1:
-                            # print(
-                            #     "✅ Less than limit fetched, stopping pagination."
-                            # )
                             break  # Stop when fewer than 'limit' records are returned
                         offset += len(
                             response.data
@@ -124,9 +121,6 @@ for client in c_list:
                         # )  # Debugging
                         all_data.extend(response.data)
                         if len(response.data) < limit - 1:
-                            # print(
-                            #     "✅ Less than limit fetched, stopping pagination."
-                            # )
                             break  # Stop when fewer than 'limit' records are returned
                         offset += len(
                             response.data
