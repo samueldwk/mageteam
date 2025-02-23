@@ -13,7 +13,10 @@ dotenv.load_dotenv()
 # ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
 
 # Run in git actions
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+
+os.environ[
+    "GOOGLE_APPLICATION_CREDENTIALS"
+] = "mage---performan-1705337009329-52b7dddd6d54.json"
 
 
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
