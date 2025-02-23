@@ -18,7 +18,7 @@ d1 = datef.dmenos(hj).date()
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
 c_list = [
-    "alamanda",
+    # "alamanda",
     "alanis",
     "dadri",
     "french",
