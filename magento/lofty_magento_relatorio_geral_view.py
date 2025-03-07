@@ -116,7 +116,19 @@ for client in c_list:
         .dt.date  # Extract only the date (YYYY-MM-DD)
     )
 
+    ### FELIX Criar uma dataframe com count dos pedidos paid e completed
+
+    df_view_vendaMagento_valor_status_count = (
+        df_order.groupby(["order_create_date_brazil", "order_status"])[
+            "order_id"
+        ]
+        .count()
+        .unstack(fill_value=0)  # Converts status into columns
+        .reset_index()
+    )
+
     # Somar total do valor das vendas magento, por status, separando por dia
+
     df_view_vendaMagento_valor_status = (
         df_order.groupby(["order_create_date_brazil", "order_status"])[
             "order_total_value"
@@ -152,25 +164,38 @@ for client in c_list:
         / df_view_vendaMagento_valor_status["paid"]
     )
 
+    # Merge df
+
+    df_view_vendaMagento_valor_status_value_count = pd.merge(
+        df_view_vendaMagento_valor_status,
+        df_view_vendaMagento_valor_status_count,
+        on="order_create_date_brazil",
+        how="left",
+    )
+
     # Organizar df para view final
 
     # Select and reorder the required rows
-    df_view_vendaMagento_valor_status = (
-        df_view_vendaMagento_valor_status.set_index("order_create_date_brazil")
+    df_view_vendaMagento_valor_status_value_count = (
+        df_view_vendaMagento_valor_status_value_count.set_index(
+            "order_create_date_brazil"
+        )
     )
 
-    df_view_vendaMagento_valor_status_final = df_view_vendaMagento_valor_status.loc[
-        :,
-        [
-            "total",
-            "canceled",
-            "canceled_%",
-            "paid",
-            "complete_%",
-            "complete",
-            # "processing",
-        ],
-    ].T
+    df_view_vendaMagento_valor_status_final = (
+        df_view_vendaMagento_valor_status_value_count.loc[
+            :,
+            [
+                "total",
+                "canceled_x",
+                "canceled_%",
+                "paid",
+                "complete_%",
+                "complete_x",
+                "processing_y",
+            ],
+        ].T
+    )
 
     # In[7]: Save df_view_vendaMagento_valor_status_final in google sheets
 
@@ -197,13 +222,13 @@ for client in c_list:
     # Step 6: Define row mappings (info types)
     info_types = {
         "Venda Magento (Geral)(todos status pedidos)(R$)": "total",
-        "Venda Magento (Geral)(PIX não pago)(R$)": "canceled",
+        "Venda Magento (Geral)(PIX não pago)(R$)": "canceled_x",
         "Venda Magento (Geral)(PIX não pago)(% sob total)": "canceled_%",
-        "Venda Magento (Geral)(apenas pagos)(R$)": "paid",
+        "Venda Magento (Geral)(apenas pagos)(R$)": "paid_x",
         "Venda Magento (Geral)(faturado)(% sob total pago)": "complete_%",
-        "Venda Magento (Geral)(faturado)(R$)": "complete",
-        # "Venda Magento (Geral)(pago não faturado)(R$)": "processing",
-        # "Venda Magento (Geral)(pago não faturado)(qtd pedidos)": "processing_%",
+        "Venda Magento (Geral)(faturado)(R$)": "complete_x",
+        # "Venda Magento (Geral)(pago não faturado)(R$)": "",
+        "Venda Magento (Geral)(pago não faturado)(qtd pedidos)": "processing_y",
     }
 
     # Step 7: Get normalized row labels from Google Sheets (First column)
