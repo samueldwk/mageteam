@@ -16,7 +16,7 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2025, 2, 9).date()
+# d1 = datetime.datetime(2025, 3, 2).date()
 
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 

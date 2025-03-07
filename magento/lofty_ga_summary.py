@@ -8,15 +8,14 @@ from datetime import timedelta, date
 dotenv.load_dotenv()
 
 # Run in local machine
-# os.environ[
-#     "GOOGLE_APPLICATION_CREDENTIALS"
-# ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
-
-# Run in git actions
-
 os.environ[
     "GOOGLE_APPLICATION_CREDENTIALS"
-] = "mage---performan-1705337009329-52b7dddd6d54.json"
+] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
+
+# Run in git actions
+# os.environ[
+#     "GOOGLE_APPLICATION_CREDENTIALS"
+# ] = "mage---performan-1705337009329-52b7dddd6d54.json"
 
 
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -52,6 +51,8 @@ datatxt1, dataname1, datasql1, dataname2, dataname3, dataname4 = datef.dates(
     d1
 )
 
+# dataname2 = "2025-02-25"
+
 
 def get_ga_df():
     request = RunReportRequest(
@@ -64,9 +65,9 @@ def get_ga_df():
             {"name": "totalRevenue"},  # Total sales revenue
             {"name": "sessions"},  # Total sessions
             {"name": "engagedSessions"},  # Engaged sessions
-            {"name": "conversions"},  # Converted sessions
+            {"name": "transactions"},  # Converted sessions
             {"name": "bounceRate"},  # Bounce rate
-            {"name": "sessionConversionRate"},  # Conversion rate
+            # {"name": "sessionConversionRate"},  # Conversion rate
             {"name": "userEngagementDuration"},  # Avg. session duration
             {"name": "screenPageViews"},  # Total page views
         ],
@@ -87,9 +88,9 @@ def get_ga_df():
                 "ga_engaged_sessions": int(row.metric_values[2].value),
                 "ga_converted_sessions": int(row.metric_values[3].value),
                 "ga_bounce_rate": float(row.metric_values[4].value),
-                "ga_conversion_rate": float(row.metric_values[5].value),
-                # "ga_timespent": float(row.metric_values[6].value),
-                "ga_pageviews": int(row.metric_values[7].value),
+                # "ga_conversion_rate": float(row.metric_values[5].value),
+                "ga_timespent_total": float(row.metric_values[5].value),
+                "ga_pageviews": int(row.metric_values[6].value),
             }
         )
 
@@ -99,6 +100,18 @@ def get_ga_df():
 
 
 df_ga = get_ga_df()
+
+df_ga["ga_timespent"] = df_ga.apply(
+    lambda row: (row["ga_timespent_total"] / row["ga_sessions"])
+    if (row["ga_sessions"] > 0 and row["ga_timespent_total"] > 0)
+    else 0,
+    axis=1,
+)
+
+df_ga["ga_conversion_rate"] = (
+    df_ga["ga_converted_sessions"] / df_ga["ga_sessions"]
+)
+
 
 # Gravar informações de df_ga_channelgroup na db
 

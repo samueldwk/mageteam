@@ -6,8 +6,15 @@ import dotenv
 import os
 import datetime
 import date_functions as datef
-from datetime import timedelta, date
 import numpy as np
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_exponential,
+    retry_if_exception_type,
+)
+import time
+
 
 dotenv.load_dotenv()
 
@@ -17,7 +24,7 @@ hj = datetime.datetime.now()
 d1 = datef.dmenos(hj).date()
 
 # Para puxar de uma data específica
-# d1 = datetime.datetime(2025, 2, 6).date()
+# d1 = datetime.datetime(2025, 3, 3).date()
 
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
@@ -31,6 +38,11 @@ key: str = os.environ.get("SUPABASE_LOFTY_KEY")
 supabase: Client = create_client(url, key)
 
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=2),
+    retry=retry_if_exception_type(Exception),
+)
 def download_fb(client, dataname):
     global df_fb_campaigns_cru_global  # Declare it as global
 
@@ -149,35 +161,31 @@ def download_fb(client, dataname):
         columns_to_convert
     ].astype(float)
 
-    # Filter conversion campaigns
-    df_fb_campaigns_filtrado = df_fb_campaigns_cru[
-        df_fb_campaigns_cru["Objective"].isin(
-            ["OUTCOME_SALES", "CONVERSIONS", "PRODUCT_CATALOG_SALES"]
-        )
-    ]
+    # # Filter conversion campaigns
+    # df_fb_campaigns_filtrado = df_fb_campaigns_cru[
+    #     df_fb_campaigns_cru["Objective"].isin(
+    #         ["OUTCOME_SALES", "CONVERSIONS", "PRODUCT_CATALOG_SALES"]
+    #     )
+    # ]
 
-    # Remove wholesale campaigns
-    df_fb_campaigns_filtrado = df_fb_campaigns_filtrado[
-        ~df_fb_campaigns_filtrado.apply(
-            lambda row: row.astype(str).str.contains("atacado").any(), axis=1
-        )
-    ]
+    # # Remove wholesale campaigns
+    # df_fb_campaigns_filtrado = df_fb_campaigns_filtrado[
+    #     ~df_fb_campaigns_filtrado.apply(
+    #         lambda row: row.astype(str).str.contains("atacado").any(), axis=1
+    #     )
+    # ]
 
     # Sum total spend
-    resultado_fb_spend_total = df_fb_campaigns_filtrado["Spend"].sum()
+    resultado_fb_spend_total = df_fb_campaigns_cru["Spend"].sum()
 
     # Sum impressions
-    resultado_fb_impressions_total = df_fb_campaigns_filtrado[
-        "Impressions"
-    ].sum()
+    resultado_fb_impressions_total = df_fb_campaigns_cru["Impressions"].sum()
 
     # Sum link clicks
-    resultado_fb_linkclicks_total = df_fb_campaigns_filtrado[
-        "Link Clicks"
-    ].sum()
+    resultado_fb_linkclicks_total = df_fb_campaigns_cru["Link Clicks"].sum()
 
     # Sum total sales
-    resultado_fb_vendas_total = df_fb_campaigns_filtrado[
+    resultado_fb_vendas_total = df_fb_campaigns_cru[
         "web_in_store_purchase"
     ].sum()
 
@@ -234,24 +242,15 @@ def download_fb(client, dataname):
 # MetaAds API
 
 for client in c_list:
-    try:
-        metaAds = download_fb(client, dataname)
-        print(metaAds)
+    metaAds = download_fb(client, dataname)
+    print(metaAds)
 
-        # Gravar no banco informações do metaads
+    # Gravar no banco informações do metaads
 
-        dic_metaAds = metaAds.to_dict(orient="records")
+    dic_metaAds = metaAds.to_dict(orient="records")
 
-        try:
-            response = (
-                supabase.table("MetaAds")
-                .upsert(dic_metaAds, returning="minimal")
-                .execute()
-            )
-
-        except Exception as e:
-            print(e)
-
-    except Exception as e:
-        print(f"❌ Error accessing Facebook data for client {client}: {e}")
-        pass
+    response = (
+        supabase.table("MetaAds")
+        .upsert(dic_metaAds, returning="minimal")
+        .execute()
+    )

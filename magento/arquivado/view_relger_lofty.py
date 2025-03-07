@@ -6,7 +6,6 @@ from datetime import timedelta, date
 from datetime import datetime
 import dotenv
 import os
-from pushover_notification import send_pushover_notification
 import ads_meta_lofty as fb
 import gspread
 
@@ -16,12 +15,9 @@ dotenv.load_dotenv()
 # DATE FUCTIONS
 
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
-# d1 = datetime(2025, 2, 15).date()  # SELECT DATE
+# d1 = datetime(2025, 3, 4).date()  # SELECT DATE
 
 datasql, datatxt, dataname1, dataname2, dataname3, dataname4 = datef.dates(d1)
-# dataname4_date_format = datetime.strptime(dataname4, "%Y-%m-%d").date()
-# dataname3_date_format = datetime.strptime(dataname3, "%Y-%m-%d").date()
-# dataname2_date_format = datetime.strptime(dataname2, "%Y-%m-%d").date()
 dataname1_date_format = datetime.strptime(dataname1, "%Y-%m-%d").date()
 
 

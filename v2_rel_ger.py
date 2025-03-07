@@ -16,7 +16,7 @@ d1 = datef.dmenos(hj).date()
 
 # #Para puxar de uma data específica
 
-# d1 = datetime.datetime(2025, 2, 15).date()
+# d1 = datetime.datetime(2025, 3, 2).date()
 
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
@@ -44,7 +44,7 @@ c_list = [
     "vogabox",
 ]
 
-# c_list = ["french"]
+# c_list = ["rery"]
 
 # DICIONÁRIO DE NOMES
 
@@ -1862,6 +1862,25 @@ for cliente in c_list:
     if cliente == "kle":
         df_vendas["Codigo SKU"] = df_vendas["Codigo SKU"].astype(str)
 
+    # Tirar vendas que nao sao de cliente final
+
+    if cliente == "french":
+        df_vendas = df_vendas[
+            ~df_vendas.apply(
+                lambda row: row.astype(str)
+                .str.contains("LF CONFECCOES")
+                .any(),
+                axis=1,
+            )
+        ]
+
+    if cliente == "french":
+        df_vendas = df_vendas[
+            ~df_vendas.apply(
+                lambda row: row.astype(str).str.contains("GUARNIERIUS").any(),
+                axis=1,
+            )
+        ]
     # SKU to Cod. Modelo + Cor ON df_vendas
 
     ####### CHANGE SO IT CHANGES TO EACH CLIENT

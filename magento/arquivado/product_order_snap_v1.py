@@ -14,7 +14,7 @@ dotenv.load_dotenv()
 # DATE FUCTIONS
 
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
-d8 = date.today() - timedelta(days=8)  # yesterday -7
+d8 = date.today() - timedelta(days=7)  # yesterday -7
 # d1 = datetime(2025, 2, 15).date()  # SELECT DATE
 
 datasql, datatxt, dataname1, dataname2, dataname3, dataname4 = datef.dates(d1)

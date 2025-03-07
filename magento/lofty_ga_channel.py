@@ -34,21 +34,18 @@ supabase: Client = create_client(url, key)
 
 # DATA FUNCTIONS
 
-d2 = date.today() - timedelta(days=4)
-datatxt2, dataname2, datasql2, datanamex, dataname3, dataname4 = datef.dates(
-    d2
-)
-
 d1 = date.today() - timedelta(days=1)
-datatxt1, dataname1, datasql1, datanamex, dataname3, dataname4 = datef.dates(
+datatxt1, dataname1, datasql1, dataname2, dataname3, dataname4 = datef.dates(
     d1
 )
+
+# dataname2 = "2025-02-25"
 
 
 def get_ga_df():
     request = RunReportRequest(
         property=f"properties/{os.getenv('ga_id_lofty')}",
-        date_ranges=[{"start_date": "2025-01-01", "end_date": "yesterday"}],
+        date_ranges=[{"start_date": dataname2, "end_date": dataname1}],
         dimensions=[
             {"name": "date"},  # New: Adds Date as a dimension
             {"name": "sessionSource"},  # Traffic source
@@ -58,13 +55,13 @@ def get_ga_df():
         ],
         metrics=[
             {"name": "totalRevenue"},  # Total sales revenue
-            {"name": "sessions"},  # Total sessions
-            {"name": "engagedSessions"},  # Engaged sessions
-            {"name": "conversions"},  # Converted sessions
-            {"name": "bounceRate"},  # Bounce rate
-            {"name": "sessionConversionRate"},  # Conversion rate
-            {"name": "averageSessionDuration"},  # Avg. session duration
-            {"name": "screenPageViews"},  # Total page views
+            # {"name": "sessions"},  # Total sessions
+            # {"name": "engagedSessions"},  # Engaged sessions
+            # {"name": "conversions"},  # Converted sessions
+            # {"name": "bounceRate"},  # Bounce rate
+            # {"name": "sessionConversionRate"},  # Conversion rate
+            # {"name": "averageSessionDuration"},  # Avg. session duration
+            # {"name": "screenPageViews"},  # Total page views
         ],
     )
 
@@ -87,16 +84,16 @@ def get_ga_df():
                 "Campaign Name": campaign,
                 "ga_channelgroup": channel_group,
                 "ga_order_value": float(row.metric_values[0].value),
-                "ga_sessions": int(row.metric_values[1].value),
-                "ga_engaged_sessions": int(row.metric_values[2].value),
-                "ga_converted_sessions": int(row.metric_values[3].value),
-                "Bounce Rate (%)": float(row.metric_values[4].value) * 100,
-                "Session Conversion Rate (%)": float(
-                    row.metric_values[5].value
-                )
-                * 100,
-                "ga_timespent": float(row.metric_values[6].value),
-                "ga_pageviews": int(row.metric_values[7].value),
+                # "ga_sessions": int(row.metric_values[1].value),
+                # "ga_engaged_sessions": int(row.metric_values[2].value),
+                # "ga_converted_sessions": int(row.metric_values[3].value),
+                # "Bounce Rate (%)": float(row.metric_values[4].value) * 100,
+                # "Session Conversion Rate (%)": float(
+                #     row.metric_values[5].value
+                # )
+                # * 100,
+                # "ga_timespent": float(row.metric_values[6].value),
+                # "ga_pageviews": int(row.metric_values[7].value),
             }
         )
 

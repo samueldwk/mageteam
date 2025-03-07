@@ -13,12 +13,12 @@ d1 = datef.dmenos(hj).date()
 
 # Para puxar de uma data específica
 
-# d1 = datetime.datetime(2025, 2, 15).date()
+# d1 = datetime.datetime(2025, 3, 2).date()
 
 datatxt, dataname, datasql, dataname2, dataname3, dataname4 = datef.dates(d1)
 
 c_list = [
-    # "alamanda",
+    "alamanda",
     "alanis",
     "dadri",
     "french",
@@ -34,15 +34,15 @@ c_list = [
     "paconcept",
     "presage",
     "pueri",
+    "rery",
     "talgui",
     "tob",
-    "rery",
     "una",
     "uniquechic",
     "vogabox",
 ]
 
-# c_list = ["alamanda"]
+# c_list = ["rery"]
 
 #### FILE PATHS ####
 
