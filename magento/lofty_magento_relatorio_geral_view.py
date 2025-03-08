@@ -192,7 +192,7 @@ for client in c_list:
         # Continue only if we have at least some data
         if billing_response.data or returns_response.data:
             # Get Google Sheet
-            gc = gspread.service_account(filename='credentials.json')
+            gc = gspread.oauth()
             sh = gc.open(f"{dic_nomes[client]} - Relatório Geral E-Commerce").worksheet("Geral")
             
             # Get all values from the sheet
