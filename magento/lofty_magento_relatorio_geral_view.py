@@ -203,7 +203,7 @@ for client in c_list:
 
     # In[7]: Save df_view_vendaMagento_valor_status_final in google sheets
 
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.oauth()
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -630,7 +630,7 @@ for client in c_list:
 
     # In[7]: Save df_view_vendaMagento_info_final in google sheets
 
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.oauth()
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -826,7 +826,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryOrder_value_final in google sheets
 
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.oauth()
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -931,7 +931,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryOrder_qty_final in google sheets
 
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.oauth()
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -1110,7 +1110,7 @@ for client in c_list:
 
     # In[7]: Save df_view_vendaMagento_coupon_final in google sheets
 
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.oauth()
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -1218,7 +1218,7 @@ for client in c_list:
 
     from gspread.utils import rowcol_to_a1
 
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.oauth()
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
     ).worksheet("Cupom Influencer")
@@ -1406,7 +1406,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryStock_value_final in google sheets
 
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.oauth()
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -1511,7 +1511,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryStock_qty_final in google sheets
 
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.oauth()
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
