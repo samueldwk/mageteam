@@ -13,6 +13,8 @@ import numpy as np
 
 dotenv.load_dotenv()
 
+
+    
 # DATE FUCTIONS
 
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
@@ -34,7 +36,7 @@ dic_nomes = {
 
 # SUPABASE AUTH
 
-from supabase import create_client, Client
+from supabase import create_client, Client 
 import supabase
 
 url: str = os.environ.get("SUPABASE_LOFTY_URL")
@@ -138,6 +140,7 @@ for client in c_list:
         .reset_index()
     )
 
+
     df_view_vendaMagento_valor_status[
         "paid"
     ] = df_view_vendaMagento_valor_status.get(
@@ -192,6 +195,7 @@ for client in c_list:
                 "paid",
                 "complete_%",
                 "complete_x",
+                "processing_x",
                 "processing_y",
             ],
         ].T
@@ -227,7 +231,7 @@ for client in c_list:
         "Venda Magento (Geral)(apenas pagos)(R$)": "paid_x",
         "Venda Magento (Geral)(faturado)(% sob total pago)": "complete_%",
         "Venda Magento (Geral)(faturado)(R$)": "complete_x",
-        # "Venda Magento (Geral)(pago não faturado)(R$)": "",
+        "Venda Magento (Geral)(pago não faturado)(R$)": "processing_x",
         "Venda Magento (Geral)(pago não faturado)(qtd pedidos)": "processing_y",
     }
 
