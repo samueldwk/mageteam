@@ -498,7 +498,7 @@ for client in c_list:
         df_relger_view_date["Data"] = datatxt
         df_relger_view_date["Mês"] = pd.to_datetime(
             df_relger_view_date["Data"], dayfirst=True
-        ).dt.month
+        ).dt.day
         df_relger_view_date["Ano"] = pd.to_datetime(
             df_relger_view_date["Data"], dayfirst=True
         ).dt.year
