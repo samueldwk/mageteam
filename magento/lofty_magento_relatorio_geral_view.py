@@ -18,7 +18,7 @@ dotenv.load_dotenv()
 # DATE FUCTIONS
 
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
-dx = date.today() - timedelta(days=15)  # x DATE
+dx = date.today() - timedelta(days=35)  # x DATE
 # d1 = datetime(2025, 2, 15).date()  # SELECT DATE
 
 datasql, datatxt, dataname1, dataname2, dataname3, dataname4 = datef.dates(d1)
@@ -55,6 +55,223 @@ end_date = (
 
 for client in c_list:
     # In[1]: Bater no db e pegar lista de pedidos
+    
+    # try:
+    #     response = (
+    #         supabase.table("OrderBillingLinx")
+    #         .select("date, total_invoicing")
+    #         .gte("date", start_date.split('T')[0])
+    #         .lte("date", end_date.split('T')[0])
+    #         .execute()
+    #     )
+        
+    #     if response.data:
+    #         print(f"✅ Successfully fetched {len(response.data)} billing records!")
+            
+    #         gc = gspread.service_account(filename='credentials.json')
+    #         sh = gc.open(f"{dic_nomes[client]} - Relatório Geral E-Commerce").worksheet("Geral")
+            
+    #         all_values = sh.get_all_values()
+    #         faturado_linx_row = None
+            
+    #         for i, row in enumerate(all_values):
+    #             if row[0].lower().strip() == "faturado linx":
+    #                 faturado_linx_row = i + 1 
+    #                 break
+            
+    #         if faturado_linx_row:
+    #             date_headers = all_values[1]
+                
+    #             updates = []
+                
+    #             billing_by_date = {record['date']: record['total_invoicing'] for record in response.data}
+                
+    #             for col_idx, date in enumerate(date_headers, start=1):
+    #                 date = date.strip()
+    #                 if date in billing_by_date:
+    #                     updates.append({
+    #                         "range": f"{gspread.utils.rowcol_to_a1(faturado_linx_row, col_idx)}",
+    #                         "values": [[billing_by_date[date]]]
+    #                     })
+                
+    #             if updates:
+    #                 sh.batch_update(updates)
+    #                 print(f"✅ Updated 'Faturado Linx' with {len(updates)} values!")
+    #             else:
+    #                 print("⚠️ No matching dates found to update.")
+    #         else:
+    #             print("⚠️ 'Faturado Linx' row not found in the sheet!")
+    #     else:
+    #         print("⚠️ No billing data found.")
+        
+    # except Exception as e:
+    #     print(f"❌ Error processing billing data: {e}")
+   
+   
+    # try:
+    #     response = (
+    #         supabase.table("OrderReturnsLinx")
+    #         .select("date, total_value")
+    #         .gte("date", start_date.split('T')[0])
+    #         .lte("date", end_date.split('T')[0])
+    #         .execute()
+    #     )
+        
+    #     if response.data:
+    #         print(f"✅ Successfully fetched {len(response.data)} return records!")
+
+    #         gc = gspread.service_account(filename='credentials.json')
+    #         sh = gc.open(f"{dic_nomes[client]} - Relatório Geral E-Commerce").worksheet("Geral")
+            
+    #         all_values = sh.get_all_values()
+    #         devolucao_row = None
+            
+    #         for i, row in enumerate(all_values):
+    #             if row[0].lower().strip() == "devolução (r$)":
+    #                 devolucao_row = i + 1
+    #                 break
+            
+    #         if devolucao_row:
+    #             date_headers = all_values[1]
+                
+    #             updates = []
+                
+    #             returns_by_date = {record['date']: record['total_value'] for record in response.data}
+                
+    #             for col_idx, date in enumerate(date_headers, start=1):
+    #                 date = date.strip()
+    #                 if date in returns_by_date:
+    #                     updates.append({
+    #                         "range": f"{gspread.utils.rowcol_to_a1(devolucao_row, col_idx)}",
+    #                         "values": [[returns_by_date[date]]]
+    #                     })
+                
+    #             if updates:
+    #                 sh.batch_update(updates)
+    #                 print(f"✅ Updated 'Devolução (R$)' with {len(updates)} values!")
+    #             else:
+    #                 print("⚠️ No matching dates found to update for returns data.")
+    #         else:
+    #             print("⚠️ 'Devolução (R$)' row not found in the sheet!")
+    #     else:
+    #         print("⚠️ No returns data found.")
+            
+    # except Exception as e:
+    #     print(f"❌ Error processing returns data: {e}")
+    
+    try:
+        # Fetch billing data
+        billing_response = (
+            supabase.table("OrderBillingLinx")
+            .select("date, total_invoicing")
+            .gte("date", start_date.split('T')[0])
+            .lte("date", end_date.split('T')[0])
+            .execute()
+        )
+        
+        # Fetch returns data
+        returns_response = (
+            supabase.table("OrderReturnsLinx")
+            .select("date, total_value")
+            .gte("date", start_date.split('T')[0])
+            .lte("date", end_date.split('T')[0])
+            .execute()
+        )
+        
+        # Check if we have data to process
+        if billing_response.data:
+            print(f"✅ Successfully fetched {len(billing_response.data)} billing records!")
+        else:
+            print("⚠️ No billing data found.")
+            
+        if returns_response.data:
+            print(f"✅ Successfully fetched {len(returns_response.data)} return records!")
+        else:
+            print("⚠️ No returns data found.")
+        
+        # Continue only if we have at least some data
+        if billing_response.data or returns_response.data:
+            # Get Google Sheet
+            gc = gspread.service_account(filename='credentials.json')
+            sh = gc.open(f"{dic_nomes[client]} - Relatório Geral E-Commerce").worksheet("Geral")
+            
+            # Get all values from the sheet
+            all_values = sh.get_all_values()
+            
+            # Get date headers (assuming they're in row 2)
+            date_headers = all_values[1]
+            
+            # Find the rows we need to update
+            faturado_linx_row = None
+            devolucao_row = None
+            devolucao_percent_row = None
+            
+            for i, row in enumerate(all_values):
+                row_label = row[0].lower().strip()
+                if row_label == "faturado linx":
+                    faturado_linx_row = i + 1  # Convert to 1-based index
+                elif row_label == "devolução (r$)":
+                    devolucao_row = i + 1  # Convert to 1-based index
+                elif row_label == "devolução (% do faturado linx)":
+                    devolucao_percent_row = i + 1  # Convert to 1-based index
+            
+            # Create dictionaries for easier lookup
+            billing_by_date = {record['date']: record['total_invoicing'] for record in billing_response.data} if billing_response.data else {}
+            returns_by_date = {record['date']: record['total_value'] for record in returns_response.data} if returns_response.data else {}
+            
+            # Calculate percentage for each date
+            percentage_by_date = {}
+            for date in set(billing_by_date.keys()) | set(returns_by_date.keys()):
+                billing_value = billing_by_date.get(date, 0)
+                returns_value = returns_by_date.get(date, 0)
+                
+                # Calculate percentage (avoid division by zero)
+                if billing_value and billing_value > 0:
+                    percentage = (returns_value / billing_value)
+                else:
+                    percentage = 0
+                    
+                percentage_by_date[date] = percentage
+            
+            # Prepare updates
+            updates = []
+            
+            # For each date in our headers, add relevant updates
+            for col_idx, date in enumerate(date_headers, start=1):
+                date = date.strip()
+                
+                # Update billing data
+                if date in billing_by_date and faturado_linx_row:
+                    updates.append({
+                        "range": f"{gspread.utils.rowcol_to_a1(faturado_linx_row, col_idx)}",
+                        "values": [[billing_by_date[date]]]
+                    })
+                
+                # Update returns data
+                if date in returns_by_date and devolucao_row:
+                    updates.append({
+                        "range": f"{gspread.utils.rowcol_to_a1(devolucao_row, col_idx)}",
+                        "values": [[returns_by_date[date]]]
+                    })
+                
+                # Update percentage data
+                if date in percentage_by_date and devolucao_percent_row:
+                    updates.append({
+                        "range": f"{gspread.utils.rowcol_to_a1(devolucao_percent_row, col_idx)}",
+                        "values": [[percentage_by_date[date]]]
+                    })
+            
+            # Execute batch update
+            if updates:
+                sh.batch_update(updates)
+                print(f"✅ Updated sheet with {len(updates)} values!")
+            else:
+                print("⚠️ No matching dates found to update.")
+        else:
+            print("⚠️ No data available to update the sheet.")
+            
+    except Exception as e:
+        print(f"❌ Error processing data: {e}")
 
     def get_order(client):
         try:
