@@ -4,12 +4,13 @@ import numpy as np
 import dotenv
 import date_functions as datef
 from datetime import timedelta, date
+from google.oauth2.service_account import Credentials
 
 dotenv.load_dotenv()
 
-os.environ[
-    "GOOGLE_APPLICATION_CREDENTIALS"
-] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
+# os.environ[
+#     "GOOGLE_APPLICATION_CREDENTIALS"
+# ] = "C:\\Users\\Samuel Kim\\OneDrive\\Documentos\\bat\\credentials.json"
 
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import (
@@ -19,9 +20,29 @@ from google.analytics.data_v1beta.types import (
     RunReportRequest,
 )
 
+service_account_info = {
+    "type": os.environ.get("SERVICE_ACCOUNT_TYPE"),
+    "project_id": os.environ.get("SERVICE_ACCOUNT_PROJECT_ID"),
+    "private_key_id": os.environ.get("SERVICE_ACCOUNT_PRIVATE_KEY_ID"),
+    "private_key": os.environ.get("SERVICE_ACCOUNT_PRIVATE_KEY").replace("\\n", "\n"),
+    "client_email": os.environ.get("SERVICE_ACCOUNT_CLIENT_EMAIL"),
+    "client_id": os.environ.get("SERVICE_ACCOUNT_CLIENT_ID"),
+    "auth_uri": os.environ.get("SERVICE_ACCOUNT_AUTH_URI"),
+    "token_uri": os.environ.get("SERVICE_ACCOUNT_TOKEN_URI"),
+    "auth_provider_x509_cert_url": os.environ.get("SERVICE_ACCOUNT_AUTH_PROVIDER"),
+    "client_x509_cert_url": os.environ.get("SERVICE_ACCOUNT_CERT_URL"),
+    "universe_domain": os.environ.get("SERVICE_ACCOUNT_UNIVERSE_DOMAIN", "googleapis.com")
+}
+
+# Create credentials object with appropriate scopes for Google Analytics
+scopes = ["https://www.googleapis.com/auth/analytics", 
+          "https://www.googleapis.com/auth/analytics.readonly"]
+
+credentials = Credentials.from_service_account_info(service_account_info, scopes=scopes)
+
 # Using a default constructor instructs the client to use the credentials
 # specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
-client = BetaAnalyticsDataClient()
+client = BetaAnalyticsDataClient(credentials=credentials)
 
 # SUPABASE AUTH
 

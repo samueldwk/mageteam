@@ -545,12 +545,12 @@ for client in c_list:
         gc = gspread.oauth()
 
         sh = gc.open(
-            f"{dic_nomes[client]} - Relatório Gerencial E-Commerce"
-        ).worksheet("Diário")
+            f"{dic_nomes[client]} - Relatï¿½rio Gerencial E-Commerce"
+        ).worksheet("Diï¿½rio")
 
         dic_relger_view_magento_fb = df_relger_view_magento_fb.values.tolist()
 
-        print(f"{dic_nomes[client]} - Relatório Gerencial E-Commerce")
+        print(f"{dic_nomes[client]} - Relatï¿½rio Gerencial E-Commerce")
 
         sh.append_rows(dic_relger_view_magento_fb, table_range="A1")
 

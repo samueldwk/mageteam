@@ -8,13 +8,13 @@ import dotenv
 import os
 import math
 import concurrent.futures
+from google.oauth2.service_account import Credentials
 import gspread
 import numpy as np
 
 dotenv.load_dotenv()
 
 
-    
 # DATE FUCTIONS
 
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
@@ -52,6 +52,26 @@ end_date = (
     datetime.combine(d1, datetime.min.time())
     + timedelta(hours=3, seconds=86399)
 ).isoformat()
+
+service_account_info = {
+    "type": os.environ.get("SERVICE_ACCOUNT_TYPE"),
+    "project_id": os.environ.get("SERVICE_ACCOUNT_PROJECT_ID"),
+    "private_key_id": os.environ.get("SERVICE_ACCOUNT_PRIVATE_KEY_ID"),
+    "private_key": os.environ.get("SERVICE_ACCOUNT_PRIVATE_KEY").replace("\\n", "\n"),
+    "client_email": os.environ.get("SERVICE_ACCOUNT_CLIENT_EMAIL"),
+    "client_id": os.environ.get("SERVICE_ACCOUNT_CLIENT_ID"),
+    "auth_uri": os.environ.get("SERVICE_ACCOUNT_AUTH_URI"),
+    "token_uri": os.environ.get("SERVICE_ACCOUNT_TOKEN_URI"),
+    "auth_provider_x509_cert_url": os.environ.get("SERVICE_ACCOUNT_AUTH_PROVIDER"),
+    "client_x509_cert_url": os.environ.get("SERVICE_ACCOUNT_CERT_URL"),
+    "universe_domain": os.environ.get("SERVICE_ACCOUNT_UNIVERSE_DOMAIN", "googleapis.com")
+}
+
+scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+
+credentials = Credentials.from_service_account_info(service_account_info, scopes=scopes)
+
+print(service_account_info)
 
 for client in c_list:
     # In[1]: Bater no db e pegar lista de pedidos
@@ -192,7 +212,7 @@ for client in c_list:
         # Continue only if we have at least some data
         if billing_response.data or returns_response.data:
             # Get Google Sheet
-            gc = gspread.oauth()
+            gc = gspread.authorize(credentials)
             sh = gc.open(f"{dic_nomes[client]} - Relatório Geral E-Commerce").worksheet("Geral")
             
             # Get all values from the sheet
@@ -420,7 +440,7 @@ for client in c_list:
 
     # In[7]: Save df_view_vendaMagento_valor_status_final in google sheets
 
-    gc = gspread.oauth()
+    gc = gspread.authorize(credentials)
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -847,7 +867,7 @@ for client in c_list:
 
     # In[7]: Save df_view_vendaMagento_info_final in google sheets
 
-    gc = gspread.oauth()
+    gc = gspread.authorize(credentials)
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -1043,7 +1063,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryOrder_value_final in google sheets
 
-    gc = gspread.oauth()
+    gc = gspread.authorize(credentials)
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -1148,7 +1168,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryOrder_qty_final in google sheets
 
-    gc = gspread.oauth()
+    gc = gspread.authorize(credentials)
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -1327,7 +1347,7 @@ for client in c_list:
 
     # In[7]: Save df_view_vendaMagento_coupon_final in google sheets
 
-    gc = gspread.oauth()
+    gc = gspread.authorize(credentials)
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -1435,7 +1455,7 @@ for client in c_list:
 
     from gspread.utils import rowcol_to_a1
 
-    gc = gspread.oauth()
+    gc = gspread.authorize(credentials)
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
     ).worksheet("Cupom Influencer")
@@ -1623,7 +1643,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryStock_value_final in google sheets
 
-    gc = gspread.oauth()
+    gc = gspread.authorize(credentials)
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
@@ -1728,7 +1748,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryStock_qty_final in google sheets
 
-    gc = gspread.oauth()
+    gc = gspread.authorize(credentials)
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"

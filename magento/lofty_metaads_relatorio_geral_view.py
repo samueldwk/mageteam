@@ -7,6 +7,7 @@ from datetime import datetime
 import dotenv
 import os
 import gspread
+from google.oauth2.service_account import Credentials
 
 # import ads_meta_lofty as fb
 
@@ -40,6 +41,23 @@ url: str = os.environ.get("SUPABASE_LOFTY_URL")
 key: str = os.environ.get("SUPABASE_LOFTY_KEY")
 supabase: Client = create_client(url, key)
 
+service_account_info = {
+    "type": os.environ.get("SERVICE_ACCOUNT_TYPE"),
+    "project_id": os.environ.get("SERVICE_ACCOUNT_PROJECT_ID"),
+    "private_key_id": os.environ.get("SERVICE_ACCOUNT_PRIVATE_KEY_ID"),
+    "private_key": os.environ.get("SERVICE_ACCOUNT_PRIVATE_KEY").replace("\\n", "\n"),
+    "client_email": os.environ.get("SERVICE_ACCOUNT_CLIENT_EMAIL"),
+    "client_id": os.environ.get("SERVICE_ACCOUNT_CLIENT_ID"),
+    "auth_uri": os.environ.get("SERVICE_ACCOUNT_AUTH_URI"),
+    "token_uri": os.environ.get("SERVICE_ACCOUNT_TOKEN_URI"),
+    "auth_provider_x509_cert_url": os.environ.get("SERVICE_ACCOUNT_AUTH_PROVIDER"),
+    "client_x509_cert_url": os.environ.get("SERVICE_ACCOUNT_CERT_URL"),
+    "universe_domain": os.environ.get("SERVICE_ACCOUNT_UNIVERSE_DOMAIN", "googleapis.com")
+}
+
+scopes = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+
+credentials = Credentials.from_service_account_info(service_account_info, scopes=scopes)
 
 for client in c_list:
     # In[4]: Bater no db e trazer stock summary
@@ -107,7 +125,7 @@ for client in c_list:
 
     # In[7]: Save df_summaryStock_value_final in google sheets
 
-    gc = gspread.oauth()
+    gc = gc = gspread.authorize(credentials)
 
     sh = gc.open(
         f"{dic_nomes[client]} - Relatório Geral E-Commerce"
