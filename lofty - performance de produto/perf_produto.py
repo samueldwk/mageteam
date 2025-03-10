@@ -16,7 +16,7 @@ dotenv.load_dotenv()
 # DATE FUCTIONS
 
 d1 = date.today() - timedelta(days=1)  # YESTERDAY DATE
-dx = date.today() - timedelta(days=15)  # x DATE
+dx = date.today() - timedelta(days=20)  # x DATE
 # d1 = datetime(2025, 2, 15).date()  # SELECT DATE
 
 datasql, datatxt, dataname1, dataname2, dataname3, dataname4 = datef.dates(d1)
@@ -518,92 +518,341 @@ for client in c_list:
 
     # In[7]: Atualizar view no google sheets
 
+    # from gspread.utils import rowcol_to_a1
+
+    # gc = gspread.oauth()
+    # sh = gc.open(f"{dic_nomes[client]} - Performance de Produto").worksheet(
+    #     "Relatório"
+    # )
+
+    # # Get all values from Google Sheets (before appending)
+    # data = sh.get_all_values()
+    # df_sheet = pd.DataFrame(data)
+
+    # # Extract column headers (first row assumed to be headers)
+    # dados_columns = [
+    #     str(date).strip() for date in df_sheet.iloc[1, 1:].tolist()
+    # ]
+    # product_sku = [
+    #     str(name).strip().lower() for name in df_sheet.iloc[1:, 0].tolist()
+    # ]
+
+    # updates = []
+    # new_rows = []
+
+    # # Iterate through product_sku in the DataFrame
+    # for index, row in df_perf_prod.iterrows():
+    #     product_sku = str(row.get("product_sku", "")).strip().lower()
+    #     if product_sku in product_sku:
+    #         row_idx = product_sku.index(product_sku) + 2  # Adjust for headers
+    #     else:
+    #         # If not found, append to Google Sheets
+    #         row_idx = len(product_sku) + 2
+    #         product_sku.append(product_sku)
+    #         new_rows.append([product_sku] + [""] * len(dados_columns))
+
+    # # ✅ Step 1: Append new product_sku rows if needed
+    # if new_rows:
+    #     sh.append_rows(new_rows)
+    #     print(f"✅ Added {len(new_rows)} new product_sku to Google Sheets.")
+
+    #     # ✅ Step 2: Refresh Google Sheets data (to include new rows)
+    #     data = sh.get_all_values()
+    #     df_sheet = pd.DataFrame(data)
+
+    #     # ✅ Step 3: Recompute row labels (First column)
+    #     product_sku = [
+    #         str(name).strip().lower() for name in df_sheet.iloc[1:, 0].tolist()
+    #     ]
+
+    # # ✅ Step 4: Proceed with batch updating values (after refreshing row labels)
+    # for dados in df_perf_prod.columns[1:]:  # Skip first column
+    #     if dados not in dados_columns:
+    #         print(f"⚠️ Date {dados_columns} not found in Google Sheets!")
+    #         continue
+
+    #     col_idx = dados_columns.index(dados) + 2  # Adjust for headers
+
+    #     for (
+    #         index,
+    #         row,
+    #     ) in df_perf_prod.iterrows():
+    #         product_sku = str(row.get("product_sku", "")).strip().lower()
+    #         if product_sku in product_sku:
+    #             row_idx = (
+    #                 product_sku.index(product_sku) + 2
+    #             )  # Convert to 1-based index
+    #         else:
+    #             print(
+    #                 f"⚠️ Row for '{product_sku}' not found in Google Sheets!"
+    #             )
+    #             continue  # Skip if row label is not found
+
+    #         # ✅ Get value from DataFrame
+    #         value = row[dados]
+
+    #         # ✅ Add batch update
+    #         updates.append(
+    #             {
+    #                 "range": rowcol_to_a1(row_idx, col_idx),
+    #                 "values": [[value]],
+    #             }
+    #         )
+
+    # # ✅ Step 5: Execute batch update in Google Sheets
+    # if updates:
+    #     sh.batch_update(updates)
+    #     print(
+    #         f"✅ Successfully updated {len(updates)} values in Google Sheets!"
+    #     )
+    # else:
+    #     print("⚠️ No updates were made. Check for missing matches.")
+
+    # from gspread.utils import rowcol_to_a1
+
+    # def update_google_sheets(df_perf_prod, client_name):
+    #     """
+    #     Updates a Google Sheets document with product performance data.
+    #     """
+    #     try:
+    #         print("🔍 Authenticating with Google Sheets API...")
+    #         gc = gspread.oauth()
+    #         sh = gc.open(
+    #             f"{dic_nomes[client_name]} - Performance de Produto"
+    #         ).worksheet("Relatório")
+    #         print(
+    #             f"✅ Connected to worksheet: {client_name} - Performance de Produto"
+    #         )
+
+    #         # Get existing data from Google Sheets
+    #         data = sh.get_all_values()
+    #         df_sheet = pd.DataFrame(data)
+
+    #         # Extract headers and existing product SKUs
+    #         if df_sheet.empty:
+    #             print("⚠️ Google Sheet appears to be empty!")
+    #             return
+
+    #         dados_columns = [
+    #             str(date).strip() for date in df_sheet.iloc[1, 1:].tolist()
+    #         ]
+    #         product_sku_list = [
+    #             str(name).strip().lower()
+    #             for name in df_sheet.iloc[1:, 0].tolist()
+    #         ]
+
+    #         updates = []
+    #         new_rows = []
+
+    #         # Iterate through df_perf_prod to check if SKUs exist in Google Sheets
+    #         for index, row in df_perf_prod.iterrows():
+    #             current_sku = str(row.get("product_sku", "")).strip().lower()
+
+    #             # Find the row index for the SKU or append a new one
+    #             if current_sku in product_sku_list:
+    #                 row_idx = (
+    #                     product_sku_list.index(current_sku) + 2
+    #                 )  # Adjust for headers
+    #             else:
+    #                 row_idx = len(product_sku_list) + 2
+    #                 product_sku_list.append(current_sku)
+    #                 new_rows.append([current_sku] + [""] * len(dados_columns))
+
+    #         # Append new SKUs if necessary
+    #         if new_rows:
+    #             sh.append_rows(new_rows)
+    #             print(f"✅ Added {len(new_rows)} new product SKUs.")
+
+    #             # Refresh Google Sheets data
+    #             data = sh.get_all_values()
+    #             df_sheet = pd.DataFrame(data)
+    #             product_sku_list = [
+    #                 str(name).strip().lower()
+    #                 for name in df_sheet.iloc[1:, 0].tolist()
+    #             ]
+
+    #         # Iterate through DataFrame columns (excluding SKU)
+    #         for dados in df_perf_prod.columns[1:]:
+    #             if dados not in dados_columns:
+    #                 print(f"⚠️ Date {dados} not found in Google Sheets!")
+    #                 continue
+
+    #             col_idx = dados_columns.index(dados) + 2  # Adjust for headers
+
+    #             for index, row in df_perf_prod.iterrows():
+    #                 current_sku = (
+    #                     str(row.get("product_sku", "")).strip().lower()
+    #                 )
+
+    #                 if current_sku in product_sku_list:
+    #                     row_idx = product_sku_list.index(current_sku) + 2
+    #                 else:
+    #                     print(
+    #                         f"⚠️ SKU '{current_sku}' not found in Google Sheets!"
+    #                     )
+    #                     continue  # Skip if SKU is not found
+
+    #                 # Get value from DataFrame
+    #                 value = row[dados]
+
+    #                 # Add update to batch
+    #                 updates.append(
+    #                     {
+    #                         "range": rowcol_to_a1(row_idx, col_idx),
+    #                         "values": [[value]],
+    #                     }
+    #                 )
+
+    #         # Execute batch update
+    #         if updates:
+    #             response = sh.batch_update(updates)  # Capture response
+    #             if "responses" in response:
+    #                 print(
+    #                     f"✅ Successfully updated {len(updates)} values in Google Sheets!"
+    #                 )
+    #             else:
+    #                 print(
+    #                     f"⚠️ Unexpected response from Google Sheets API: {response}"
+    #                 )
+    #         else:
+    #             print("⚠️ No updates were made. Check for missing matches.")
+
+    #     except gspread.exceptions.APIError as api_err:
+    #         print(f"❌ Google Sheets API Error: {api_err}")
+    #     except gspread.exceptions.GSpreadException as gs_err:
+    #         print(f"❌ Google Sheets Error: {gs_err}")
+    #     except Exception as e:
+    #         print(f"❌ Unexpected error updating Google Sheets: {e}")
+
+    import gspread
+    import pandas as pd
     from gspread.utils import rowcol_to_a1
 
-    gc = gspread.oauth()
-    sh = gc.open(f"{dic_nomes[client]} - Performance de Produto").worksheet(
-        "Relatório"
-    )
-
-    # Get all values from Google Sheets (before appending)
-    data = sh.get_all_values()
-    df_sheet = pd.DataFrame(data)
-
-    # Extract column headers (first row assumed to be headers)
-    dados_columns = [
-        str(date).strip() for date in df_sheet.iloc[1, 1:].tolist()
-    ]
-    product_sku = [
-        str(name).strip().lower() for name in df_sheet.iloc[1:, 0].tolist()
-    ]
-
-    updates = []
-    new_rows = []
-
-    # Iterate through product_sku in the DataFrame
-    for index, row in df_perf_prod.iterrows():
-        product_sku = str(row.get("product_sku", "")).strip().lower()
-        if product_sku in product_sku:
-            row_idx = product_sku.index(product_sku) + 2  # Adjust for headers
-        else:
-            # If not found, append to Google Sheets
-            row_idx = len(product_sku) + 2
-            product_sku.append(product_sku)
-            new_rows.append([product_sku] + [""] * len(dados_columns))
-
-    # ✅ Step 1: Append new product_sku rows if needed
-    if new_rows:
-        sh.append_rows(new_rows)
-        print(f"✅ Added {len(new_rows)} new product_sku to Google Sheets.")
-
-        # ✅ Step 2: Refresh Google Sheets data (to include new rows)
-        data = sh.get_all_values()
-        df_sheet = pd.DataFrame(data)
-
-        # ✅ Step 3: Recompute row labels (First column)
-        product_sku = [
-            str(name).strip().lower() for name in df_sheet.iloc[1:, 0].tolist()
-        ]
-
-    # ✅ Step 4: Proceed with batch updating values (after refreshing row labels)
-    for dados in df_perf_prod.columns[1:]:  # Skip first column
-        if dados not in dados_columns:
-            print(f"⚠️ Date {dados_columns} not found in Google Sheets!")
-            continue
-
-        col_idx = dados_columns.index(dados) + 2  # Adjust for headers
-
-        for (
-            index,
-            row,
-        ) in df_perf_prod.iterrows():
-            product_sku = str(row.get("product_sku", "")).strip().lower()
-            if product_sku in product_sku:
-                row_idx = (
-                    product_sku.index(product_sku) + 2
-                )  # Convert to 1-based index
-            else:
-                print(
-                    f"⚠️ Row for '{product_sku}' not found in Google Sheets!"
-                )
-                continue  # Skip if row label is not found
-
-            # ✅ Get value from DataFrame
-            value = row[dados]
-
-            # ✅ Add batch update
-            updates.append(
-                {
-                    "range": rowcol_to_a1(row_idx, col_idx),
-                    "values": [[value]],
-                }
+    def update_google_sheets(df_perf_prod, client_name):
+        """
+        Updates a Google Sheets document with product performance data.
+        """
+        try:
+            print("🔍 Authenticating with Google Sheets API...")
+            gc = gspread.oauth()
+            sh = gc.open(
+                f"{dic_nomes[client_name]} - Performance de Produto"
+            ).worksheet("Relatório")
+            print(
+                f"✅ Connected to worksheet: {client_name} - Performance de Produto"
             )
 
-    # ✅ Step 5: Execute batch update in Google Sheets
-    if updates:
-        sh.batch_update(updates)
-        print(
-            f"✅ Successfully updated {len(updates)} values in Google Sheets!"
-        )
-    else:
-        print("⚠️ No updates were made. Check for missing matches.")
+            # Get existing data from Google Sheets
+            data = sh.get_all_values()
+            df_sheet = pd.DataFrame(data)
+
+            # Extract headers and existing product SKUs
+            if df_sheet.empty:
+                print("⚠️ Google Sheet appears to be empty!")
+                return
+
+            dados_columns = [
+                str(date).strip().replace(" ", "").replace("-", "/")
+                for date in df_sheet.iloc[1, 1:].tolist()
+            ]
+            product_sku_list = [
+                str(name).strip().lower()
+                for name in df_sheet.iloc[1:, 0].tolist()
+            ]
+
+            updates = []
+            new_rows = []
+
+            df_perf_prod.columns = [
+                f"{col.start_time.strftime('%Y/%m/%d')}/{col.end_time.strftime('%Y/%m/%d')}"
+                if isinstance(col, pd.Period)
+                else str(col).strip()
+                for col in df_perf_prod.columns
+            ]
+
+            # print(
+            #     f"🛠️ Converted DataFrame Columns: {df_perf_prod.columns.tolist()}"
+            # )
+            # print(f"🛠️ Google Sheets Columns: {dados_columns}")
+
+            # Iterate through df_perf_prod to check if SKUs exist in Google Sheets
+            for index, row in df_perf_prod.iterrows():
+                current_sku = str(row.get("product_sku", "")).strip().lower()
+
+                # Find the row index for the SKU or append a new one
+                if current_sku in product_sku_list:
+                    row_idx = (
+                        product_sku_list.index(current_sku) + 2
+                    )  # Adjust for headers
+                else:
+                    row_idx = len(product_sku_list) + 2
+                    product_sku_list.append(current_sku)
+                    new_rows.append([current_sku] + [""] * len(dados_columns))
+
+            # Append new SKUs if necessary
+            if new_rows:
+                sh.append_rows(new_rows)
+                print(f"✅ Added {len(new_rows)} new product SKUs.")
+
+                # Refresh Google Sheets data
+                data = sh.get_all_values()
+                df_sheet = pd.DataFrame(data)
+                product_sku_list = [
+                    str(name).strip().lower()
+                    for name in df_sheet.iloc[1:, 0].tolist()
+                ]
+
+            # Iterate through DataFrame columns (excluding SKU)
+            for dados in df_perf_prod.columns[1:]:
+                if dados not in dados_columns:
+                    print(f"⚠️ Date {dados} not found in Google Sheets!")
+                    continue
+
+                col_idx = dados_columns.index(dados) + 2  # Adjust for headers
+
+                for index, row in df_perf_prod.iterrows():
+                    current_sku = (
+                        str(row.get("product_sku", "")).strip().lower()
+                    )
+
+                    if current_sku in product_sku_list:
+                        row_idx = product_sku_list.index(current_sku) + 2
+                    else:
+                        print(
+                            f"⚠️ SKU '{current_sku}' not found in Google Sheets!"
+                        )
+                        continue  # Skip if SKU is not found
+
+                    # Get value from DataFrame
+                    value = row[dados]
+
+                    # Add update to batch
+                    updates.append(
+                        {
+                            "range": rowcol_to_a1(row_idx, col_idx),
+                            "values": [[value]],
+                        }
+                    )
+
+            # Execute batch update
+            if updates:
+                response = sh.batch_update(updates)  # Capture response
+                if "responses" in response:
+                    print(
+                        f"✅ Successfully updated {len(updates)} values in Google Sheets!"
+                    )
+                else:
+                    print(
+                        f"⚠️ Unexpected response from Google Sheets API: {response}"
+                    )
+            else:
+                print("⚠️ No updates were made. Check for missing matches.")
+
+        except gspread.exceptions.APIError as api_err:
+            print(f"❌ Google Sheets API Error: {api_err}")
+        except gspread.exceptions.GSpreadException as gs_err:
+            print(f"❌ Google Sheets Error: {gs_err}")
+        except Exception as e:
+            print(f"❌ Unexpected error updating Google Sheets: {e}")
+
+    update_google_sheets(df_perf_prod, client)
